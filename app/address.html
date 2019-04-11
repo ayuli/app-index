@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -32,28 +34,31 @@
      </div><!--head-top/-->
      <form action="login.html" method="get" class="reg-login">
       <div class="lrBox">
-       <div class="lrList"><input type="text" placeholder="收货人" /></div>
-       <div class="lrList"><input type="text" placeholder="详细地址" /></div>
+       <div class="lrList"><input type="text" placeholder="收货人" id="consignee_name"/></div>
+       <div class="lrList"><input type="text" placeholder="详细地址" id="detailed_address"/></div>
        <div class="lrList">
-        <select>
-         <option>省份/直辖市</option>
+        <select id="province">
+         <option>省份</option>
         </select>
        </div>
        <div class="lrList">
-        <select>
+        <select id="city">
+         <option>城市</option>
+        </select>
+       </div>
+       <div class="lrList">
+        <select id="area">
          <option>区县</option>
         </select>
        </div>
-       <div class="lrList">
-        <select>
-         <option>详细地址</option>
-        </select>
-       </div>
-       <div class="lrList"><input type="text" placeholder="手机" /></div>
-       <div class="lrList2"><input type="text" placeholder="设为默认地址" /> <button>设为默认</button></div>
+       <div class="lrList"><input type="text" placeholder="手机" id="consignee_tel"/></div>
+       <div class="mui-input-row mui-checkbox">
+		  <label style="font-family: inherit;">设为默认地址</label>
+		  <input name="checkbox1" id="is_address" value="1" type="checkbox">
+		</div>
       </div><!--lrBox/-->
       <div class="lrSub">
-       <input type="submit" value="保存" />
+       <input type="button" id="btn" value="保存" />
       </div>
      </form><!--reg-login/-->
      
@@ -98,3 +103,93 @@
    </script>
   </body>
 </html>
+<script type="text/javascript">
+mui.ready(function () {
+		mui.ajax('http://39.96.199.148:8060/getregion',{
+		data:{
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			var str = "<option>省份</option>";
+			$.each(data,function(k,v){
+				str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+			})
+			$('#province').html(str);
+		},
+		error:function(xhr,type,errorThrown){
+		}
+	});
+	$('#province').change(function(){
+			var pid = $('#province').val();
+				mui.ajax('http://39.96.199.148:8060/getregion',{
+			data:{
+				pid:pid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				var str = "<option>城市</option>";
+				$.each(data,function(k,v){
+					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+				})
+				$('#city').html(str);
+			},
+			error:function(xhr,type,errorThrown){
+			}
+		});
+	})
+		$('#city').change(function(){
+			var pid = $('#city').val();
+				mui.ajax('http://39.96.199.148:8060/getregion',{
+			data:{
+				pid:pid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				var str = "<option>区县</option>";
+				$.each(data,function(k,v){
+					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+				})
+				$('#area').html(str);
+			},
+			error:function(xhr,type,errorThrown){
+			}
+		});
+	})
+})
+
+ $('#btn').click(function(){
+		var is_address = $('#is_address').prop('checked')
+		if(is_address){
+			is_address = 1;
+		}else{
+			is_address = 0;
+		}
+		console.log(is_address);
+ 		mui.ajax('http://39.96.199.148:8060/address',{
+		data:{
+			consignee_name:$('#consignee_name').val(),
+			detailed_address:$('#detailed_address').val(),
+			province:$('#province').val(),
+			city:$('#city').val(),
+			district:$('#area').val(),
+			consignee_tel:$('#consignee_tel').val(),
+			is_address:is_address
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'post',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			alert(1111)
+		},
+		error:function(xhr,type,errorThrown){
+			alert(222)
+		}
+	}); 
+}) 
+</script>	

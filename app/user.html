@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -25,7 +27,7 @@
       <dl class="names">
        <dt><img src="images/user01.png" /></dt>
        <dd>
-        <h3>天池不动峰</h3>
+        <h3 id="username"></h3>
        </dd>
        <div class="clearfix"></div>
       </dl>
@@ -36,7 +38,7 @@
        </dl>
        <dl>
         <dt>我的积分</dt>
-        <dd>0</dd>
+        <dd id="userscore"></dd>
        </dl>
        <div class="clearfix"></div>
       </div><!--shouyi/-->
@@ -48,19 +50,19 @@
       <div class="state">
          <dl>
           <dt><a href="order.html"><img src="images/user1.png" /></a></dt>
-          <dd><a href="order.html">待支付</a></dd>
+          <dd><a href="order.html">待支付</a></dd><span id="pay1"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user2.png" /></a></dt>
-          <dd><a href="order.html">代发货</a></dd>
+          <dd><a href="order.html">代发货</a></dd><span id="pay2"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user3.png" /></a></dt>
-          <dd><a href="order.html">待收货</a></dd>
+          <dd><a href="order.html">已完成</a></dd><span id="pay3"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user4.png" /></a></dt>
-          <dd><a href="order.html">全部订单</a></dd>
+          <dd><a href="order.html">全部订单</a></dd><span id="order"></span>
          </dl>
          <div class="clearfix"></div>
       </div><!--state/-->
@@ -116,3 +118,24 @@
    </script>
   </body>
 </html>
+<script type="text/javascript">
+	mui.ajax('http://39.96.199.148:8060/userCenter',{
+		data:{
+			
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			$('#username').text(data.username)
+			$('#userscore').text(data.userscore)
+			$('#pay1').text(data.pay1)
+			$('#pay2').text(data.pay2)
+			$('#pay3').text(data.pay3)
+			$('#order').text(data.order)
+		},
+		error:function(xhr,type,errorThrown){data.uaername = name;
+			
+		}
+	});
+</script>
