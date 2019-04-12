@@ -22,3 +22,6 @@ Route::get('/', function () {
 Route::get('/goodsList','Index\GoodsController@goodsList');
 //商品展示
 Route::post('/detail','Index\GoodsController@goodsList');
+
+//收藏
+Route::get('/shoucang','Index\GoodsController@shoucang');

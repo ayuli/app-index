@@ -47,7 +47,7 @@
         <p class="hui">富含纤维素，平衡每日膳食</p>
        </td>
        <td align="right">
-        <a href="javascript:;" class="shoucang"><span class="glyphicon glyphicon-star-empty"></span></a>
+        <a href="javascript:;" class="shoucang" ><span class="glyphicon glyphicon-star-empty" onclick="collect()"></span></a>
        </td>
       </tr>
      </table>
@@ -74,7 +74,8 @@
      <div class="proinfoList">
        商品名称：SheHuiRen</br>
 	   商品价格：299</br>
-	   商品积分：35
+	   商品积分：35</br>
+	   商品添加的时间：2019-4-11 19:36	   
      </div><!--proinfoList/-->
      <div class="proinfoList">
       暂无信息......
@@ -104,6 +105,9 @@
     <script src="js/jquery.spinner.js"></script>
    <script>
 	$('.spinnerExample').spinner({});
+	function collect(){
+		alert('收藏成功');
+	}
 	</script>
   </body>
 </html>
