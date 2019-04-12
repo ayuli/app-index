@@ -106,7 +106,22 @@
    <script>
 	$('.spinnerExample').spinner({});
 	function collect(){
-		alert('收藏成功');
+		//alert('收藏成功');
+		mui.ajax({  
+				url: 'http://39.96.199.148/collection',  
+				data:{
+					user_id:user_id,goods_id:goods_id
+				},   
+				dataType: 'json',  
+				type: 'post',  
+				success:function(data){
+					alert(data.msg);
+			}, 
+				error: function(data) {
+					alert(146); 
+					alert(data.msg); 
+				} 
+		});
 	}
 	</script>
   </body>
