@@ -41,7 +41,7 @@
       <table>
        <tr>
         <td colspan="2" width="65%"></td>
-        <td width="35%" align="right"><div class="qingqu"><a href="shoucang.html" onclick="cancel()" class="orange" onclick="javascript:this.innerHTML=(this.innerHTML==?'已取消':'取消收藏');">已取消</a></div></td>
+        <td width="35%" align="right"><div class="qingqu"><a href="shoucang.html" onclick="cancel()" class="orange">已取消</a></div></td>
        </tr>
        <tr>
         <td class="dingimg" width="15%"><img src="images/20190303190131.jpg"/></td>
@@ -109,13 +109,19 @@
    </script>
   </body>
 </html>
-<script>    
-function changeVal(obj){
-    var val=document.getElementById("btn");
-    if(val.innerHTML=="展开"){
-        obj.innerHTML="收缩";
-    }else if(val.innerHTML=="收缩"){
-        obj.innerHTML="展开";
-    }
-}
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:'http://39.96.199.148:8060/collectionget/',
+			type:'get',
+			dataType:'json',
+			success:function(da){
+				var str = '';
+				$.each(da.data,function(k,v){
+					str +="<table><tr><td colspan='2' width='65%'></td><td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' onclick='cancel()' class='orange'>已取消</a></div></td></tr><tr><td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td><td width='50%'><h3>"+v.goods_name+"</h3><time>下单时间：2019-04-11  13:51</time></td><td align='right'><img src='images/20190303190131.jpg'/></td></tr><tr><th colspan='3'><strong class='orange'>￥"+v.goods_price+"</strong></th></tr></table>"
+				})
+				$('.dingdanlist').html(str);
+			},
+		});
+	})
 </script>

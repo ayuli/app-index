@@ -47,7 +47,7 @@
         <p class="hui">富含纤维素，平衡每日膳食</p>
        </td>
        <td align="right">
-        <a href="javascript:;" class="shoucang" ><span class="glyphicon glyphicon-star-empty" onclick="collect()"></span></a>
+        <a href="javascript:;" class="shoucang" ><span class="glyphicon glyphicon-star-empty" name="goods_id"  onclick="collection()"></span></a>
        </td>
       </tr>
      </table>
@@ -105,24 +105,17 @@
     <script src="js/jquery.spinner.js"></script>
    <script>
 	$('.spinnerExample').spinner({});
-	function collect(){
-		//alert('收藏成功');
-		mui.ajax({  
-				url: 'http://39.96.199.148/collection',  
-				data:{
-					user_id:user_id,goods_id:goods_id
-				},   
-				dataType: 'json',  
-				type: 'post',  
-				success:function(data){
-					alert(data.msg);
-			}, 
-				error: function(data) {
-					alert(146); 
-					alert(data.msg); 
+		function collection(){
+		//var goods_id=document.getElementById('goods_id').val();
+			$.ajax({  
+					url:'http://39.96.199.148:8060/collection',
+					dataType:'json',  
+					type:'post', 
+					success:function(data){
+						alert(data.msg);
 				} 
-		});
-	}
+			});
+		}
 	</script>
   </body>
 </html>
