@@ -107,6 +107,7 @@
 	$('.spinnerExample').spinner({});
 		
 		function cancel(){
+			alert('已取消收藏');
 			$.ajax({  
 					url:'http://39.96.199.148:8060/uncollection',
 					type:'post', 
