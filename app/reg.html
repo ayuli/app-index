@@ -43,7 +43,7 @@
        <div class="lrList"><input type="text" id="tpwd" placeholder="再次输入密码" /></div>
       </div><!--lrBox/-->
       <div class="lrSub">
-       <input type="submit" value="立即注册" />
+       <input type="button" id="btn" value="立即注册" />
       </div>
      </form><!--reg-login/-->
      <div class="height1"></div>
@@ -83,6 +83,86 @@
   </body>
 </html>
 <script type="text/javascript">
-	
-</script>
+	mui.plusReady(function () {
+		var c_name = 2;
+		$('#name').blur(function(){
+			var name = $('#name').val();
+			 var email = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+			var phone = /^(1[0-9][0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+			if(phone.test(name)||email.test(name)){
+				mui.ajax('http://39.96.199.148:8060/registersole',{
+					data:{
+						name:name
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						if(data==2){
+							mui.toast('该手机或邮箱已绑定其他用户')
+							c_name = 2;
+						}else{
+							c_name = 1;
+						}
+					},
+					error:function(xhr,type,errorThrown){
+					}
+				});
+			}else{
+				mui.toast('请输入正确的手机或邮箱号')
+				c_name = 2;
+			}
+		})
+		var c_pwd =2;
+		$('#pwd').blur(function(){
+			var pwd = $('#pwd').val();
+			 var pwds = /^[\u4E00-\u9FA5A-Za-z0-9_^%&',;=?$\x22!@]{6,18}$/  ;
+			if(pwds.test(pwd)){
+				c_pwd =1
+			}else{
+				mui.toast('请输入正确的密码格式')
+				c_pwd =2
+			}
+		})
+		var c_tpwd =2;
+		$('#tpwd').blur(function(){
+			var pwd = $('#pwd').val();
+			var tpwd = $('#tpwd').val();
+			if(pwd!==tpwd){
+				mui.toast('请确认两次密码是否一致')
+				c_tpwd=2
+			}else{
+				c_tpwd=1
+			}
+		})
+		$('#btn').click(function(){
+				if(c_name==1&&c_pwd==1 &&c_tpwd==1){
+					var name = $('#name').val();
+					var pwd = $('#pwd').val();
+					mui.ajax('http://39.96.199.148:8060/register',{
+						data:{
+							name:name,
+							pwd:pwd
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							if(data==1){
+								mui.toast('注册成功')
+								mui.openWindow({
+									url:'index.html'
+								});
+							}
+						},
+						error:function(xhr,type,errorThrown){
+						}
+					});
+				}else{
+					
+					mui.toast('请按正确的方式填写注册内容')
+				}
+		})
+	})
+</script><strong></strong>
 

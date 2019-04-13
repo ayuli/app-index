@@ -8,6 +8,7 @@
     <title>三级分销</title>
 	<script src="js/mui.min.js"></script>
 	<link href="css/mui.min.css" rel="stylesheet"/>
+	<script src="js/mui.min.js"></script>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -52,8 +53,8 @@
        </div>
        <div class="lrList"><input type="text" placeholder="手机" id="consignee_tel"/></div>
        <div class="mui-input-row mui-checkbox">
-       		  <div class="lrList2"><input type="text" readonly="" placeholder="设为默认地址" /> <button id="is_address" value="1">设为默认</button></div>
-       		</div>
+		  <div class="lrList2"><input type="text" placeholder="设为默认地址" /> <button id="is_address" value="1">设为默认</button></div>
+		</div>
       </div><!--lrBox/-->
       <div class="lrSub">
        <input type="button" id="btn" value="保存" />
@@ -100,66 +101,96 @@
    </script>
   </body>
 </html>
-<script type="text/javascript">
-mui.ready(function () {
-		mui.ajax('http://39.96.199.148:8060/getregion',{
-		data:{
-		},
-		dataType:'json',//服务器返回json格式数据
-		type:'get',//HTTP请求类型
-		timeout:10000,//超时时间设置为10秒；
-		success:function(data){
-			var str = "<option>省份</option>";
-			$.each(data,function(k,v){
-				str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-			})
-			$('#province').html(str);
-		},
-		error:function(xhr,type,errorThrown){
-		}
-	});
-	$('#province').change(function(){
-			var pid = $('#province').val();
-				mui.ajax('http://39.96.199.148:8060/getregion',{
+<script type="text/javascript"> 
+	mui.plusReady(function () {  
+		    data = plus.webview.currentWebview();
+			name = data.name
+			tel = data.tel
+			address = data.address
+			province = data.province
+			district = data.district
+			city = data.city
+			add_id = data.add_id
+			$('#consignee_name').val(name)
+			$('#detailed_address').val(address)
+			$('#consignee_tel').val(tel)
+		mui.ajax('http://39.96.199.148:8060/selregion',{
 			data:{
-				pid:pid
 			},
 			dataType:'json',//服务器返回json格式数据
 			type:'get',//HTTP请求类型
 			timeout:10000,//超时时间设置为10秒；
 			success:function(data){
-				var str = "<option>城市</option>";
+				var str = "<option>省份</option>";
+				var str1 = "<option>城市</option>";
+				var str2 = "<option>区县</option>";
 				$.each(data,function(k,v){
-					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					if(v.region_id==province){
+						str += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
+					}else{
+						str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					}
+					if(v.region_id==city){
+						str1 += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
+					}else{
+						str1 += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					}
+					if(v.region_id==district){
+						str2 += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
+					}else{
+						str2 += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					}
 				})
-				$('#city').html(str);
+				// str = "<option value='"+province+"'></option>"
+				$('#province').html(str);
+				$('#city').html(str1);
+				$('#area').html(str2);
 			},
 			error:function(xhr,type,errorThrown){
 			}
 		});
-	})
-		$('#city').change(function(){
-			var pid = $('#city').val();
-				mui.ajax('http://39.96.199.148:8060/getregion',{
-			data:{
-				pid:pid
-			},
-			dataType:'json',//服务器返回json格式数据
-			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				var str = "<option>区县</option>";
-				$.each(data,function(k,v){
-					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-				})
-				$('#area').html(str);
-			},
-			error:function(xhr,type,errorThrown){
-			}
-		});
-	})
-})
-var isaddress = 0
+	}) 
+		$('#province').change(function(){
+				var pid = $('#province').val();
+					mui.ajax('http://39.96.199.148:8060/getregion',{
+				data:{
+					pid:pid
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					var str = "<option>城市</option>";
+					$.each(data,function(k,v){
+						str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					})
+					$('#city').html(str);
+				},
+				error:function(xhr,type,errorThrown){
+				}
+			});
+		})
+			$('#city').change(function(){
+				var pid = $('#city').val();
+					mui.ajax('http://39.96.199.148:8060/getregion',{
+				data:{
+					pid:pid
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					var str = "<option>区县</option>";
+					$.each(data,function(k,v){
+						str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+					})
+					$('#area').html(str);
+				},
+				error:function(xhr,type,errorThrown){
+				}
+			});
+		})
+		var isaddress = 0
 		$('#is_address').click(function(){
 			console.log(isaddress)
 			if(isaddress==0){
@@ -170,14 +201,13 @@ var isaddress = 0
 				mui.toast('已取消默认')
 		}		
 		})
-		 $('#btn').click(function(){
+		$('#btn').click(function(){
 				if(isaddress){
 					isaddress = 1;
 				}else{
 					isaddress = 0;
 				}
-				console.log(is_address);
-				mui.ajax('http://39.96.199.148:8060/address',{
+		 		 mui.ajax('http://39.96.199.148:8060/upaddress',{
 				data:{
 					consignee_name:$('#consignee_name').val(),
 					detailed_address:$('#detailed_address').val(),
@@ -185,17 +215,22 @@ var isaddress = 0
 					city:$('#city').val(),
 					district:$('#area').val(),
 					consignee_tel:$('#consignee_tel').val(),
-					is_address:isaddress
+					is_address:isaddress,
+					id:add_id,
 				},
 				dataType:'json',//服务器返回json格式数据
 				type:'post',//HTTP请求类型
 				timeout:10000,//超时时间设置为10秒；
 				success:function(data){
-					alert(1111)
+					if(data==1){
+						alert(11111)
+					}else{
+						alert(123)
+					}
 				},
 				error:function(xhr,type,errorThrown){
 					alert(222)
 				}
-			}); 
-		}) 
+			});  
+		})
 </script>	

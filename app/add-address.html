@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -37,16 +39,13 @@
       </tr>
      </table>
      
-     <div class="dingdanlist" onClick="window.location.href='proinfo.html'">
-      <table>
+     <div class="dingdanlist">
+      <table id="is_address">
        
        <tr>
-        <td width="50%">
-         <h3>张先生 185444171241</h3>
-         <time>上海普陀区曹杨路1040弄中友大厦19楼</time>
-        </td>
-        <td align="right"><a href="address.html" class="hui"><span class="glyphicon glyphicon-check"></span> 修改信息</a></td>
+        
        </tr>
+	   
       </table>
      </div><!--dingdanlist/-->
      
@@ -91,3 +90,61 @@
    </script>
   </body>
 </html>
+<script type="text/javascript">
+mui.plusReady(function () {
+	var name = $('#name').val()
+	mui.ajax('http://39.96.199.148:8060/addressGet',{
+		data:{
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			if(data==2){
+				mui.toast('请先登陆')
+				mui.openWindow({
+					url:'login.html',
+					createNew:true,
+				});
+			}else{
+				var str = 123
+				$.each(data,function(k,v){
+					str +=
+					"<tr>"
+					 +"<td width='50%'>"
+					  +"<h3 id='name'>"+v.consignee_name+"</h3>"
+					  +"<time id='address'>"+v.detailed_address+"</time>"
+					 +"</td>"
+					 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+					 +"</tr>"
+				})
+				$('#is_address').html(str);
+  				$('.btn').click(function(){
+				var consignee_name = $(this).attr('consignee_name')
+				var consignee_tel = $(this).attr('consignee_tel')
+				var detailed_address = $(this).attr('detailed_address')
+				var city = $(this).attr('city')
+				var district = $(this).attr('district')
+				var province = $(this).attr('province')
+ 					var add_id = $(this).attr('add_id')
+ 					mui.openWindow({
+ 						url:'up-address.html',
+ 						createNew:true,
+ 						extras:{   
+							province:province,
+							district:district,
+							city:city,
+ 							name:consignee_name,
+ 							tel:consignee_tel,
+ 							address:detailed_address,
+							add_id:add_id
+ 									},
+ 					}); 
+ 				}) 
+			}
+		},
+		error:function(xhr,type,errorThrown){
+		},
+	});
+});
+</script>
