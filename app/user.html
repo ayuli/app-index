@@ -74,7 +74,8 @@
 	 </ul><!--userNav/-->
      
      <div class="lrSub">
-       <a href="javascript:;">退出登录</a>
+		 
+       <a id="btn" href="javascript:;">退出登录</a>
      </div>
      
      <div class="height1"></div>
@@ -138,4 +139,26 @@
 			
 		}
 	});
+	$('#btn').click(function(){
+		mui.ajax('http://39.96.199.148:8060/outlogin',{
+			data:{
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				if(data==1){
+					mui.toast('退出登陆')
+					mui.openWindow({
+						url:'login.html'
+					});
+				}else{
+					mui.toast('退出失败')
+				}
+			},
+			error:function(xhr,type,errorThrown){
+				alert(3333)
+			}
+		});
+	})
 </script>
