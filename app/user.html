@@ -120,9 +120,10 @@
   </body>
 </html>
 <script type="text/javascript">
+	var uid = plus.storage.getItem("uid")
 	mui.ajax('http://39.96.199.148:8060/userCenter',{
 		data:{
-			
+			uid:uid
 		},
 		dataType:'json',//服务器返回json格式数据
 		type:'get',//HTTP请求类型
