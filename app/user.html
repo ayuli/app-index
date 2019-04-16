@@ -120,26 +120,30 @@
   </body>
 </html>
 <script type="text/javascript">
-	var uid = plus.storage.getItem("uid")
-	mui.ajax('http://39.96.199.148:8060/userCenter',{
-		data:{
-			uid:uid
-		},
-		dataType:'json',//服务器返回json格式数据
-		type:'get',//HTTP请求类型
-		timeout:10000,//超时时间设置为10秒；
-		success:function(data){
-			$('#username').text(data.username)
-			$('#userscore').text(data.userscore)
-			$('#pay1').text(data.pay1)
-			$('#pay2').text(data.pay2)
-			$('#pay3').text(data.pay3)
-			$('#order').text(data.order)
-		},
-		error:function(xhr,type,errorThrown){data.uaername = name;
-			
+	mui.plusReady(function () {
+	   var uid = plus.storage.getItem("uid")
+	   	mui.ajax('http://39.96.199.148:8060/userCenter',{
+	   	data:{
+	   		uid:uid
+	   	},
+	   	dataType:'json',//服务器返回json格式数据
+	   	type:'get',//HTTP请求类型
+	   	timeout:10000,//超时时间设置为10秒；
+	   	success:function(data){
+			console.log(data)
+	   		$('#username').text(data.username)
+	   		$('#userscore').text(data.userscore)
+	   		$('#pay1').text(data.pay1)
+	   		$('#pay2').text(data.pay2)
+	   		$('#pay3').text(data.pay3)
+	   		$('#order').text(data.order)
+			alert(data.pay1)
+	   	},
+		error:function(xhr,type,errorThrown){
+			alert(3333)
 		}
-	});
+	   });
+	})
 	$('#btn').click(function(){
 		mui.ajax('http://39.96.199.148:8060/outlogin',{
 			data:{
