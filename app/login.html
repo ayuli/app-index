@@ -36,7 +36,7 @@
       <h3>还没有三级分销账号？点此<a class="orange" href="reg.html">注册</a></h3>
       <div class="lrBox">
        <div class="lrList"><input type="text" id="name" placeholder="输入手机号码或者邮箱号" /></div>
-       <div class="lrList"><input type="text" id="pwd" placeholder="输入证码" /></div>
+       <div class="lrList"><input type="text" id="pwd" placeholder="输入密码" /></div>
       </div><!--lrBox/-->
       <div class="lrSub">
        <input type="button" id="btn" value="立即登录" />
@@ -95,10 +95,15 @@ mui.ready(function(){
 						if(data==1){
 							mui.toast('登陆成功')
 							mui.openWindow({
-								url:'index.html'
+								url:'index.html',
+								createNew:true,
 							});
 						}else if(data==3){
 							mui.toast('已登陆')
+							mui.openWindow({
+								url:'index.html',
+								createNew:true,
+							});
 						}else{
 							mui.toast('用户名或密码错误')
 						}
