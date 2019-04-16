@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+		<style type="text/css">   
+        #bcid{   
+            width: 100%;   
+            height: 100%;   
+            position: absolute;   
+            background: #000000;   
+        }   
+        html, body ,div{   
+            height:100%;   
+            width: 100%;   
+        }   
+        .fbt{   
+            color: #0E76E1;   
+            width: 50%;   
+            background-color: #ffffff;   
+            float: left;    
+            line-height: 44px;   
+            text-align: center;   
+        }   
+    </style>   
+</head>
+
+<body>
+	<div id="bcid"></div>  
+<body>
+</html>
+
+<script>
+	var height = window.innerHeight + 'px';//获取页面实际高度   
+    var width = window.innerWidth + 'px';   
+    document.getElementById("bcid").style.height= height;   
+    document.getElementById("bcid").style.width= width;  
+	
+	 mui.plusReady(function () {  //通过mui初始化扫描 
+		mui.init();   
+        startRecognize();   
+     });
+		function startRecognize(){
+			var filter;   
+             //自定义的扫描控件样式   
+             var styles = {frameColor: "#29E52C",scanbarColor: "#29E52C",background: ""}   
+            //扫描控件构造   
+            scan = new plus.barcode.Barcode('bcid',filter,styles);   
+            scan.onmarked = onmarked;  
+			scan.start();  
+		}
+		function onmarked(type, result ) {  //这个是扫描二维码的回调函数，type是扫描二维码回调的类型 
+                    var text = '';   
+                    alert( text + " : "+ result );   
+            };   
+</script>
