@@ -154,15 +154,17 @@
 					plus.storage.removeItem("uid");
 					alert(plus.storage.getItem("uid"));
 					mui.openWindow({
-						url:'login.html'
+						url:'login.html',
+						createNew:true,
 					});
 				}else{
-					mui.toast('退出失败')
+					mui.toast('未登录，请先登陆')
+					mui.openWindow({
+						url:'login.html',
+						createNew:true,
+					});
 				}
 			},
-			error:function(xhr,type,errorThrown){
-				alert(3333)
-			}
 		});
 	})
 </script>
