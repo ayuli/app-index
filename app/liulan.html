@@ -35,13 +35,13 @@
      <table class="shoucangtab">
       <tr>
        <td width="75%"><span class="hui">浏览记录共有：<strong class="orange">1</strong>条</span></td>
-       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" class="orange">全部删除</a></td>
+       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" id="adel" class="orange">全部删除</a></td>
       </tr>
      </table>
      
-     <div class="collectionlist">
+     <div class="collectionlist"id="liulan">
 		 
-      <table id="liulan">
+<!--      <table>
        <tr>
         <td colspan="2" width="65%"></td>
        </tr>
@@ -54,7 +54,7 @@
  
        </tr>
 	   
-      </table>
+      </table> -->
 	  
      </div><!--dingdanlist/-->
      
@@ -107,6 +107,13 @@
 <script>
 	mui.plusReady(function () {
 		var uid = plus.storage.getItem("uid")
+		if(uid==null){
+			mui.toast('请先登陆')
+			mui.openWindow({
+				url:'login.html',
+				createNew:true,
+			});
+		}
 	    mui.ajax('http://39.96.199.148:8060/showhistory',{
 	    	data:{
 	    		uid:uid
@@ -124,16 +131,55 @@
 							+"<td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td>"
 							+"<td width='50%'>"
 							+"<h5 id='goodsname'>"+v.goods_name+"</h5>"
-							
 							+"<time id='addtime'>浏览时间:"+v.add_htime+"</time>"
+							+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+							+"<a class='del' style='color:red' hid="+v.history_id+">删除</a>"
 							+"</td>"
 							+"</tr>"
 				})
 				$('#liulan').html(str)
+				$('.del').click(function(){
+					var id = $(this).attr('hid')
+					mui.ajax('http://39.96.199.148:8060/delhistory',{
+						data:{
+							id:id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'get',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							if(data==1){
+									alert('删除成功');
+									location.href="";
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							
+						}
+					});
+				})
 	    	},
 	    	error:function(xhr,type,errorThrown){
 	    		
 	    	}
 	    });
+	})
+	$('#adel').click(function(){
+					mui.ajax('http://39.96.199.148:8060/delahistory',{
+						data:{
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'get',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							if(data==1){
+									alert('删除成功');
+									location.href="";
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							
+						}
+					});
 	})
 </script>

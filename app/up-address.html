@@ -57,9 +57,10 @@
 		</div>
       </div><!--lrBox/-->
       <div class="lrSub">
-       <input type="button" id="btn" value="保存" />
+       <input style="background:#00CC00" type="button"  id="btn" value="保存" />
+	   </br>
+	   <input style="background:#FF0000" type="button" id="del" value="删除" />
       </div>
-     
      <div class="height1"></div>
      <div class="footNav">
       <dl>
@@ -207,7 +208,7 @@
 				}else{
 					isaddress = 0;
 				}
-		 		 mui.ajax('http://39.96.199.148:8060/upaddress',{
+		 	mui.ajax('http://39.96.199.148:8060/upaddress',{
 				data:{
 					consignee_name:$('#consignee_name').val(),
 					detailed_address:$('#detailed_address').val(),
@@ -223,9 +224,9 @@
 				timeout:10000,//超时时间设置为10秒；
 				success:function(data){
 					if(data==1){
-						alert(11111)
+						alert('修改成功')
 					}else{
-						alert(123)
+						alert('未修改')
 					}
 				},
 				error:function(xhr,type,errorThrown){
@@ -233,4 +234,22 @@
 				}
 			});  
 		})
+		$('#del').click(function(){
+			mui.ajax('http://39.96.199.148:8060/deladdress',{
+					data:{
+						id:add_id,
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						alert('删除成功')
+						mui.openWindow({
+							url:'add-address.html',
+							createNew:true,
+					})
+				
+				}
+			})
+		});
 </script>	
