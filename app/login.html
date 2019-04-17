@@ -92,10 +92,12 @@ mui.ready(function(){
 					type:'get',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
-						if(data==1){
+						if(data.code==1){
+							var uid = data.uid
 							mui.toast('登陆成功')
-							plus.storage.setItem("uid",name);
-							 mui.openWindow({
+							plus.storage.setItem("uid",""+uid+"");
+						
+							mui.openWindow({
 								url:'index.html',
 								createNew:true,
 							}); 
@@ -110,6 +112,7 @@ mui.ready(function(){
 						}
 					},
 					error:function(xhr,type,errorThrown){
+						alert(111)
 					}
 				});
 			})

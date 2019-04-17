@@ -150,6 +150,8 @@
 						success:function(data){
 							if(data==1){
 								mui.toast('注册成功')
+								plus.storage.setItem("uid",""+uid+"");
+								
 								mui.openWindow({
 									url:'index.html',
 									createNew:true,

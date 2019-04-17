@@ -69,7 +69,7 @@
       <li><span class="glyphicon glyphicon-usd"></span><a href="quan.html">我的优惠券</a></li>
       <li><span class="glyphicon glyphicon-map-marker"></span><a href="add-address.html">收货地址管理</a></li>
       <li><span class="glyphicon glyphicon-star-empty"></span><a href="shoucang.html">我的收藏</a></li>
-      <li><span class="glyphicon glyphicon-heart"></span><a href="shoucang.html">我的浏览记录</a></li>
+      <li><span class="glyphicon glyphicon-heart"></span><a href="liulan.html">我的浏览记录</a></li>
       <li><span class="glyphicon glyphicon-usd"></span><a href="tixian.html">余额提现</a></li>
 	 </ul><!--userNav/-->
      
@@ -130,17 +130,14 @@
 	   	type:'get',//HTTP请求类型
 	   	timeout:10000,//超时时间设置为10秒；
 	   	success:function(data){
-			console.log(data)
 	   		$('#username').text(data.username)
 	   		$('#userscore').text(data.userscore)
 	   		$('#pay1').text(data.pay1)
 	   		$('#pay2').text(data.pay2)
 	   		$('#pay3').text(data.pay3)
 	   		$('#order').text(data.order)
-			alert(data.pay1)
 	   	},
 		error:function(xhr,type,errorThrown){
-			alert(3333)
 		}
 	   });
 	})
@@ -154,6 +151,8 @@
 			success:function(data){
 				if(data==1){
 					mui.toast('退出登陆')
+					plus.storage.removeItem("uid");
+					alert(plus.storage.getItem("uid"));
 					mui.openWindow({
 						url:'login.html'
 					});

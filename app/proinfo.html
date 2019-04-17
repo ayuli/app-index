@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -119,3 +121,29 @@
 	</script>
   </body>
 </html>
+	<script type="text/javascript">
+		mui.plusReady(function () {
+			data = plus.webview.currentWebview();
+			var goodsid = data.goodsid
+			var uid = plus.storage.getItem("uid");
+		    mui.ajax('http://39.96.199.148:8060/addhistory',{
+		    	data:{
+		    		uid:uid,
+					goodsid:goodsid
+		    	},
+		    	dataType:'json',//服务器返回json格式数据
+		    	type:'post',//HTTP请求类型
+		    	timeout:10000,//超时时间设置为10秒；
+		    	success:function(data){
+					if(data==1){
+						alert(11)
+					}else{
+						alert(222)
+					}
+		    	},
+		    	error:function(xhr,type,errorThrown){
+		    		
+		    	}
+		    });
+		})
+	</script>

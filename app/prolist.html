@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -33,7 +35,7 @@
       <li><a href="javascript:;">价格</a></li>
      </ul><!--pro-select/-->
      <div class="prolist">
-
+<!-- 
       <dl>
        <dt><a href="proinfo.html"><img src="images/prolist1.jpg" width="100" height="100" /></a></dt>
        <dd>
@@ -44,7 +46,7 @@
        <div class="clearfix"></div>
       </dl>
 	  
-	  
+	  -->
      </div><!--prolist/-->
      <div class="height1"></div>
      <div class="footNav">
@@ -98,9 +100,20 @@
 			success:function(da){
 				var str = '';
 				$.each(da.data,function(k,v){
-					str += "<dl><dt><a href='proinfo.html'><img src='images/20190303190131.jpg' width='100' height='100' /></a></dt><dd><h3><a href='proinfo.html'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+					str += "<dl class='goods' goodsid='"+v.goods_id+"'><dt><p><img src='images/20190303190131.jpg' width='100' height='100' /></p></dt><dd><h3><p>"+v.goods_name+"</p></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
 				})
 				$('.prolist').html(str);	
+				
+				$('.goods').click(function(){
+					var goodsid=$(this).attr('goodsid')
+					mui.openWindow({
+						url:'proinfo.html',
+						createNew:true,
+						extras:{
+							goodsid:goodsid
+						}
+					});
+				})
 			},
 		});
 	})	
