@@ -1,12 +1,12 @@
 ;(function ($) {
   $.fn.spinner = function (opts) {
     return this.each(function () {
-      var defaults = {value:0, min:0}
+      var defaults = {value:1, min:1}
       var options = $.extend(defaults, opts)
       var keyCodes = {up:38, down:40}
       var container = $('<div></div>')
       container.addClass('spinner')
-      var textField = $(this).addClass('value').attr('maxlength', '2').val(options.value)
+      var textField = $(this).addClass('value').attr('maxlength', '3').val(options.value)
         .bind('keyup paste change', function (e) {
           var field = $(this)
           if (e.keyCode == keyCodes.up) changeValue(1)
@@ -24,7 +24,12 @@
       textField.after(increaseButton)
 
       function changeValue(delta) {
-        textField.val(getValue() + delta)
+				var goods_num = $(".goods_num").val();
+				var num = getValue() + delta;
+				if(num>goods_num){
+					return false;
+				}
+        textField.val(num)
         validateAndTrigger(textField)
       }
 
