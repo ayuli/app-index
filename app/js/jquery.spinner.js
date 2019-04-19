@@ -24,11 +24,12 @@
       textField.after(increaseButton)
 
       function changeValue(delta) {
-				var goods_num = $(".goods_num").val();
-				var num = getValue() + delta;
-				if(num>goods_num){
-					return false;
-				}
+		var goods_num = $(".goods_num").val();
+		console.log(goods_num);
+		var num = getValue() + delta;
+		if(num>=goods_num){
+			return false;
+		}
         textField.val(num)
         validateAndTrigger(textField)
       }
