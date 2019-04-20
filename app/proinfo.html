@@ -142,7 +142,7 @@
 		    mui.ajax('http://39.96.199.148:8060/addhistory',{
 		    	data:{
 		    		uid:uid,
-					goodsid:goodsid
+					goodsid:goodsid 
 		    	},
 		    	dataType:'json',//服务器返回json格式数据
 		    	type:'post',//HTTP请求类型
@@ -210,10 +210,9 @@
 					$(this).addClass('attr_click');
 				});
 				
-				
 			},'json'); 
 			
-			
+
 			
 			$(".cartAdd").click(function(){
 				var goods_attr=$(".attr_click").attr('goods_attr');
