@@ -29,7 +29,7 @@
      <header>
       <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
       <div class="head-mid">
-       <h1>会员注册</h1>
+       <h1>忘记密码</h1>
       </div>
      </header>
      <div class="head-top">
@@ -46,7 +46,7 @@
       <div class="lrSub">
 		<input type="button" id="btn1" value="获取验证码" />
 		</br>
-        <input type="button" style="background:#00CC00;" id="btn" value="立即注册" />
+		<input type="button" style="background:#00CC00;" id="btn" value="修改密码" />
       </div>
      </form><!--reg-login/-->
      <div class="height1"></div>
@@ -86,110 +86,46 @@
   </body>
 </html>
 <script type="text/javascript">
-		$('#btn1').click(function(){
-		var name = $('#name').val();
-		mui.ajax('http://39.96.199.148:8060/getcode',{
-			data:{
-				user_name:name
-			},
-			dataType:'json',//服务器返回json格式数据
-			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				alert(data.msg)
-			},
-			error:function(xhr,type,errorThrown){
-				alert(2)
-			}
-		});
-		})
-	mui.plusReady(function () {
-		var c_name = 2;
-		$('#name').blur(function(){
-			var name = $('#name').val();
-			 var email = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-			var phone = /^(1[0-9][0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
-			if(phone.test(name)||email.test(name)){
-				mui.ajax('http://39.96.199.148:8060/registersole',{
+	$('#btn1').click(function(){
+	var name = $('#name').val();
+	mui.ajax('http://39.96.199.148:8060/getvercode',{
+		data:{
+			user_name:name
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			alert(data.msg)
+		},
+		error:function(xhr,type,errorThrown){
+			alert(2)
+		}
+	});
+	})
+
+	$('#btn').click(function(){
+				var name = $('#name').val();
+				var pwd = $('#pwd').val();
+				var tpwd = $('#tpwd').val();
+				var yzm = $('#yzm').val();
+				mui.ajax('http://39.96.199.148:8060/forget',{
 					data:{
-						name:name
+						user_name:name,
+						user_pwd:pwd,
+						user_pwd2:tpwd,
+						user_code:yzm
 					},
 					dataType:'json',//服务器返回json格式数据
-					type:'get',//HTTP请求类型
+					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
-						if(data==2){
-							mui.toast('该手机或邮箱已绑定其他用户')
-							c_name = 2;
-						}else{
-							c_name = 1;
-						}
+						alert(data.msg)
 					},
 					error:function(xhr,type,errorThrown){
+						alert(22)
 					}
 				});
-			}else{
-				mui.toast('请输入正确的手机或邮箱号')
-				c_name = 2;
-			}
-		})
-		var c_pwd =2;
-		$('#pwd').blur(function(){
-			var pwd = $('#pwd').val();
-			 var pwds = /^[\u4E00-\u9FA5A-Za-z0-9_^%&',;=?$\x22!@]{6,18}$/  ;
-			if(pwds.test(pwd)){
-				c_pwd =1
-			}else{
-				mui.toast('请输入正确的密码格式')
-				c_pwd =2
-			}
-		})
-		var c_tpwd =2;
-		$('#tpwd').blur(function(){
-			var pwd = $('#pwd').val();
-			var tpwd = $('#tpwd').val();
-			if(pwd!==tpwd){
-				mui.toast('请确认两次密码是否一致')
-				c_tpwd=2
-			}else{
-				c_tpwd=1
-			}
-		})
-		var yzm = 2
-		$('#yzm').blur(function(){
-			var yzm = 1
-		})
-		$('#btn').click(function(){
-				if(c_name==1&&c_pwd==1 &&c_tpwd==1&&var yzm = 1){
-					var name = $('#name').val();
-					var pwd = $('#pwd').val();
-					mui.ajax('http://39.96.199.148:8060/register',{
-						data:{
-							name:name,
-							pwd:pwd
-						},
-						dataType:'json',//服务器返回json格式数据
-						type:'post',//HTTP请求类型
-						timeout:10000,//超时时间设置为10秒；
-						success:function(data){
-							if(data==1){
-								mui.toast('注册成功')
-								plus.storage.setItem("uid",""+uid+"");
-								
-								mui.openWindow({
-									url:'index.html',
-									createNew:true,
-								});
-							}
-						},
-						error:function(xhr,type,errorThrown){
-						}
-					});
-				}else{
-					
-					mui.toast('请按正确的方式填写注册内容')
-				}
-		})
 	})
 </script><strong></strong>
 

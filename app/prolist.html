@@ -94,9 +94,10 @@
 <script>
 	$(function(){
 		$.ajax({
-			url:'http://39.96.199.148:8060/indexgoods/',
+			url:'http://39.96.199.148:8060/indexgoods',
 			type:'get',
 			dataType:'json',
+			data:{type:'all'},
 			success:function(da){
 				var str = '';
 				$.each(da.data,function(k,v){
