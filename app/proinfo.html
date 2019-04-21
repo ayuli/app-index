@@ -31,10 +31,6 @@
      </header>
      <div id="sliderA" class="slider">
       <img src="images/20190303190131.jpg" />
-      <img src="images/20190303190131.jpg" />
-      <img src="images/20190303190131.jpg" />
-      <img src="images/20190303190131.jpg" />
-      <img src="images/20190303190131.jpg" />
      </div><!--sliderA/-->
      <table class="jia-len">
       <tr>
@@ -137,6 +133,8 @@
 			
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
+			
+			// return false;
 			var uid = plus.storage.getItem("uid");
 			//历史记录
 		    mui.ajax('http://39.96.199.148:8060/addhistory',{
@@ -167,6 +165,21 @@
 				$(".goods_name").html(res.goodsInfo.goods_name);
 				$(".goods_number").text(res.goodsInfo.goods_number);
 				$(".goods_num").val(res.goodsInfo.goods_number);
+				 
+				if(res.goodsInfo.goods_imgs==""){
+					var str="<img src='http://39.96.199.148:8060/img/nullimg.jpg' style='width: 640px; height: 250px;'>"; 
+					$("#sliderA").html(str);
+				}else{
+					var str="";
+					$.each(res.goodsInfo.goods_imgs,function(i,v){
+						str+="<img src='http://39.96.199.148:8060/"+v+"'>";  
+					});
+					$("#sliderA").html(str); 
+					$("#sliderA").excoloSlider();
+
+				}
+				
+
 				var proinfoList="商品名称："+res.goodsInfo.goods_name+"</br>"+
 				  "商品价格：￥"+res.goodsInfo.goods_price+"</br>"+
 				  "商品积分："+res.goodsInfo.goods_score+"</br>"+

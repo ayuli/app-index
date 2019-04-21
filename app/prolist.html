@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Author" contect="http://www.webqin.net">
+    <title>三级分销</title>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/response.css" rel="stylesheet">
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="maincont">
+     <header>
+      <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div class="head-mid">
+       <form action="#" class="prosearch"><input type="text" style='width:240px;' name='search' id='search'/><input type="button" name="label" type2='search' value="搜索" style='width:40px;' id='search-btn'/></form>
+      </div>
+     </header>
+     <ul class="pro-select">
+      <li class="pro-selCur" name="label" type2='is_del'><a href="javascript:;">全部</a></li>
+      <li name="label"  type2='is_new'><a href="javascript:;" >新品</a></li>
+      <li name="label" class='price' type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
+     </ul><!--pro-select/-->
+	 
+	 
+	 
+	 	 <div id="pullrefresh" class="mui-scroll-wrapper">
+	    <div class="mui-scroll">
+			
+			
+     <div class="prolist">
+
+<!--      <dl>
+       <dt><a href="proinfo.html"><img src="images/prolist1.jpg" width="100" height="100" /></a></dt>
+       <dd>
+        <h3><a href="proinfo.html">四叶草</a></h3>
+        <div class="prolist-price"><strong>¥299</strong> <span>¥599</span></div>
+        <div class="prolist-yishou"><span>5.0折</span> <em>已售：35</em></div>
+       </dd>
+       <div class="clearfix"></div>
+      </dl>
+	  -->
+	  
+     </div><!--prolist/-->
+	 
+	 
+	 </div>
+	 </div>
+
+     <div class="height1"></div>
+     <div class="footNav">
+      <dl>
+       <a href="index.html">
+        <dt><span class="glyphicon glyphicon-home"></span></dt>
+        <dd>微店</dd>
+       </a>
+      </dl>
+      <dl class="ftnavCur">
+       <a href="prolist.html">
+        <dt><span class="glyphicon glyphicon-th"></span></dt>
+        <dd>所有商品</dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="car.html">
+        <dt><span class="glyphicon glyphicon-shopping-cart"></span></dt>
+        <dd>购物车 </dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="user.html">
+        <dt><span class="glyphicon glyphicon-user"></span></dt>
+        <dd>我的</dd>
+       </a>
+      </dl>
+      <div class="clearfix"></div>
+     </div><!--footNav/-->
+    </div><!--maincont-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/style.js"></script>
+    <!--焦点轮换-->
+    <script src="js/jquery.excoloSlider.js"></script>
+
+    <script>
+		var page =2;
+
+		$(function () {
+			$("#search").val(" ");
+
+
+		 $("#sliderA").excoloSlider();
+		 
+		 $.ajax({
+		 	url:'http://39.96.199.148:8060/indexgoods/',
+		 	type:'get',
+		 	data : {type:'is_del',page:1},  
+		 	dataType:'json',
+		 	success:function(da){
+		 		var str = '';
+		 		$.each(da.data,function(k,v){ 
+		 			str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+		 		})
+		 		$('.prolist').html(str);
+					
+				$('.goodsList').click(function(){
+					var goods_id=$(this).attr('goods_id')
+					mui.openWindow({
+						url:'proinfo.html', 
+						createNew:true,
+						extras:{
+							goods_id:goods_id
+						}
+					});
+				});
+				
+		 	},
+		 });
+		 
+		
+		
+		 
+		// 标记
+		$('[name=label]').click(function(){
+			page=1;
+			_this = $(this);
+			
+			var type2 = _this.attr('type2')
+				
+			
+			if(type2=='prices'){
+				$('#arrows').text('↑') 
+				_this.attr('type2','pricex')
+			}else if(type2=='pricex'){
+				_this.attr('type2','prices')
+				$('#arrows').text('↓')
+			}
+			
+			if(type2!='search'){ 
+				$("#search").val(" ");
+				_this.siblings().removeClass();
+				_this.addClass('pro-selCur')
+			}else{
+				var type2 = $(".pro-selCur").attr('type2')
+			}
+			var search = $("[name='search']").val();
+			
+			if($('.price').hasClass('pro-selCur')){
+				if($("#arrows").text()=='↑'){
+					type2='prices'
+				}else{
+					type2='pricex'
+				}
+			}
+			
+			getGoodsList(type2,search); 
+		})
+		
+		function getGoodsList(type2,search){
+			
+			$.ajax({
+				url:'http://39.96.199.148:8060/indexgoods/',
+				type:'get',
+				data : {type:type2,search:search,page:1},
+				dataType:'json',
+				success:function(da){   
+					var str = '';
+					$.each(da.data,function(k,v){
+						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+					})
+					console.log(str);
+					$('.prolist').html(str);	
+					page++;
+					$('.goodsList').click(function(){
+						var goods_id=$(this).attr('goods_id')
+						mui.openWindow({
+							url:'proinfo.html', 
+							createNew:true,
+							extras:{
+								goods_id:goods_id
+							}
+						});
+					});
+				},
+			});
+		}
+		
+		
+	});
+	
+		mui.init({
+			
+		    pullRefresh : { 
+		        container:pullrefresh,//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+		        up : {
+		            height:50,//可选.默认50.触发上拉加载拖动距离
+		            auto:false,//可选,默认false.自动上拉加载一次
+		            contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+		            contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+		            callback :pulluploading //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+		        } 
+		    }
+		});
+		
+	function pulluploading(){  
+	
+		var type2=$(".pro-selCur").attr('type2');
+		
+		if($('.price').hasClass('pro-selCur')){
+			if($("#arrows").text()=='↑'){
+				type2='prices'
+			}else{
+				type2='pricex'
+			}
+		}
+		
+		search = $("#search").val();
+		// console.log(search);
+		// console.log(page); 
+			mui.ajax("http://39.96.199.148:8060/indexgoods/", {
+	        type: "get",
+	        dataType: "json",
+	        data:{type : type2,page : page,search:search},
+	        success: function(d){
+				
+		     if(d.code==0){
+	                var result="";
+	                $.each(d.data,function(i,v){
+					result+= "<dl class='goodsList' goods_id='"+v.goods_id+"'><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存：100</em></div></dd><div class='clearfix'></div></dl>";
+				 });
+		     
+		        $(".prolist").append(result);
+				
+				$('.goodsList').click(function(){
+					var goods_id=$(this).attr('goods_id')
+					mui.openWindow({
+						url:'proinfo.html',
+						createNew:true,
+						extras:{
+							goods_id:goods_id
+						}
+					});
+				});
+		        page++;
+		        mui('#pullrefresh').pullRefresh().endPullupToRefresh(false)
+		    }else{
+		        mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+		    }
+			
+	        }
+	    });
+		    
+	}
+	
+	</script>
+  </body>
+</html>
+<script>
+	
+	
+		
+		
+		
+		
+		
+</script>
