@@ -38,48 +38,46 @@
      </div><!--sliderA/-->
      <table class="jia-len">
       <tr>
-       <th><strong class="orange">299</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商品数量：35</th>
+       <th><span style='color: #f60;'>￥</span><strong class="orange">299</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商品数量：<span class="goods_number">35</span></th>
        <td>
-        <input type="text" class="spinnerExample" />
+        <input type="text" class="spinnerExample"  />
        </td>
+	   <input type="hidden" class='goods_num'>
       </tr>
-      <tr>
-       <td>
-        <strong>500g</strong>
-        <p class="hui">富含纤维素，平衡每日膳食</p>
-       </td>
-       <td align="right">
-        <a href="javascript:;" class="shoucang" ><span class="glyphicon glyphicon-star-empty" id="uid" name="goods_id"  onclick="collection()"></span></a>
-       </td>
-      </tr>
+		<tr>
+			<td>
+			<strong class='goods_name'></strong>
+			</td>
+			<td align="right">
+			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty"></span></a>
+			</td>
+		</tr>
      </table>
-     <div class="height2"></div>
      <h3 class="proTitle">商品规格</h3>
      <ul class="guige">
-      <li class="guigeCur"><a href="javascript:;">50ML</a></li>
+      <!-- <li class="guigeCur"><a href="javascript:;">50ML</a></li>
       <li><a href="javascript:;">100ML</a></li>
       <li><a href="javascript:;">150ML</a></li>
       <li><a href="javascript:;">200ML</a></li>
-      <li><a href="javascript:;">300ML</a></li>
+      <li><a href="javascript:;">300ML</a></li> -->
       <div class="clearfix"></div>
      </ul><!--guige/-->
      <div class="height2"></div>
      <div class="zhaieq">
-      <a href="javascript:;" class="zhaiCur">商品简介</a>
-      <a href="javascript:;">商品参数</a>
+      <a href="javascript:;" class="zhaiCur">商品参数</a>
+      <a href="javascript:;">商品简介</a>
       <a href="javascript:;" style="background:none;">订购列表</a>
       <div class="clearfix"></div>
      </div><!--zhaieq/-->
-     <div class="proinfoList">
-      <img src="images/20190303190131.jpg" width="636" height="822" />
-     </div><!--proinfoList/-->
-     <div class="proinfoList">
+     <div class="proinfoList proinfoList2">
        商品名称：SheHuiRen</br>
 	   商品价格：299</br>
 	   商品积分：35</br>
 	   商品添加的时间：2019-4-11 19:36	   
      </div><!--proinfoList/-->
-     <div class="proinfoList">
+	 <div class="proinfoList proinfoList1">
+	 </div><!--proinfoList/--> 
+     <div class="proinfoList proinfoList3">
       暂无信息......
      </div><!--proinfoList/-->
      <table class="jrgwc">
@@ -87,7 +85,7 @@
        <th>
         <a href="index.html"><span class="glyphicon glyphicon-home"></span></a>
        </th>
-       <td><a href="car.html">加入购物车</a></td>
+       <td><a href="javascript:;" class="cartAdd">加入购物车</a></td>
       </tr>
      </table>
     </div><!--maincont-->
@@ -103,11 +101,10 @@
 		 $("#sliderA").excoloSlider();
 		});
 	</script>
-     <!--jq加减-->
-    <script src="js/jquery.spinner.js"></script>
+     
+
    <script>
-	$('.spinnerExample').spinner({});
-	
+
 		function collection(){
 			var uid = plus.storage.getItem("uid")
 		//var goods_id=document.getElementById('goods_id').val();
@@ -126,7 +123,7 @@
 								createNew:true,
 							});
 						}
-						alert(data.msg);
+						// alert(data.msg);
 				} 
 			});
 		}
@@ -134,21 +131,25 @@
   </body>
 </html>
 	<script type="text/javascript">
+	$(function(){
+		$('.spinnerExample').spinner({});
 		mui.plusReady(function () {
+			
 			data = plus.webview.currentWebview();
-			var goodsid = data.goodsid
+			var goodsid = data.goods_id
 			var uid = plus.storage.getItem("uid");
+			//历史记录
 		    mui.ajax('http://39.96.199.148:8060/addhistory',{
 		    	data:{
 		    		uid:uid,
-					goodsid:goodsid
+					goodsid:goodsid 
 		    	},
 		    	dataType:'json',//服务器返回json格式数据
 		    	type:'post',//HTTP请求类型
 		    	timeout:10000,//超时时间设置为10秒；
 		    	success:function(data){
 					if(data==1){
-						alert(11)
+						// alert(11)
 					}else{
 						alert(222)
 					}
@@ -157,5 +158,83 @@
 		    		
 		    	}
 		    });
+
+			
+			//商品信息
+			var url="http://39.96.199.148:8060/indexGoodsDetail";
+			$.get(url,{goods_id:goodsid},function(res){
+				$(".orange").html(res.goodsInfo.goods_price);
+				$(".goods_name").html(res.goodsInfo.goods_name);
+				$(".goods_number").text(res.goodsInfo.goods_number);
+				$(".goods_num").val(res.goodsInfo.goods_number);
+				var proinfoList="商品名称："+res.goodsInfo.goods_name+"</br>"+
+				  "商品价格：￥"+res.goodsInfo.goods_price+"</br>"+
+				  "商品积分："+res.goodsInfo.goods_score+"</br>"+
+				  "商品添加的时间："+res.goodsInfo.add_time+"	  ";
+				
+				$(".proinfoList2").html(proinfoList);
+				$(".proinfoList1").html(res.goodsInfo.goods_desc);
+
+				   
+				if(res.attrInfo==""){
+					$(".guige").text("该商品没有规格！");
+					
+				}else{
+					var str=""; 
+					mui.each(res.attrInfo,function (i,v) {
+						str+="<li><a href='javascript:;' price='"+v.attr_price+"' goods_attr='"+v.goods_attr+"' class='attr' >"+v.attr_value+"</a></li>";
+					}); 
+					str+="<div class='clearfix'></div>"; 
+					$(".guige").html(str);
+				}
+				
+				
+				$(".spinnerExample").blur(function(){
+					var num=parseInt($(this).val());
+					if(isNaN(num)){
+						$(this).val(1);
+						return false;
+					}
+					if(num>res.goodsInfo.goods_number){
+						$(this).val(res.goodsInfo.goods_number);
+						return false;
+					}
+					$(this).val(num);
+				});
+				
+				
+				$(".attr").click(function(){
+					var price=parseInt(res.goodsInfo.goods_price).toFixed(2);
+					var price=(Number(price)+Number($(this).attr('price'))).toFixed(2);
+					$(".orange").text(price);
+					$(this).addClass('attr_click');
+				});
+				
+			},'json'); 
+			
+
+			
+			$(".cartAdd").click(function(){
+				var goods_attr=$(".attr_click").attr('goods_attr');
+				var goods_id=goodsid;
+				var user_id=plus.storage.getItem("uid");
+				var goods_num=$(".spinnerExample").val();
+				var url="http://39.96.199.148:8060/cartAdd";
+				var data={};
+				data.goods_attr=goods_attr;
+				data.goods_id=goods_id;
+				data.user_id=user_id; 
+				data.goods_num=goods_num;
+				$.post(url,data,function(res){
+					alert(res.msg);
+					if(res.code==1){  
+						location.href="car.html"; 
+					}
+				},'json');
+			});
+			
 		})
+	});
 	</script>
+	<!--jq加减-->
+	 <script src="js/jquery.spinner.js"></script>

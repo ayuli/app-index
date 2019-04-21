@@ -32,52 +32,39 @@
      </div><!--head-top/-->
      <table class="shoucangtab">
       <tr>
-       <td width="75%"><span class="hui">购物车共有：<strong class="orange">2</strong>件商品</span></td>
+       <td width="75%"><span class="hui">购物车共有：<strong class="orange">1</strong>件商品</span></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;">
         <span class="glyphicon glyphicon-shopping-cart" style="font-size:2rem;color:#666;"></span>
        </td>
       </tr>
      </table>
-     
-     <div class="dingdanlist">
-      <table>
-       <tr>
-        <td width="100%" colspan="4"><a href="javascript:;"><input type="checkbox" name="1" /> 全选</a></td>
-       </tr>
-       <tr>
-        <td width="4%"><input type="checkbox" name="1" /></td>
-        <td class="dingimg" width="15%"><img src="images/pro1.jpg" /></td>
-        <td width="50%">
-         <h3>三级分销农庄有机瓢瓜400g</h3>
-         <time>下单时间：2015-08-11  13:51</time>
-        </td>
-        <td align="right"><input type="text" class="spinnerExample" /></td>
-       </tr>
-       <tr>
-        <th colspan="4"><strong class="orange">¥36.60</strong></th>
-       </tr>
-      </table>
-     </div><!--dingdanlist/-->
-     
+     &nbsp;&nbsp;<tr>
+      <td width="100%" colspan="4"><a href="javascript:;"><input type="checkbox" id="allbox" name="1" /> 全选</a></td>
+	  <td><a href='' onclick='goodspidel()'>批量删除</a></td>
+     </tr>
+	
+	   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tr>
+	    <td width="100%" colspan="4"><a href="javascript:;"  class="batchdel">&nbsp;</a></td>
+	   </tr>
+	   
      <div class="dingdanlist">
       <table>
        <tr>
         <td width="4%"><input type="checkbox" name="1" /></td>
-        <td class="dingimg" width="15%"><img src="images/pro1.jpg" /></td>
+        <td class="dingimg" width="15%"><img src="images/20190303190131.jpg" /></td>
         <td width="50%">
-         <h3>三级分销农庄有机瓢瓜400g</h3>
-         <time>下单时间：2015-08-11  13:51</time>
+         <h3>亨奇 摇表器 机械手表德国进口全自动</h3>
         </td>
         <td align="right"><input type="text" class="spinnerExample" /></td>
        </tr>
        <tr>
-        <th colspan="4"><strong class="orange">¥36.60</strong></th>
+			<th colspan="4"><strong class="orange">¥36.60</strong></th>
        </tr>
-       <tr>
-        <td width="100%" colspan="4"><a href="javascript:;"><input type="checkbox" name="1" /> 删除</a></td>
-       </tr>
+	   
       </table>
+	  
      </div><!--dingdanlist/-->
+     <!--dingdanlist/-->
      <div class="height1"></div>
      <div class="gwcpiao">
      <table>
@@ -96,8 +83,165 @@
     <script src="js/style.js"></script>
     <!--jq加减-->
     <script src="js/jquery.spinner.js"></script>
+	<script src="js/mui.css"></script>
    <script>
 	$('.spinnerExample').spinner({});
 	</script>
   </body>
 </html>
+<script>
+	$(function(){
+		$.ajax({
+			url:'http://39.96.199.148:8060/cartshow/',
+			type:'get',
+			dataType:'json',
+			success:function(da){
+				var str = '';
+				$.each(da.data,function(k,v){
+					str += "<div class='dingdanlist'><table><tr><td width='4%'><input type='checkbox' class='box' name='1'/></td><td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td><td width='50%'><h3>"+v.goods_name+"</h3><a href='' onclick='goodsdel()'>删除</a></td><td><input type='hidden' value="+v.goods_num+"><input type='button' style='width:24px;' value='-' class='change_num' flag='1'><input type='text' style='width:25px;' value="+v.goods_num+" id='buy_number'/><input type='button' style='width:24px;' value='+' class='change_num' flag='2'></td></tr><tr><th colspan='4'><strong class='orange'>￥&nbsp;"+v.goods_price+"</strong></th></tr></table></div>"
+				})
+				$('.dingdanlist').html(str);
+			},
+		});
+		
+			
+// 			function goodspidel(){
+// 				alert('批量删除成功');
+// 			}
+// 		//删除
+//              $('.goodsdel').click(function(){
+// 				 //alert('删除成功');
+//                   var _this=$(this);
+//                   var cart_id=_this.parents('tr').find('td').first().find('input').attr('cart_id');
+//                   $.ajax(
+//                       "{:url('http://39.96.199.148:8060/indexCartDel')}",
+//                       {user_id:user_id,goods_id:goods_id},
+//                       function(result){
+//                           if(result.code==1){
+//                               _this.parents('tr').remove();
+//                           }
+//                       }
+// 					  ,'json'
+//                   )
+//               });
+			  
+			  //批量删除
+// 			  function goodsdel(){
+// 				  alert('删处成功');
+// 			  }
+// 			  $(".goodsdel").click(function(){
+// 				  alert('删除成功');
+// 			       var cart_id=[];
+// 			      $('.batchdel').each(function(index){
+// 			          if($(this).prop('checked')==true){
+// 			              cart_id.push($(this).attr('cart_id'));
+// 						  //console.log(cart_id);
+// 			          }
+// 			      })
+// 			      goods_id=goods_id.substr(1);
+// 			      cart_id=cart_id.substr(1);
+// 			  
+// 			      $.ajax(
+// 			          "{:url('http://39.96.199.148:8060/indexCartDel')}",
+// 			          {goods_id:goods_id,cart_id:cart_id},
+// 			          function(result){
+// 			              if(result.code==1){
+// 			                  $('.box').each(function(index){
+// 			                      if($(this).prop('checked')==true){
+// 			                          $(this).parents('tr').remove();
+// 			                      }
+// 			                  })
+// 			              }
+// 			          },'json'
+// 			      )
+			  // });
+			  
+ 			      //点击复选框
+             $('.box').click(function(){
+                  
+              })
+			 
+			   //点击全选
+             $('#allbox').click(function(){
+                  var _this=$(this);
+                  var status=_this.prop('checked');
+
+                  $('.box').prop('checked',status);
+                  
+              });
+			  
+			  //点击 +-
+             $('.change_num').click(function(){ 
+				 alert(11);
+				 
+                 var _this=$(this);
+				
+                  var flag=_this.attr('flag');
+                  if(flag==1){
+                      //减
+                      reduceNum(_this);
+                  }else{
+                      //加
+                      addNum(_this);
+                  }
+                  subtotal(_this,flag);//小计发生变化
+                  //total();// 商品总价 商品数量  发生变化
+                  //数据库或cookie发生改变
+                  //changeNum(_this);
+             })
+			 
+			 
+			 //数量减少 
+            function reduceNum(_this){
+                _this.nextAll(":button").prop('disabled',false);
+                var buy_number=parseInt(_this.next().val());
+                if(buy_number<=1){
+                    buy_number=1;
+                    _this.prop('disabled',true);
+                }else{
+                    buy_number-=1;
+                }
+                _this.next().val(buy_number)
+            }
+			
+			//数量增加
+            function addNum(_this){
+                _this.prevAll(":button").prop('disabled',false);
+                var buy_number=parseInt(_this.prev().val());
+                var goods_num=parseInt(_this.prevAll(":hidden").val());
+                 if(buy_number>=goods_num){
+                    _this.prev().val(goods_num);
+                    _this.prop('disabled',true);
+                 }else{
+                    buy_number+=1;
+                    _this.prev().val(buy_number);
+                 }
+            }
+			$("#buy_number").blur(function(){
+                    var goods_num=parseInt($('#buy_number').val());
+                    var _this=$(this);
+                    var buy_number=_this.val();
+                    var reg=/^[1-9]\d{0,}$/;
+                    if(reg.test(buy_number)){
+                        if(buy_number>=goods_num){
+                            _this.val(goods_num)
+                        }
+                    }else{
+                        _this.val(1);
+                    }
+                })
+				
+			//小计
+            function subtotal(_this){
+                if(_this.attr('flag')==1){
+                    var buy_number=_this.next().val();
+                }else{
+                    var buy_number=_this.prev().val();
+                }
+                var goods_price=_this.parents('td').prev('td').find('span').text();
+                var subtotal=buy_number*goods_price;
+                _this.parents('td').next().text("￥"+subtotal);
+                _this.parents('tr').children('strong').eq(0).find('input').prop('checked',true)
+            }
+	})	
+</script>
