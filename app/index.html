@@ -49,13 +49,13 @@
       <img src="images/image4.jpg" />
       <img src="images/image5.jpg" />
      </div><!--sliderA/-->
-     <ul class="pronav">
+<!--    <ul class="pronav">
       <li><a href="prolist.html">晋恩干红</a></li>
       <li><a href="prolist.html">万能手链</a></li>
       <li><a href="prolist.html">高级手镯</a></li>
       <li><a href="prolist.html">特异戒指</a></li>
       <div class="clearfix"></div>
-     </ul><!--pronav/-->
+     </ul> -->
      <div class="index-pro1">
 		 
 		 
@@ -88,7 +88,11 @@
      </div><!--prolist/-->
 	 
 	 
-     <div class="joins">广告<a href="fenxiao.html"><img src="images/jrwm.jpg" /></a></div>
+     <div class="joins">广告
+		<div id='default'>
+			<a href="fenxiao.html"><img src="images/jrwm.jpg" /></a>
+		</div>
+	 </div>
      <div class="copyright">Copyright &copy; <span class="blue">这是就是三级分销底部信息</span></div>
      
      <div class="height1"></div>
@@ -209,6 +213,20 @@
 						});
 					});
 			},
+		});
+		
+		
+		
+		$.ajax({   //广告
+			url:'http://39.96.199.148:8060/appadvget',
+			type:'get',
+			data : {},
+			dataType:'json',
+			success:function(da){ 
+				var str = "<img src='"+da.img+"' />";
+				$('#default').html(str); 	
+		
+			}
 		});
 	})
 		
