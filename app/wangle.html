@@ -121,6 +121,12 @@
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
 						alert(data.msg)
+						if(data.code==0){
+							mui.openWindow({
+								url:'login.html',
+								createNew:true,
+							});
+						}
 					},
 					error:function(xhr,type,errorThrown){
 						alert(22)
