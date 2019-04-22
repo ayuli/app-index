@@ -103,8 +103,11 @@
 </html>
 <script type="text/javascript">
 mui.plusReady(function () {
+	data = plus.webview.currentWebview();
+
 	var user_id = plus.storage.getItem("uid");
- 
+	var cart_id = data.cart_id;
+	console.log(cart_id); 
   $('#btn').click(function(){
  		if(isaddress){
  			isaddress = 1;
@@ -112,7 +115,7 @@ mui.plusReady(function () {
  			isaddress = 0;
  		}
  		mui.ajax('http://39.96.199.148:8060/address',{
- 		data:{
+ 		data:{ 
  			user_id:user_id, 
  			consignee_name:$('#consignee_name').val(),
  			detailed_address:$('#detailed_address').val(),
@@ -126,10 +129,30 @@ mui.plusReady(function () {
  		type:'post',//HTTP请求类型
  		timeout:10000,//超时时间设置为10秒；
  		success:function(data){
- 			alert(1111)
+			console.log(data);
+ 			if(data==1){
+				if(cart_id!=''){
+					mui.openWindow({
+						url:'pay.html', 
+						createNew:true,
+						extras:{ 
+							cart_id:cart_id
+						}
+					});
+				}else{
+					mui.openWindow({
+						url:'add-address.html', 
+						createNew:true,
+						extras:{ 
+						}
+					});
+				}
+			}else{
+				alert('添加失败！');
+			}
  		},
  		error:function(xhr,type,errorThrown){
- 			alert(222)
+ 			
  		}
  	}); 
  })

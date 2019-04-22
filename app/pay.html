@@ -19,6 +19,12 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+  <style>
+	  .mui-table-view{
+		  position: static;
+	  }
+	  
+  </style>
   <body>
     <div class="maincont">
      <header>
@@ -33,28 +39,48 @@
      <div class="dingdanlist">
       <table>
        <tr>
-        <td class="dingimg" width="75%" colspan="2">选择收货地址</td>
-        <td align="right"><img src="images/jian-new.png" /></td>
+        <td width="75%" colspan="3" style='border: none;' class='address'>
+			<ul class="mui-table-view" style='background-color: #f2f2f2;'>  
+				<li class="mui-table-view-cell mui-collapse address_info">
+					<a class="mui-navigate-right" href="#" >选择收货地址</a>
+					
+				</li>
+				
+			</ul> 
+		</td>
+        <!-- <td align="right"><img src="images/jian-new.png" /></td> -->
        </tr>
        <tr>
-			<td colspan="3" class='address_info' style="height:10px; background:#efefef;padding:0;">
-				
+			<td colspan="3" style="height:10px; background:#efefef;padding:0;border:none;">
 			</td>
 	   </tr>
        
        <tr>
-        <td class="dingimg" width="75%" colspan="2">支付方式</td>
+        <td class="dingimg" width="100%" colspan="3">
+			<ul class="mui-table-view" style='background-color: #f2f2f2;'>  
+				<li class="mui-table-view-cell mui-collapse mui-active">
+					<a class="mui-navigate-right" href="#" >选择支付方式</a>
+					<div class='mui-collapse-content'>
+						<p>
+							<div class="mui-input-row mui-radio">
+								<label>微信</label>
+								<input name="pay_way" type="radio" checked="checked" value='1'>
+							</div>
+							<div class="mui-input-row mui-radio">
+								<label>支付宝</label>
+								<input name="pay_way" type="radio" value='2'>
+							</div>
+						</p>
+					</div>
+				</li>
+				
+			</ul>
+		</td>
        </tr>
        <tr>
 			<td colspan="3" style="height:10px; background:#efefef;padding:0;">
-				<div class="mui-input-row mui-radio">
-					<label>微信</label>
-					<input name="radio1" type="radio" value='1'>
-				</div>
-				<div class="mui-input-row mui-radio">
-					<label>支付宝</label>
-					<input name="radio1" type="radio" value='2'>
-				</div>
+				 
+				
 			</td>
 	   </tr>
        <!-- <tr>
@@ -79,7 +105,7 @@
         <td class="dingimg goods_list" width="75%" colspan="3">商品清单</td>
        </tr>
        
-       <tr>
+      <!-- <tr>
         <td class="dingimg" width="15%"><img src="images/zf3.jpg" /></td>
         <td width="50%">
          <h3>三级分销农庄有机瓢瓜400g</h3>
@@ -97,27 +123,21 @@
          <time>下单时间：2015-08-11  13:51</time>
         </td>
         <td align="right"><span class="qingdan">X 1</span></td>
-       </tr>
-       <tr>
+       </tr> -->
+       <!-- <tr>
         <th colspan="3"><strong class="orange">¥36.60</strong></th>
-       </tr>
+       </tr> -->
        
        <tr>
         <td class="dingimg" width="75%" colspan="2">商品金额</td>
-        <td align="right"><strong class="orange">¥68.80</strong></td>
+        <td align="right"><span style='color: #f60;'>¥</span><strong class="orange total_price">68.80</strong></td>
        </tr>
-       <tr>
-        <td class="dingimg" width="75%" colspan="2">折扣优惠</td>
-        <td align="right"><strong class="green">¥0.00</strong></td>
-       </tr>
+       
        <tr>
         <td class="dingimg" width="75%" colspan="2">抵扣金额</td>
         <td align="right"><strong class="green">¥0.00</strong></td>
        </tr>
-       <tr>
-        <td class="dingimg" width="75%" colspan="2">运费</td>
-        <td align="right"><strong class="orange">¥20.80</strong></td>
-       </tr>
+       
       </table>
      </div><!--dingdanlist/-->
      
@@ -129,7 +149,7 @@
      <table>
       <tr>
        <th width="10%"><a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-menu-left"></span></a></th>
-       <td width="50%">总计：<strong class="orange">¥69.88</strong></td>
+       <td width="50%">总计：<span style='color: #f60;'>¥</span><strong class="orange foot_price">69.88</strong></td>
        <td width="40%"><a href="javascript:;" class="jiesuan">提交订单</a></td>
       </tr>
      </table>
@@ -151,61 +171,100 @@
 <script>
 	$(function(){
 		mui.plusReady(function () {
+			var foot_price=0;
 			data = plus.webview.currentWebview();
 			var cart_id = data.cart_id
-			var user_id = plus.storage.getItem("uid");
-			var url="http://39.96.199.148:8060/addressGet";
+			var user_id = plus.storage.getItem("uid"); 
+ 			var url="http://39.96.199.148:8060/addressGet";
 			$.get(url,{user_id:user_id},function(res){  
-				if(res.code==0){  
-					$(".address_info").html("<a href='address.html'>"+res.msg+"</a>");
+				if(res.code==0){     
+					$(".address").html("<div style='background-color: #f2f2f2;height:35px;'><span style='line-height:35px;margin-left:15px;' class='addaddress'>"+res.msg+"</span></div>");
+					$(".addaddress").click(function(){  
+						 mui.openWindow({
+						 	url:'address.html', 
+						 	createNew:true,
+						 	extras:{ 
+						 		cart_id:cart_id
+						 	}
+						 });
+					});
 				}else{
-					var str='';
+					var str="<div class='mui-collapse-content'><p>";
 					$.each(res.data,function(i,v){
 						str+="<div class='mui-input-row mui-radio'>"+  
 								"<label>"+v.addressInfo+" "+v.userInfo+"</label>"+
-								"<input name='address_id' type='radio' value='"+v.address_id+"'>"+
+								"<input name='address_id' @if("+v.is_address+" == 1) checked @endif   type='radio'  value='"+v.address_id+"'>"+
 							"</div>";
 					})
-					$(".address_info").html(str);
+					str+="</p></div>";
+					$(".address_info").append(str);
 				}
+				
+				
 			},'json');
 			
 			$.post("http://39.96.199.148:8060/cartshow",{cart_id:cart_id,user_id:user_id},function(res){
 				if(res.code==1){ 
 					var str="";  
+					var total_price=0;
 					$.each(res.data,function(i,v){
+						total_price+=Number(v.goods_price);  
 						if(v.type_id!=null){
-							str+="<tr>"+
-								"<td class='dingimg' width='15%'><img src='images/zf3.jpg' /></td>"+
+							str+="<tr class='goodsList'>"+ 
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
 								"<td width='50%'>"+
-								"<h3>"+v.goods_name+" "+v.goods_attr+"</h3>"+
+								"<h3>"+v.goods_name+" "+v.attr_value+"</h3>"+
 								"</td>"+
 								"<td align='right'><span class='qingdan'>X "+v.goods_num+"</span></td>"+
 								"</tr>"+
 								"<tr>"+
-								"<th colspan='3'><strong class='orange'>¥"+v.goods_price+"</strong></th>"+
+								"<th colspan='3'><strong class='orange goods_price'>¥"+v.goods_price+"</strong></th>"+
 								"</tr>";
 						}else{
-							str+="<tr>"+
-								"<td class='dingimg' width='15%'><img src='images/zf3.jpg' /></td>"+
+							str+="<tr class='goodsList'>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'   /></td>"+
 								"<td width='50%'>"+
 								"<h3>"+v.goods_name+"</h3>"+ 
 								"</td>"+
 								"<td align='right'><span class='qingdan'>X "+v.goods_num+"</span></td>"+
 								"</tr>"+
-								"<tr>"+
-								"<th colspan='3'><strong class='orange'>¥"+v.goods_price+"</strong></th>"+
+								"<tr>"+ 
+								"<th colspan='3'><strong class='orange goods_price'>¥"+v.goods_price+"</strong></th>"+
 								"</tr>";
 						}
 						
-						$(".goods_list").parent().after(str);
-						
 					});
+					total_price=total_price.toFixed(2);  
+					$(".goods_list").parent().after(str);
+					$(".total_price").text(total_price);
+					$(".foot_price").text(total_price);
+					foot_price=total_price;
 				}
 			},'json');
 
 			$(".jiesuan").click(function(){
-				var pay_way=$("[name='radio1']:checked").val(); 
+				var pay_way=$("[name='pay_way']:checked").val(); 
+				var address_id=$("[name='address_id']:checked").val();
+				var url="http://39.96.199.148:8060/createOrder";
+				var total=foot_price;
+				var data={};
+				data.cart_id=cart_id;
+				data.pay_way=pay_way;
+				data.address_id=address_id;
+				data.user_id=user_id;
+				data.total=total;
+				$.post(url,data,function(res){
+					alert(res.msg);
+					if(res.code==1){ 
+						mui.openWindow({
+							url:'success.html', 
+							createNew:true,
+							extras:{ 
+								order_id:res.order_id
+							}
+						});
+					}
+				},'json');
 			});
 		});
 	})

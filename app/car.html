@@ -49,7 +49,7 @@
 	   
      <div class="dingdanlist">
       <table>
-       <tr>
+       <!-- <tr>
         <td width="4%"><input type="checkbox" name="1" /></td>
         <td class="dingimg" width="15%"><img src="images/20190303190131.jpg" /></td>
         <td width="50%">
@@ -59,7 +59,7 @@
        </tr>
        <tr>
 			<th colspan="4"><strong class="orange">¥36.60</strong></th>
-       </tr>
+       </tr> -->
 	   
       </table>
 	  
@@ -94,7 +94,7 @@
 	$(function(){ 
 		mui.plusReady(function () { 
 			var user_id = plus.storage.getItem("uid");
-			
+			 
 			$.ajax({
 				url:'http://39.96.199.148:8060/cartshow/',
 				type:'get',
@@ -106,9 +106,9 @@
 						var str = '';
 						$.each(da.data,function(k,v){
 							if(v.type_id!=null){
-								str += "<tr>"+ 
+								str += "<tr>"+  
 								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1' /></td>"+
-								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+ 
 								"<td width='50%'><h3>"+v.goods_name+"<br/><span style='color:#f00;'>"+v.attr_value+"</span></h3></td>"+
 								"<td width='18%'><span onclick='goodsdel()'>删除</span></td>"+
 								"<td align='right'>"+ 
@@ -138,14 +138,15 @@
 						$('.dingdanlist').html(str);
 						$('.spinnerExample').spinner({});
 					}else{
-						$('.dingdanlist').html(res.msg);
+						$(".cart_count").text(0);
+						$('.dingdanlist').html(da.msg);  
 					}
 					
 			
 				},
 			});
 			
-			$(".jiesuan").click(function(){
+			$(".jiesuan").click(function(){  
 				var cart_id="";
 				$.each($(".box:checked"),function(i,v){
 					cart_id+=$(this).attr('cart_id')+',';
@@ -178,7 +179,7 @@
 //                               _this.parents('tr').remove();
 //                           }
 //                       }
-// 					  ,'json'
+// 					  ,'json' 
 //                   )
 //               });
 			  
