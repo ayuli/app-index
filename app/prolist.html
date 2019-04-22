@@ -114,11 +114,11 @@
 		 	success:function(da){
 		 		var str = '';
 		 		$.each(da.data,function(k,v){ 
-		 			str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+		 			str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
 		 		})
 		 		$('.prolist').html(str);
 					
-				$('.goodsList').click(function(){
+				$('.goodsList_del').click(function(){
 					var goods_id=$(this).attr('goods_id')
 					mui.openWindow({
 						url:'proinfo.html', 
@@ -183,7 +183,6 @@
 					$.each(da.data,function(k,v){
 						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
 					})
-					console.log(str);
 					$('.prolist').html(str);	
 					page++;
 					$('.goodsList').click(function(){
@@ -241,12 +240,12 @@
 		     if(d.code==0){
 	                var result="";
 	                $.each(d.data,function(i,v){
-					result+= "<dl class='goodsList' goods_id='"+v.goods_id+"'><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存：100</em></div></dd><div class='clearfix'></div></dl>";
+					result+= "<dl class='"+page+"' goods_id='"+v.goods_id+"'><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存：100</em></div></dd><div class='clearfix'></div></dl>";
 				 });
 		     
 		        $(".prolist").append(result);
-				
-				$('.goodsList').click(function(){
+				   // console.log(page)
+				$('.'+page+'').click(function(){
 					var goods_id=$(this).attr('goods_id')
 					mui.openWindow({
 						url:'proinfo.html',
@@ -258,7 +257,7 @@
 				});
 		        page++;
 		        mui('#pullrefresh').pullRefresh().endPullupToRefresh(false)
-		    }else{
+		    }else{ 
 		        mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
 		    }
 			
