@@ -91,29 +91,32 @@
   </body>
 </html>
 <script type="text/javascript">
-mui.plusReady(function () {
+mui.plusReady(function () { 
 	var name = $('#name').val()
+	var user_id = plus.storage.getItem("uid");
+	
 	mui.ajax('http://39.96.199.148:8060/addressGet',{
 		data:{
+			user_id:user_id
 		},
 		dataType:'json',//服务器返回json格式数据
 		type:'get',//HTTP请求类型
 		timeout:10000,//超时时间设置为10秒；
-		success:function(data){
-			if(data==2){
-				mui.toast('请先登陆')
+		success:function(res){
+			if(res.code==0){
+				mui.toast(res.msg)
 				mui.openWindow({
 					url:'login.html',
 					createNew:true,
 				});
 			}else{
-				var str = '你还没有收获地址'
-				$.each(data,function(k,v){
+				var str = '' 
+				$.each(res.data,function(k,v){  
 					str +=
 					"<tr>"
 					 +"<td width='50%'>"
-					  +"<h3 id='name'>"+v.consignee_name+"</h3>"
-					  +"<time id='address'>"+v.detailed_address+"</time>"
+					  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+					  +"<time id='address'>"+v.addressInfo+"</time>"
 					 +"</td>"
 					 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
 					 +"</tr>"

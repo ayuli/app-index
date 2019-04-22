@@ -129,7 +129,7 @@
 	<script type="text/javascript">
 	$(function(){
 		$('.spinnerExample').spinner({});
-		mui.plusReady(function () {
+		mui.plusReady(function () { 
 			
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
@@ -190,6 +190,7 @@
 
 				   
 				if(res.attrInfo==""){
+					$(".guige").addClass('attr_none');
 					$(".guige").text("该商品没有规格！");
 					
 				}else{
@@ -228,19 +229,37 @@
 
 			
 			$(".cartAdd").click(function(){
-				var goods_attr=$(".attr_click").attr('goods_attr');
-				var goods_id=goodsid;
 				var user_id=plus.storage.getItem("uid");
+				if(user_id==null){
+					mui.alert('请先登录！',function(){
+						location.href="login.html"; 
+					}); 
+					return false;
+				}
+				
+				var goods_attr=$(".attr_click").attr('goods_attr');
+				
+				if(!$(".guige").hasClass('attr_none')){
+					if(goods_attr==undefined){
+						mui.alert('请选择规格！');
+						return false;
+					}
+				}
+				
+				
+				var goods_id=goodsid;
+				
+
 				var goods_num=$(".spinnerExample").val();
 				var url="http://39.96.199.148:8060/cartAdd";
 				var data={};
 				data.goods_attr=goods_attr;
-				data.goods_id=goods_id;
+				data.goods_id=goods_id; 
 				data.user_id=user_id; 
 				data.goods_num=goods_num;
 				$.post(url,data,function(res){
 					alert(res.msg);
-					if(res.code==1){  
+					if(res.code==1){   
 						location.href="car.html"; 
 					}
 				},'json');

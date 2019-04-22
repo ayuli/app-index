@@ -32,7 +32,7 @@
      </div><!--head-top/-->
      <table class="shoucangtab">
       <tr>
-       <td width="75%"><span class="hui">购物车共有：<strong class="orange">1</strong>件商品</span></td>
+       <td width="75%"><span class="hui">购物车共有：<strong class="orange cart_count">1</strong>件商品</span></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;">
         <span class="glyphicon glyphicon-shopping-cart" style="font-size:2rem;color:#666;"></span>
        </td>
@@ -71,7 +71,7 @@
       <tr>
        <th width="10%"><a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-menu-left"></span></a></th>
        <td width="50%">总计：<strong class="orange">¥69.88</strong></td>
-       <td width="40%"><a href="pay.html" class="jiesuan">去结算</a></td>
+       <td width="40%"><a href="javascript:;" class="jiesuan">去结算</a></td>
       </tr>
      </table>
     </div><!--gwcpiao/-->
@@ -83,7 +83,7 @@
     <script src="js/style.js"></script>
     <!--jq加减-->
     <script src="js/jquery.spinner.js"></script>
-	<script src="js/mui.css"></script>
+	<script src="js/mui.js"></script>
    <script>
 	$('.spinnerExample').spinner({});
 	</script>
@@ -92,33 +92,76 @@
  <script src="js/jquery.spinner.js"></script>
 <script>
 	$(function(){ 
-		$.ajax({
-			url:'http://39.96.199.148:8060/cartshow/',
-			type:'get',
-			dataType:'json',
-			success:function(da){
-				var str = '';
-				$.each(da.data,function(k,v){
-
-					str += "<tr>"+
-					"<td width='4%'><input type='checkbox' class='box' name='1'/></td>"+
-					"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
-					"<td width='50%'><h3>"+v.goods_name+"</h3></td>"+
-					"<td width='15%'><span onclick='goodsdel()'>删除</span></td>"+
-					"<td align='right'>"+ 
-						"<input type='hidden' value="+v.goods_num+"><input type='text' class='spinnerExample' />"+
-					"</td>"+ 
-					"</tr>"+
-					"<tr>"+
-					"<th colspan='5'><strong class='orange'>￥&nbsp;"+v.goods_price+"</strong></th>"+
-					"</tr>"
-				})
-				
-				$('.dingdanlist').html(str);
-				$('.spinnerExample').spinner({});
-
-			},
+		mui.plusReady(function () { 
+			var user_id = plus.storage.getItem("uid");
+			
+			$.ajax({
+				url:'http://39.96.199.148:8060/cartshow/',
+				type:'get',
+				data:{user_id:user_id},
+				dataType:'json', 
+				success:function(da){
+					if(da.code==1){
+						$(".cart_count").text(da.count); 
+						var str = '';
+						$.each(da.data,function(k,v){
+							if(v.type_id!=null){
+								str += "<tr>"+ 
+								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1' /></td>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
+								"<td width='50%'><h3>"+v.goods_name+"<br/><span style='color:#f00;'>"+v.attr_value+"</span></h3></td>"+
+								"<td width='18%'><span onclick='goodsdel()'>删除</span></td>"+
+								"<td align='right'>"+ 
+									"<input type='hidden' value="+v.goods_num+"><input type='text' class='spinnerExample' />"+
+								"</td>"+ 
+								"</tr>"+
+								"<tr>"+
+								"<th colspan='5'><strong class='orange'>￥&nbsp;"+v.goods_price+"</strong></th>"+
+								"</tr>"
+							}else{
+								str += "<tr>"+ 
+								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1'/></td>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
+								"<td width='50%'><h3>"+v.goods_name+"</h3></td>"+
+								"<td width='18%'><span onclick='goodsdel()'>删除</span></td>"+
+								"<td align='right'>"+ 
+									"<input type='hidden' value="+v.goods_num+"><input type='text' class='spinnerExample' />"+
+								"</td>"+ 
+								"</tr>"+
+								"<tr>"+
+								"<th colspan='5'><strong class='orange'>￥&nbsp;"+v.goods_price+"</strong></th>"+
+								"</tr>"
+							}
+							
+						})
+						
+						$('.dingdanlist').html(str);
+						$('.spinnerExample').spinner({});
+					}else{
+						$('.dingdanlist').html(res.msg);
+					}
+					
+			
+				},
+			});
+			
+			$(".jiesuan").click(function(){
+				var cart_id="";
+				$.each($(".box:checked"),function(i,v){
+					cart_id+=$(this).attr('cart_id')+',';
+				});
+				console.log(cart_id);
+				mui.openWindow({
+					url:'pay.html', 
+					createNew:true,
+					extras:{
+						cart_id:cart_id
+					}
+				});
+			});
+			
 		});
+		
 		
 			
 			
@@ -261,9 +304,5 @@
 // 	function goodspidel(){
 // 		alert('批量删除成功');
 // 	}
-</script>
-<script type="text/javascript">
-	$(function(){
-	})
 </script>
  

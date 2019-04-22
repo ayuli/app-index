@@ -102,7 +102,37 @@
   </body>
 </html>
 <script type="text/javascript">
-mui.ready(function () {
+mui.plusReady(function () {
+	var user_id = plus.storage.getItem("uid");
+ 
+  $('#btn').click(function(){
+ 		if(isaddress){
+ 			isaddress = 1;
+ 		}else{
+ 			isaddress = 0;
+ 		}
+ 		mui.ajax('http://39.96.199.148:8060/address',{
+ 		data:{
+ 			user_id:user_id, 
+ 			consignee_name:$('#consignee_name').val(),
+ 			detailed_address:$('#detailed_address').val(),
+ 			province:$('#province').val(),
+ 			city:$('#city').val(),
+ 			district:$('#area').val(),
+ 			consignee_tel:$('#consignee_tel').val(),
+ 			is_address:isaddress
+ 		},
+ 		dataType:'json',//服务器返回json格式数据
+ 		type:'post',//HTTP请求类型
+ 		timeout:10000,//超时时间设置为10秒；
+ 		success:function(data){
+ 			alert(1111)
+ 		},
+ 		error:function(xhr,type,errorThrown){
+ 			alert(222)
+ 		}
+ 	}); 
+ })
 		mui.ajax('http://39.96.199.148:8060/getregion',{
 		data:{
 		},
@@ -162,7 +192,7 @@ mui.ready(function () {
 })
 var isaddress = 0
 		$('#is_address').click(function(){
-			console.log(isaddress)
+			// console.log(isaddress)
 			if(isaddress==0){
 				isaddress=1
 				mui.toast('已设为默认')
@@ -171,32 +201,5 @@ var isaddress = 0
 				mui.toast('已取消默认')
 		}		
 		})
-		 $('#btn').click(function(){
-				if(isaddress){
-					isaddress = 1;
-				}else{
-					isaddress = 0;
-				}
-				console.log(is_address);
-				mui.ajax('http://39.96.199.148:8060/address',{
-				data:{
-					consignee_name:$('#consignee_name').val(),
-					detailed_address:$('#detailed_address').val(),
-					province:$('#province').val(),
-					city:$('#city').val(),
-					district:$('#area').val(),
-					consignee_tel:$('#consignee_tel').val(),
-					is_address:isaddress
-				},
-				dataType:'json',//服务器返回json格式数据
-				type:'post',//HTTP请求类型
-				timeout:10000,//超时时间设置为10秒；
-				success:function(data){
-					alert(1111)
-				},
-				error:function(xhr,type,errorThrown){
-					alert(222)
-				}
-			}); 
-		}) 
+		 
 </script>	
