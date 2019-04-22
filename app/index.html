@@ -43,11 +43,13 @@
       <div class="clearfix"></div>
      </ul><!--reg-login-click/-->
      <div id="sliderA" class="slider">
-      <img src="images/image1.jpg" />
-      <img src="images/image2.jpg" />
-      <img src="images/image3.jpg" />
-      <img src="images/image4.jpg" />
-      <img src="images/image5.jpg" />
+		 <!-- <div  name='slider'> -->
+		<!-- 	<img src="images/image1.jpg" />
+			<img src="images/image2.jpg" />
+			<img src="images/image3.jpg" />
+			<img src="images/image4.jpg" />
+			<img src="images/image5.jpg" /> -->
+		<!-- </div> -->
      </div><!--sliderA/-->
 <!--    <ul class="pronav">
       <li><a href="prolist.html">晋恩干红</a></li>
@@ -136,7 +138,6 @@
     <!--焦点轮换-->
     <script src="js/jquery.excoloSlider.js"></script>
     <script>
-		 $("#sliderA").excoloSlider();
 	</script>
 	<script>
 		$(function(){
@@ -215,7 +216,21 @@
 			},
 		});
 		
-		
+		$.ajax({   //轮播图
+			url:'http://39.96.199.148:8060/slide',
+			type:'get',
+			data : {},
+			dataType:'json',
+			success:function(da){ 
+				var str = '';
+					$.each(da.data,function(k,v){
+						str += "<img src='http://39.96.199.148:8060/"+v.goods_img+"' />";
+					})
+					$("#sliderA").html(str); 
+					$("#sliderA").excoloSlider();
+
+			},
+		});
 		
 		$.ajax({   //广告
 			url:'http://39.96.199.148:8060/appadvget',
