@@ -44,7 +44,7 @@
 				<li class="mui-table-view-cell mui-collapse address_info">
 					<a class="mui-navigate-right" href="#" >选择收货地址</a>
 					
-				</li>
+				</li> 
 				
 			</ul> 
 		</td>
@@ -52,7 +52,7 @@
        </tr>
        <tr>
 			<td colspan="3" style="height:10px; background:#efefef;padding:0;border:none;">
-			</td>
+			</td> 
 	   </tr>
        
        <tr>
@@ -175,7 +175,7 @@
 			data = plus.webview.currentWebview();
 			var cart_id = data.cart_id
 			var user_id = plus.storage.getItem("uid"); 
- 			var url="http://39.96.199.148:8060/addressGet";
+ 			var url="http://39.96.199.148:8060/addressGet"; 
 			$.get(url,{user_id:user_id},function(res){  
 				if(res.code==0){     
 					$(".address").html("<div style='background-color: #f2f2f2;height:35px;'><span style='line-height:35px;margin-left:15px;' class='addaddress'>"+res.msg+"</span></div>");
@@ -193,7 +193,7 @@
 					$.each(res.data,function(i,v){
 						str+="<div class='mui-input-row mui-radio'>"+  
 								"<label>"+v.addressInfo+" "+v.userInfo+"</label>"+
-								"<input name='address_id' @if("+v.is_address+" == 1) checked @endif   type='radio'  value='"+v.address_id+"'>"+
+								"<input name='address_id' @if("+v.is_address+" == 1) checked @endif   type='radio'  value='"+v.id+"'>"+
 							"</div>";
 					})
 					str+="</p></div>";
@@ -201,7 +201,7 @@
 				}
 				
 				
-			},'json');
+			},'json');  
 			
 			$.post("http://39.96.199.148:8060/cartshow",{cart_id:cart_id,user_id:user_id},function(res){
 				if(res.code==1){ 
@@ -254,7 +254,7 @@
 				data.user_id=user_id;
 				data.total=total;
 				$.post(url,data,function(res){
-					alert(res.msg);
+					alert(res.msg); 
 					if(res.code==1){ 
 						mui.openWindow({
 							url:'success.html', 

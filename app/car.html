@@ -104,7 +104,7 @@
 					if(da.code==1){
 						$(".cart_count").text(da.count); 
 						var str = '';
-						$.each(da.data,function(k,v){
+						$.each(da.data,function(k,v){      
 							if(v.type_id!=null){
 								str += "<tr>"+  
 								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1' /></td>"+
@@ -151,7 +151,10 @@
 				$.each($(".box:checked"),function(i,v){
 					cart_id+=$(this).attr('cart_id')+',';
 				});
-				console.log(cart_id);
+				if(cart_id==''){
+					mui.alert('请选择商品！');
+					return false;
+				} 
 				mui.openWindow({
 					url:'pay.html', 
 					createNew:true,
