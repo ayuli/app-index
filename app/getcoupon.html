@@ -12,6 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+		<script src="js/mui.min.js"></script>
+	<script src="js/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -51,7 +53,7 @@
          
              <div class="jl2Text" style="float: left; margin-top: 36px;margin-left: 40px;">
               数&nbsp;&nbsp;&nbsp;量：<strong class="red" style="font-size:16px;">100</strong> 个
-             <a class="ljdh lq-ben"  href="javascript:;">领取</a>
+             <a class="ljdh"  href="javascript:;">领取</a>
 			 </div><!--jl2Text/-->
           
             <div class="clearfix" style="height: 100px;"></div>
@@ -115,7 +117,7 @@
 <script>
 	
 	$(function(){
-		$.ajax({
+		$.ajax({  //展示领取优惠卷
 			url:'http://39.96.199.148:8060/getcoupon',
 			data : {},
 			type:'get', 
@@ -123,16 +125,31 @@
 			success:function(da){
 				var str = '';
 				$.each(da.data,function(k,v){
-					str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3个月</dd><div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt><div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>"+v.coupon_num+"</strong> 个<a class='ljdh lq-ben' coupon_id='"+v.coupon_id+"' href='javascript:;'>领取</a></div><div class='clearfix' style='height: 100px;'></div></dl></div>";
+					str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3个月</dd>"
+					+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt>"
+					+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>"+v.coupon_num+"</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>领取</a></div>"
+					+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
 				})
 				$('#yhj').html(str);
 			}
 		});
 		
 		
-		$(".lq-ben").click(function(){
-			// alert(111)
+		$(document).on('click','a[class=ljdh]',function(){ //点击领取优惠卷
+			
 			var coupon_id = $(this).attr('coupon_id')
+			var user_id=plus.storage.getItem("uid");
+	
+			$.ajax({
+				url:'http://39.96.199.148:8060/coupondo',
+				data : {coupon_id:coupon_id,user_id:user_id},
+				type:'get',
+				dataType:'json',
+				success:function(da){
+					alert(da.msg)
+					location.href=''
+				}
+			});
 			
 		})
 		
