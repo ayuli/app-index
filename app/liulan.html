@@ -47,21 +47,6 @@
 		 			<br>
 		 			</div>
 		</div>
-<!--      <table>
-       <tr>
-        <td colspan="2" width="65%"></td>
-       </tr>
-       <tr>
-        <td class="dingimg" width="15%"><img src="images/20190303190131.jpg"/></td>
-        <td width="50%">
-         <h3 id="goodsname">SheHuiRen</h3>
-         <time id="addtime">浏览时间</time>
-        </td>
- 
-       </tr>
-	   
-      </table> -->
-	  
      </div><!--dingdanlist/-->
      
      <div class="dingdanlist" onClick="window.location.href='proinfo.html'">
@@ -136,13 +121,14 @@
 							    +"</tr>"
 							    +"<tr>"
 								+"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'/></td>"
-								+"<td width='50%'>"
+								+"<td width='50%' border-top:'#ddd 1px solid'>"
 								+"<h5 id='goodsname'>"+v.goods_name+"</h5>"
 								+"<time id='addtime'>浏览时间:"+v.add_htime+"</time>"
 								+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 								+"<a class='del' style='color:red' hid="+v.history_id+">删除</a>"
 								+"</td>"
 								+"</tr>"
+
 					})
 					$('#liulan').html(str)
 					$('#num').html(data.num)
