@@ -224,7 +224,7 @@
 			success:function(da){ 
 				var str = '';
 					$.each(da.data,function(k,v){
-						str += "<img src='http://39.96.199.148:8060/"+v.goods_img+"' />";
+						str += "<img src='"+v.goods_img+"' />";
 					})
 					$("#sliderA").html(str); 
 					$("#sliderA").excoloSlider();
