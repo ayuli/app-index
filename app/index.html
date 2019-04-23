@@ -43,11 +43,13 @@
       <div class="clearfix"></div>
      </ul><!--reg-login-click/-->
      <div id="sliderA" class="slider">
-      <img src="images/image1.jpg" />
-      <img src="images/image2.jpg" />
-      <img src="images/image3.jpg" />
-      <img src="images/image4.jpg" />
-      <img src="images/image5.jpg" />
+		 <!-- <div  name='slider'> -->
+		<!-- 	<img src="images/image1.jpg" />
+			<img src="images/image2.jpg" />
+			<img src="images/image3.jpg" />
+			<img src="images/image4.jpg" />
+			<img src="images/image5.jpg" /> -->
+		<!-- </div> -->
      </div><!--sliderA/-->
 <!--    <ul class="pronav">
       <li><a href="prolist.html">晋恩干红</a></li>
@@ -136,7 +138,6 @@
     <!--焦点轮换-->
     <script src="js/jquery.excoloSlider.js"></script>
     <script>
-		 $("#sliderA").excoloSlider();
 	</script>
 	<script>
 		$(function(){
@@ -148,12 +149,12 @@
 			success:function(da){
 				var str = '';
 					$.each(da.data,function(k,v){
-						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+						str += "<dl class='goodsList_hot' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
 					})
 					
 					$('.prolist').html(str);
 					
-					$('.goodsList').click(function(){   
+					$('.goodsList_hot').click(function(){   
 						var goods_id=$(this).attr('goods_id')
 						mui.openWindow({
 							url:'proinfo.html', 
@@ -173,11 +174,11 @@
 			success:function(da){
 				var str = '';
 					$.each(da.data,function(k,v){
-						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>￥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl></br>"
+						str += "<dl class='goodsList_new' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>￥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl></br>"
 					})
 					
 					$('#pro1').html(str);
-					$('.goodsList').click(function(){ 
+					$('.goodsList_new').click(function(){ 
 						var goods_id=$(this).attr('goods_id')
 						mui.openWindow({
 							url:'proinfo.html', 
@@ -197,12 +198,12 @@
 			success:function(da){ 
 				var str = '';
 					$.each(da.data,function(k,v){
-						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>￥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl></br>"
+						str += "<dl class='goodsList_best' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><a href='javascript:;'>"+v.goods_name+"</a><div class='prolist-price'><strong>￥"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl></br>"
 					})
 					
 					$('#pro2').html(str); 
 					
-					$('.goodsList').click(function(){ 
+					$('.goodsList_best').click(function(){ 
 						var goods_id=$(this).attr('goods_id')
 						mui.openWindow({
 							url:'proinfo.html', 
@@ -215,13 +216,27 @@
 			},
 		});
 		
-		
+		$.ajax({   //轮播图
+			url:'http://39.96.199.148:8060/slide',
+			type:'get',
+			data : {},
+			dataType:'json',
+			success:function(da){ 
+				var str = '';
+					$.each(da.data,function(k,v){
+						str += "<img src='"+v.ad_img+"' />";
+					})
+					$("#sliderA").html(str); 
+					$("#sliderA").excoloSlider();
+
+			},
+		});
 		
 		$.ajax({   //广告
 			url:'http://39.96.199.148:8060/appadvget',
 			type:'get',
 			data : {},
-			dataType:'json',
+			dataType:'json', 
 			success:function(da){ 
 				var str = "<img src='"+da.img+"' />";
 				$('#default').html(str); 	

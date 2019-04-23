@@ -45,7 +45,7 @@
 			<strong class='goods_name'></strong>
 			</td>
 			<td align="right">
-			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty"></span></a>
+			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty" id='shoucang'></span></a>
 			</td>
 		</tr>
      </table>
@@ -76,14 +76,18 @@
      <div class="proinfoList proinfoList3">
       暂无信息......
      </div><!--proinfoList/-->
-     <table class="jrgwc">
-      <tr>
+     <!-- <table class="jrgwc"> -->
+      <!-- <tr>
        <th>
         <a href="index.html"><span class="glyphicon glyphicon-home"></span></a>
        </th>
        <td><a href="javascript:;" class="cartAdd">加入购物车</a></td>
-      </tr>
-     </table>
+      </tr> -->
+     <!-- </table> -->
+	 <div class="lrSub">
+	  <input type="button" class='cartAdd' style="background:#00CC00" id="btn" value="加入购物车" />
+	  
+	 </div>
     </div><!--maincont-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
@@ -130,10 +134,10 @@
 	$(function(){
 		$('.spinnerExample').spinner({});
 		mui.plusReady(function () { 
-			
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
-			
+			// console.log(goodsid);
+
 			// return false;
 			var uid = plus.storage.getItem("uid");
 			//历史记录
@@ -165,19 +169,27 @@
 				$(".goods_name").html(res.goodsInfo.goods_name);
 				$(".goods_number").text(res.goodsInfo.goods_number);
 				$(".goods_num").val(res.goodsInfo.goods_number);
-				 
-				if(res.goodsInfo.goods_imgs==""){
-					var str="<img src='http://39.96.199.148:8060/img/nullimg.jpg' style='width: 640px; height: 250px;'>"; 
+				// console.log(res.goodsInfo.goods_img) 
+				if(res.goodsInfo.goods_img!=null){
+					var str="<img src='http://39.96.199.148:8060/"+res.goodsInfo.goods_img+"' style='width: 640px; height: 250px;'>"; 
 					$("#sliderA").html(str);
 				}else{
-					var str="";
-					$.each(res.goodsInfo.goods_imgs,function(i,v){
-						str+="<img src='http://39.96.199.148:8060/"+v+"'>";  
-					});
-					$("#sliderA").html(str); 
-					$("#sliderA").excoloSlider();
-
+					var str="<img src='http://39.96.199.148:8060/img/nullimg.jpg' style='width: 640px; height: 250px;'>"; 
+					$("#sliderA").html(str);
 				}
+				 
+// 				if(res.goodsInfo.goods_imgs==""){
+					// var str="<img src='http://39.96.199.148:8060/img/nullimg.jpg' style='width: 640px; height: 250px;'>"; 
+// 					$("#sliderA").html(str);
+// 				}else{
+// 					var str="";
+// 					$.each(res.goodsInfo.goods_imgs,function(i,v){
+// 						str+="<img src='http://39.96.199.148:8060/"+v+"'>";  
+// 					});
+// 					$("#sliderA").html(str); 
+// 					$("#sliderA").excoloSlider();
+// 
+// 				}
 				
 
 				var proinfoList="商品名称："+res.goodsInfo.goods_name+"</br>"+
@@ -247,7 +259,7 @@
 				}
 				
 				
-				var goods_id=goodsid;
+				var goods_id=goodsid; 
 				
 
 				var goods_num=$(".spinnerExample").val();
@@ -265,6 +277,29 @@
 				},'json');
 			});
 			
+		})
+		
+		
+		$("#shoucang").click(function(){
+			data = plus.webview.currentWebview();
+			var goods_id = data.goods_id
+			var user_id=plus.storage.getItem("uid");
+		$.ajax({
+			url : 'http://39.96.199.148:8060/collection',
+			data : {goods_id:goods_id,user_id:user_id},
+			type : 'post',
+			dataType: 'json',
+			success:function(d){
+				alert(d.msg)
+			}
+		})
+			
+			
+// 			if($(this).attr('class')=='glyphicon glyphicon-star-empty'){
+// 
+// 			}else{
+// 				$(this).addClass('')
+// 			}
 		})
 	});
 	</script>
