@@ -35,7 +35,7 @@
      <table class="shoucangtab">
       <tr>
        <td width="75%"><span class="hui">收藏栏共有：<strong id="num" class="orange">0</strong>件商品</span></td>
-       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" class="orange">全部删除</a></td>
+       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" id="alldel" class="orange">全部删除</a></td>
       </tr>
      </table>
 	<div id="sc">
@@ -88,70 +88,91 @@
   </body>
 </html>
 <script>
-	function plusReady(){
+	mui.plusReady(function(){
 		var uid = plus.storage.getItem("uid");
-	    mui.ajax('http://39.96.199.148:8060/collectionget',{
-	    	data:{
-	    		user_id:uid
-	    	},
-	    	dataType:'json',//服务器返回json格式数据
-	    	type:'get',//HTTP请求类型
-	    	timeout:10000,//超时时间设置为10秒；
-	    	success:function(data){
-	    		if(data.code==0){
-					var str =''
-					$.each(data.data,function(k,v){
-						str +=
-						 "<div class='dingdanlist' style='margin-top:-1px'>"+
-						 "<table>"+
-							"<tr >"+
-								"<td colspan='2' width='65%'></td>"+
-								"<td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' class='del' rid='"+v.rec_id+"' class='orange'>取消收藏</a></div></td>"+
-							"</tr>"+
-							"<tr>"+
-								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'/></td>" +
-								"<td width='64%'>"+
-								 "<h3 style='font-size:1.3rem'>"+v.goods_name+"</h3>"+
-								 "<time>"+v.add_time+"</time>"+
-								"</td>"+
-								"<td align='right'><img src='images/jian-new.png' /></td>"+
-							"</tr>"+
-							"<tr style='boder-top:#ddd 1px solid'>"+
-								"<th colspan='3'><strong class='orange'>￥ "+v.goods_price+"</strong></th>"+
-							"</tr>"+
-							"</table>"
-					})
-					$('#sc').html(str)
-					$('#num').html(data.num)
-					$('.del').click(function(){
-						rid = $(this).attr('rid')
-						mui.ajax('http://39.96.199.148:8060/uncollection',{
-							data:{
-								user_id:uid,
-								rec_id:rid
-							},
-							dataType:'json',//服务器返回json格式数据
-							type:'post',//HTTP请求类型
-							timeout:10000,//超时时间设置为10秒；
-							success:function(data){
-								alert(22)
-							},
-							error:function(xhr,type,errorThrown){
-								alert(11)
-							}
-						});
-					})
-				}else{
-					mui.toast('查询收藏失败')
-				}
-	    	},
-
-	    });
-	}
-	if (window.plus) {
-	    plusReady()
-	} else{
-	    document.addEventListener('plusready',plusReady,false);
-	}
+		if(uid==null){
+			mui.toast('请先登陆')
+			mui.openWindow({
+				url:'login.html',
+				createNew:true,
+			});
+		}else{
+			mui.ajax('http://39.96.199.148:8060/collectionget',{
+				data:{
+					user_id:uid
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					if(data.code==0){
+						var str =''
+						$.each(data.data,function(k,v){
+							str +=
+							 "<div class='dingdanlist' style='margin-top:-1px'>"+
+							 "<table>"+
+								"<tr >"+
+									"<td colspan='2' width='65%'></td>"+
+									"<td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' class='del' rid='"+v.rec_id+"' class='orange'>取消收藏</a></div></td>"+
+								"</tr>"+
+								"<tr>"+
+									"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'/></td>" +
+									"<td width='64%'>"+
+									 "<h3 style='font-size:1.3rem'>"+v.goods_name+"</h3>"+
+									 "<time>"+v.add_time+"</time>"+
+									"</td>"+
+									"<td align='right'><img src='images/jian-new.png' /></td>"+
+								"</tr>"+
+								"<tr style='boder-top:#ddd 1px solid'>"+
+									"<th colspan='3'><strong class='orange'>￥ "+v.goods_price+"</strong></th>"+
+								"</tr>"+
+								"</table>"
+						})
+						$('#sc').html(str)
+						$('#num').html(data.num)
+						$('.del').click(function(){
+							rid = $(this).attr('rid')
+							mui.ajax('http://39.96.199.148:8060/uncollection',{
+								data:{
+									user_id:uid,
+									rec_id:rid
+								},
+								dataType:'json',//服务器返回json格式数据
+								type:'post',//HTTP请求类型
+								timeout:10000,//超时时间设置为10秒；
+								success:function(data){
+									mui.toast('查询收藏失败')
+								},
+								error:function(xhr,type,errorThrown){
+									mui.toast('查询收藏失败')
+								}
+							});
+						}) 
+					}else{
+						mui.toast('您还没有收藏商品')
+					}
+				},
+			});
+		}
+	})
+$('#alldel').click(function(){
+	var uid = plus.storage.getItem("uid");
+	mui.ajax('http://39.96.199.148:8060/delconllection',{
+		data:{
+			user_id:uid
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			if(data==1){
+				mui.toast('删除成功')
+				location.href="";
+			}else{
+				mui.toast('删除失败')
+			}
+		}
+	});
+})
 	
 </script>

@@ -39,14 +39,12 @@
       </tr>
      </table>
      
-     <div class="dingdanlist">
-      <table id="is_address">
-       
-       <tr>
-        
-       </tr>
-	   
-      </table>
+     <div id="is_address" class="dingdanlist">
+			<div style="text-align:center;">
+			<img src="images/nosc.png" style="text-align:center;">
+			<h4>您还没有收货地址....</h4>
+			<br>
+			</div>
      </div><!--dingdanlist/-->
      
      <div class="height1"></div>
@@ -104,7 +102,7 @@ mui.plusReady(function () {
 		timeout:10000,//超时时间设置为10秒；
 		success:function(res){
 			if(res.code==0){
-				mui.toast(res.msg)
+				mui.toast('请先登录')
 				mui.openWindow({
 					url:'login.html',
 					createNew:true,

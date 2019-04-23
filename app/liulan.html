@@ -34,13 +34,19 @@
      </div><!--head-top/-->
      <table class="shoucangtab">
       <tr>
-       <td width="75%"><span class="hui">浏览记录共有：<strong class="orange">1</strong>条</span></td>
+       <td width="75%"><span class="hui">浏览记录共有：<strong id="num" class="orange">0</strong>条</span></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" id="adel" class="orange">全部删除</a></td>
       </tr>
      </table>
      
      <div class="collectionlist"id="liulan">
-		 
+		<div id="is_address" class="dingdanlist">
+		 			<div style="text-align:center;">
+		 			<img src="images/nosc.png" style="text-align:center;">
+		 			<h4>您还没有浏览过商品....</h4>
+		 			<br>
+		 			</div>
+		</div>
 <!--      <table>
        <tr>
         <td colspan="2" width="65%"></td>
@@ -122,22 +128,25 @@
 	    	type:'get',//HTTP请求类型
 	    	timeout:10000,//超时时间设置为10秒；
 	    	success:function(data){
-				var str = '暂无浏览记录'
-				$.each(data,function(k,v){
-					str += "<tr>"
-							+"<td colspan='2' width='65%'></td>"
-						    +"</tr>"
-						    +"<tr>"
-							+"<td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td>"
-							+"<td width='50%'>"
-							+"<h5 id='goodsname'>"+v.goods_name+"</h5>"
-							+"<time id='addtime'>浏览时间:"+v.add_htime+"</time>"
-							+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-							+"<a class='del' style='color:red' hid="+v.history_id+">删除</a>"
-							+"</td>"
-							+"</tr>"
-				})
-				$('#liulan').html(str)
+				var str =""
+				if(data.num!==0){
+					$.each(data.res,function(k,v){
+						str += "<tr>"
+								+"<td colspan='2' width='65%'></td>"
+							    +"</tr>"
+							    +"<tr>"
+								+"<td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td>"
+								+"<td width='50%'>"
+								+"<h5 id='goodsname'>"+v.goods_name+"</h5>"
+								+"<time id='addtime'>浏览时间:"+v.add_htime+"</time>"
+								+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+								+"<a class='del' style='color:red' hid="+v.history_id+">删除</a>"
+								+"</td>"
+								+"</tr>"
+					})
+					$('#liulan').html(str)
+					$('#num').html(data.num)
+				}
 				$('.del').click(function(){
 					var id = $(this).attr('hid')
 					mui.ajax('http://39.96.199.148:8060/delhistory',{
