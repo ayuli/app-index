@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -32,40 +34,20 @@
      </div><!--head-top/-->
      <table class="shoucangtab">
       <tr>
-       <td width="75%"><span class="hui">收藏栏共有：<strong class="orange">3</strong>件商品</span></td>
+       <td width="75%"><span class="hui">收藏栏共有：<strong id="num" class="orange">0</strong>件商品</span></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" class="orange">全部删除</a></td>
       </tr>
      </table>
-     
-     <div class="collectionlist" onClick="window.location.href='proinfo.html'">
-		 
-      <table>
-       <tr>
-        <td colspan="2" width="65%"></td>
-        <td width="35%" align="right"><div class="qingqu"><a href="shoucang.html" onclick="cancel()" class="orange">取消收藏</a></div></td>
-       </tr>
-       <tr>
-        <td class="dingimg" width="15%"><img src="images/20190303190131.jpg"/></td>
-        <td width="50%">
-         <h3>SheHuiRen</h3>
-         <time></time>
-        </td>
-        <td align="right"><img src="images/jian-new.png" /></td>
-       </tr>
-       <tr>
-        <th colspan="3"><strong class="orange">￥ 299</strong></th>
-       </tr>
-      </table>
-	  
-     </div><!--dingdanlist/-->
-     
-     <div class="dingdanlist" onClick="window.location.href='proinfo.html'">
-      <table>
-       <tr>
-        <td colspan="2" width="65%"></td>
-       </tr>
-      </table>
-     </div><!--dingdanlist/--> 
+	<div id="sc">
+		<div style="text-align:center;">
+			<tr >
+			<td><img src="images/nosc.png" style="text-align:center;"></td>
+			<td><h4>您还没有收藏商品....</h4></td>
+			<br>
+			<td><a href="index.html"><button type="button" class="mui-btn mui-btn-blue mui-btn-outlined">前往首页</button></a></td>
+		</tr>
+		</div>
+	</div>
      
      <div class="height1"></div>
      <div class="footNav">
@@ -103,37 +85,73 @@
     <script src="js/style.js"></script>
     <!--jq加减-->
     <script src="js/jquery.spinner.js"></script>
-   <script>
-	$('.spinnerExample').spinner({});
-		
-		function cancel(){
-			alert('已取消收藏');
-			$.ajax({  
-					url:'http://39.96.199.148:8060/uncollection',
-					type:'post', 
-					dataType:'json',
-					success:function(result){
-						alert(result.msg);
-				} 
-			});
-		}
-		
-   </script>
   </body>
 </html>
 <script>
-	$(function(){
-		$.ajax({
-			url:'http://39.96.199.148:8060/collectionget/',
-			type:'get',
-			dataType:'json',
-			success:function(da){
-				var str = '';
-				$.each(da.data,function(k,v){
-					str += "<table><tr><td colspan='2' width='65%'></td><td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' onclick='cancel()' class='orange'>取消收藏</a></div></td></tr><tr><td class='dingimg' width='15%'><img src='images/20190303190131.jpg'/></td><td width='50%'><h3>"+v.goods_id+"</h3><time>收藏的时间：2019-04-11  13:51</time></td><td align='right'><img src=''/></td></tr><tr><th colspan='3'><strong class='orange'>￥&nbsp;"+v.user_id+"</strong></th></tr></table>"
-				})
-				$('.collectionlist').html(str);
-			},
-		});
-	})
+	function plusReady(){
+		var uid = plus.storage.getItem("uid");
+	    mui.ajax('http://39.96.199.148:8060/collectionget',{
+	    	data:{
+	    		user_id:uid
+	    	},
+	    	dataType:'json',//服务器返回json格式数据
+	    	type:'get',//HTTP请求类型
+	    	timeout:10000,//超时时间设置为10秒；
+	    	success:function(data){
+	    		if(data.code==0){
+					var str =''
+					$.each(data.data,function(k,v){
+						str +=
+						 "<div class='dingdanlist' style='margin-top:-1px'>"+
+						 "<table>"+
+							"<tr >"+
+								"<td colspan='2' width='65%'></td>"+
+								"<td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' class='del' rid='"+v.rec_id+"' class='orange'>取消收藏</a></div></td>"+
+							"</tr>"+
+							"<tr>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'/></td>" +
+								"<td width='64%'>"+
+								 "<h3 style='font-size:1.3rem'>"+v.goods_name+"</h3>"+
+								 "<time>"+v.add_time+"</time>"+
+								"</td>"+
+								"<td align='right'><img src='images/jian-new.png' /></td>"+
+							"</tr>"+
+							"<tr style='boder-top:#ddd 1px solid'>"+
+								"<th colspan='3'><strong class='orange'>￥ "+v.goods_price+"</strong></th>"+
+							"</tr>"+
+							"</table>"
+					})
+					$('#sc').html(str)
+					$('#num').html(data.num)
+					$('.del').click(function(){
+						rid = $(this).attr('rid')
+						mui.ajax('http://39.96.199.148:8060/uncollection',{
+							data:{
+								user_id:uid,
+								rec_id:rid
+							},
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								alert(22)
+							},
+							error:function(xhr,type,errorThrown){
+								alert(11)
+							}
+						});
+					})
+				}else{
+					mui.toast('查询收藏失败')
+				}
+	    	},
+
+	    });
+	}
+	if (window.plus) {
+	    plusReady()
+	} else{
+	    document.addEventListener('plusready',plusReady,false);
+	}
+	
 </script>
