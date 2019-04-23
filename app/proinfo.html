@@ -45,7 +45,7 @@
 			<strong class='goods_name'></strong>
 			</td>
 			<td align="right">
-			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty"></span></a>
+			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty" id='shoucang'></span></a>
 			</td>
 		</tr>
      </table>
@@ -277,6 +277,29 @@
 				},'json');
 			});
 			
+		})
+		
+		
+		$("#shoucang").click(function(){
+			data = plus.webview.currentWebview();
+			var goods_id = data.goods_id
+			var user_id=plus.storage.getItem("uid");
+		$.ajax({
+			url : 'http://39.96.199.148:8060/collection',
+			data : {goods_id:goods_id,user_id:user_id},
+			type : 'post',
+			dataType: 'json',
+			success:function(d){
+				alert(d.msg)
+			}
+		})
+			
+			
+// 			if($(this).attr('class')=='glyphicon glyphicon-star-empty'){
+// 
+// 			}else{
+// 				$(this).addClass('')
+// 			}
 		})
 	});
 	</script>
