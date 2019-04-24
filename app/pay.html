@@ -171,7 +171,7 @@
 	<script src='js/mui.js'></script>
     <script src="js/jquery.spinner.js"></script>
    <script>
-	$('.spinnerExample').spinner({});
+	$('.spinnerExample').spinner({});  
 	</script>
   </body>
 </html>
@@ -187,6 +187,7 @@
  			var url="http://39.96.199.148:8060/addressGet"; 
 			$.get(url,{user_id:user_id},function(res){  
 				if(res.code==0){     
+					$(".address_info").addClass('none');
 					$(".address").html("<div style='background-color: #f2f2f2;height:35px;'><span style='line-height:35px;margin-left:15px;' class='addaddress'>"+res.msg+"</span></div>");
 					$(".addaddress").click(function(){  
 						 mui.openWindow({
@@ -321,13 +322,42 @@
 				var pay_way=$("[name='pay_way']:checked").val(); 
 				var address_id=$("[name='address_id']:checked").val();
 				var url="http://39.96.199.148:8060/createOrder";
+				if($(".address_info").hasClass('none')){
+					mui.alert('您还未设置收货地址，点击去设置！','提示',function(){
+						mui.openWindow({
+							url:'address.html', 
+							createNew:true,
+							extras:{ 
+								cart_id:cart_id
+							}
+						});
+					});
+					return false;
+				}else{
+					if(address_id==undefined){ 
+						mui.alert('您还未设置收货地址，点击去设置！','提示',function(){
+							mui.openWindow({
+								url:'add-address.html', 
+								createNew:true,
+								extras:{ 
+									cart_id:cart_id
+								}
+							});
+						});
+						return false;
+					}
+				}
+				
 				var total=foot_price;
 				var data={};
 				data.cart_id=cart_id;
 				data.pay_way=pay_way;
 				data.address_id=address_id;
 				data.user_id=user_id;
-				data.total=total;
+				data.total=total;  
+				console.log(address_id);
+				return 
+				false;
 				$.post(url,data,function(res){
 					alert(res.msg); 
 					if(res.code==1){ 

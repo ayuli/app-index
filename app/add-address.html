@@ -32,14 +32,14 @@
      <div class="head-top">
       <img src="images/head.jpg" />
      </div><!--head-top/-->
-     <table class="shoucangtab">
+     <table class="shoucangtab" style="border-bottom:none;">
       <tr>
        <td width="75%"><a href="address.html" class="hui"><strong class="">+</strong> 新增收货地址</a></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" class="orange">删除信息</a></td>
       </tr>
      </table>
      
-     <div id="is_address" class="dingdanlist">
+     <div id="is_address" class="dingdanlist" style="margin-top:0px;">
 			<div style="text-align:center;">
 			<img src="images/nosc.png" style="text-align:center;">
 			<h4>您还没有收货地址....</h4>
@@ -108,17 +108,31 @@ mui.plusReady(function () {
 					createNew:true,
 				});
 			}else{
-				var str = '' 
+				var str = "<table style='border-top:none;'>"
 				$.each(res.data,function(k,v){  
-					str +=
-					"<tr>"
-					 +"<td width='50%'>"
-					  +"<h3 id='name'>"+v.userInfo+"</h3>"  
-					  +"<time id='address'>"+v.addressInfo+"</time>"
-					 +"</td>"
-					 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
-					 +"</tr>"
+					if(v.is_address==1){
+						str +=
+						"<tr id='"+v.id+"'>"
+						 +"<td width='60%' >"
+						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+						  +"<time id='address'>"+v.addressInfo+"</time>"
+						 +"</td>"
+						 +"<td style='color:green;' class='is_address' >默认地址</td>"
+						 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"</tr>";
+					}else{
+						str +=
+						"<tr id='"+v.id+"'>"
+						 +"<td width='60%' class='is_address'>"
+						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+						  +"<time id='address'>"+v.addressInfo+"</time>"
+						 +"</td>"
+						 +"<td style='color:red;' width='20%;'>设为默认</td>"
+						 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"</tr>";
+					}
 				})
+				str+="</table>";
 				$('#is_address').html(str);
   				$('.btn').click(function(){
 				var consignee_name = $(this).attr('consignee_name')
@@ -139,9 +153,25 @@ mui.plusReady(function () {
  							tel:consignee_tel,
  							address:detailed_address,
 							add_id:add_id
- 									},
+						},
  					}); 
- 				}) 
+ 				});
+				$(".is_address").click(function(){
+					var _this=$(this);
+					var id=$(this).parents('tr').attr('id');
+					var data={};
+					data.id=id;
+					data.user_id=user_id;
+					$.get("http://39.96.199.148:8060/is_address",data,function(res){
+						alert(111);
+						if(res.code==0){
+							alert(res.msg);
+						}else{
+							_this.text('默认地址');
+							_this.css('color','green');
+						}
+					},'json');
+				});
 			}
 		},
 		error:function(xhr,type,errorThrown){
