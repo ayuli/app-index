@@ -12,6 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,52 +33,41 @@
       <img src="images/head.jpg" />
      </div><!--head-top/-->
      <div class="zhaieq">
-      <a href="javascript:;" class="zhaiCur">已使用</a>
-      <a href="javascript:;">未使用</a>
-      <a href="javascript:;">已过期</a>
+      <a href="javascript:;" class="zhaiCur" name='tab' type='1'>未使用</a>
+      <a href="javascript:;" name='tab' type='2'>已使用</a>
+      <a href="javascript:;" name='tab' type='3'>已过期</a>
       <div class="clearfix"></div>
      </div><!--oredereq/-->
      
-     <div class="jifen">
+     <div class="jifen" id='yhj'>
+		 
+		 
+		 
           <div class="jifenList">
-           <dl class="jl1">
-            <dt>100元购物抵用券</dt>
-            <dd>有效期：自兑换日起3个月</dd>
-            <div class="clearfix"></div>
-           </dl><!--jl1/-->
-           <dl class="jl2">
-            <dt><img src="images/jf1.jpg" width="103" height="150" /></dt>
-            <dd>
-             <div class="jl2Text">
-              购买满100元可用，每个项目限用一个红包<br />
-              数&nbsp;&nbsp;&nbsp;量： 1<br />
-              需消耗：<strong class="red" style="font-size:16px;">1</strong> 个
-             </div><!--jl2Text/-->
-             <a class="ljdh" href="javascript:;">使用</a>
-            </dd>
-            <div class="clearfix"></div>
-           </dl><!--jl2/-->
-          </div><!--jifenList/-->
-          <div class="jifenList">
-           <dl class="jl1">
-            <dt>500元购物抵用券</dt>
-            <dd>有效期：自兑换日起3个月</dd>
-            <div class="clearfix"></div>
-           </dl><!--jl1/-->
-           <dl class="jl2">
-            <dt><img src="images/jf2.jpg" width="103" height="150" /></dt>
-            <dd>
-             <div class="jl2Text">
-              购买满500元可用，每个项目限用一个红包<br />
-              数&nbsp;&nbsp;&nbsp;量： 1<br />
-              需消耗：<strong class="red" style="font-size:16px;">1</strong> 个
-             </div><!--jl2Text/-->
-             <a class="ljdh" href="javascript:;">使用</a>
-            </dd>
-            <div class="clearfix"></div>
-           </dl><!--jl2/-->
-          </div><!--jifenList/-->
+          <dl class="jl1">
+           <dt>100元购物抵用券</dt>
+           <dd>有效期：自兑换日起3个月</dd>
+           <div class="clearfix"></div>
+          </dl><!--jl1/-->
+          <dl class="jl2">
+           <dt><img src="images/yh2.jpg" width="203" height="150" /></dt>
+                  
+            <div class="jl2Text" style="float: left; margin-top: 36px;margin-left: 40px;">
+             数&nbsp;&nbsp;&nbsp;量：<strong class="red" style="font-size:16px;">100</strong> 个
+            <a class="ljdh"  href="javascript:;">使用</a>
+         			 </div><!--jl2Text/-->
+         
+           <div class="clearfix" style="height: 100px;"></div>
+          </dl><!--jl2/-->
+         </div><!--jifenList/-->
+		 
+		 
+      
           <div class="clearfix"></div>
+		  
+		  
+		  
+		  
       </div><!--jifen/-->
      
      <div class="height1"></div>
@@ -116,7 +107,54 @@
     <!--jq加减-->
     <script src="js/jquery.spinner.js"></script>
    <script>
-	$('.spinnerExample').spinner({});
+	// $('.spinnerExample').spinner({});
    </script>
   </body>
 </html>
+<script>
+	$(function(){
+		aj(1);
+		
+		var type = '';
+		$(document).on('click',"a[name=tab]",function(){
+			if($(this).attr('type')==1){
+				type = 1
+			}else if($(this).attr('type')==2){
+				type = 2
+			}else if($(this).attr('type')==3){
+				type = 3
+			}
+			
+			aj(type);
+			
+		})
+		 
+		$(document).on('click','a[class=ljdh]',function(){ //点击使用优惠卷 跳转商品列表
+			mui.openWindow({
+				url:'prolist.html',
+			});
+		})
+		
+		function aj(type){
+			// var user_id=plus.storage.getItem("uid");
+			var user_id = 4;
+			$.ajax({
+				url : 'http://39.96.199.148:8060/couponDel',
+				data : {user_id:user_id,type:type},
+				type : 'get',
+				dataType : 'json',
+				success : function(d){
+					var str = '';
+					$.each(d.data,function(k,v){
+						str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3个月</dd>"
+						+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt>"
+						+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>1</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>使用</a></div>"
+						+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+					})
+					$('#yhj').html(str);
+				}
+			})
+		}
+		
+	})
+</script>
