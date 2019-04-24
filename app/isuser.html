@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Author" contect="http://www.webqin.net">
+    <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/response.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="maincont">
+     <header>
+      <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div class="head-mid">
+       <h1>我的资料</h1>
+      </div>
+     </header>
+		<a href="touxiang.html"><img src="images/d5.png" alt=""></a>
+      <div class="lrBox">
+       <div class="lrList"><input type="text" placeholder="昵称" id="consignee_name"/></div>
+       <div class="lrList"><input type="text" placeholder="详细地址" id="detailed_address"/></div>
+       <div class="mui-input-row mui-checkbox">
+       		  <div class="lrList2"><input type="text"  readonly="" placeholder="设为默认地址" /> <button id="is_address" value="1">设为默认</button></div>
+       		</div>
+      </div><!--lrBox/-->
+      <div class="lrSub">
+       <input type="button" style="background:#00CC00" id="btn" value="保存" />
+	   
+      </div>
+     
+     <div class="height1"></div>
+     <div class="footNav">
+      <dl>
+       <a href="index.html">
+        <dt><span class="glyphicon glyphicon-home"></span></dt>
+        <dd>微店</dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="prolist.html">
+        <dt><span class="glyphicon glyphicon-th"></span></dt>
+        <dd>所有商品</dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="car.html">
+        <dt><span class="glyphicon glyphicon-shopping-cart"></span></dt>
+        <dd>购物车 </dd>
+       </a>
+      </dl>
+      <dl class="ftnavCur">
+       <a href="user.html">
+        <dt><span class="glyphicon glyphicon-user"></span></dt>
+        <dd>我的</dd>
+       </a>
+      </dl>
+      <div class="clearfix"></div>
+     </div><!--footNav/-->
+    </div><!--maincont-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/style.js"></script>
+    <!--jq加减-->
+    <script src="js/jquery.spinner.js"></script>
+   <script>
+	$('.spinnerExample').spinner({});
+   </script>
+  </body>
+</html>
+<script type="text/javascript">
+mui.plusReady(function () {
+	data = plus.webview.currentWebview();
+
+	var user_id = plus.storage.getItem("uid");
+	var cart_id = data.cart_id;
+	console.log(cart_id); 
+  $('#btn').click(function(){
+ 		if(isaddress){
+ 			isaddress = 1;
+ 		}else{
+ 			isaddress = 0;
+ 		}
+ 		mui.ajax('http://39.96.199.148:8060/address',{
+ 		data:{ 
+ 			user_id:user_id, 
+ 			consignee_name:$('#consignee_name').val(),
+ 			detailed_address:$('#detailed_address').val(),
+ 			province:$('#province').val(),
+ 			city:$('#city').val(),
+ 			district:$('#area').val(),
+ 			consignee_tel:$('#consignee_tel').val(),
+ 			is_address:isaddress
+ 		},
+ 		dataType:'json',//服务器返回json格式数据
+ 		type:'post',//HTTP请求类型
+ 		timeout:10000,//超时时间设置为10秒；
+ 		success:function(data){
+			console.log(data);
+ 			if(data==1){
+				if(cart_id!=''){
+					mui.openWindow({
+						url:'pay.html', 
+						createNew:true,
+						extras:{ 
+							cart_id:cart_id
+						}
+					});
+				}else{
+					mui.openWindow({
+						url:'add-address.html', 
+						createNew:true,
+						extras:{ 
+						}
+					});
+				}
+			}else{
+				alert('添加失败！');
+			}
+ 		},
+ 		error:function(xhr,type,errorThrown){
+ 			
+ 		}
+ 	}); 
+ })
+		mui.ajax('http://39.96.199.148:8060/getregion',{
+		data:{
+		},
+		dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		timeout:10000,//超时时间设置为10秒；
+		success:function(data){
+			var str = "<option>省份</option>";
+			$.each(data,function(k,v){
+				str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+			})
+			$('#province').html(str);
+		},
+		error:function(xhr,type,errorThrown){
+		}
+	});
+	$('#province').change(function(){
+			var pid = $('#province').val();
+				mui.ajax('http://39.96.199.148:8060/getregion',{
+			data:{
+				pid:pid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				var str = "<option>城市</option>";
+				$.each(data,function(k,v){
+					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+				})
+				$('#city').html(str);
+			},
+			error:function(xhr,type,errorThrown){
+			}
+		});
+	})
+		$('#city').change(function(){
+			var pid = $('#city').val();
+				mui.ajax('http://39.96.199.148:8060/getregion',{
+			data:{
+				pid:pid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'get',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				var str = "<option>区县</option>";
+				$.each(data,function(k,v){
+					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
+				})
+				$('#area').html(str);
+			},
+			error:function(xhr,type,errorThrown){
+			}
+		});
+	})
+})
+var isaddress = 0
+		$('#is_address').click(function(){
+			// console.log(isaddress)
+			if(isaddress==0){
+				isaddress=1
+				mui.toast('已设为默认')
+			}else{
+				isaddress=0
+				mui.toast('已取消默认')
+		}		
+		})
+		 
+</script>	
