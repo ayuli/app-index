@@ -12,6 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -32,10 +34,10 @@
      </div><!--head-top/-->
      
      <div class="zhaieq oredereq">
-      <a href="javascript:;" class="zhaiCur">待付款</a>
-      <a href="javascript:;">待发货</a>
-      <a href="javascript:;">已取消</a>
-      <a href="javascript:;" style="background:none;">已完成</a>
+      <a href="javascript:;" class="zhaiCur" name='tab'>待付款</a>
+      <a href="javascript:;" name='tab'>待发货</a>
+      <a href="javascript:;" name='tab'>已取消</a>
+      <a href="javascript:;" name='tab' style="background:none;">已完成</a>
       <div class="clearfix"></div>
      </div><!--oredereq/-->
      
@@ -120,3 +122,14 @@
    </script>
   </body>
 </html>
+
+<script>
+	mui.plusReady(function () {
+		
+		$(document).on('click','[name=tab]',function(){
+			alert(1)
+		})
+		
+	})
+	
+</script>

@@ -46,26 +46,27 @@
      
      <ul class="userNav">
       <li><span class="glyphicon glyphicon-list-alt"></span><a href="order.html">我的订单</a></li>
-      <div class="height2"></div>
-      <div class="state">
+      <!-- <div class="height2"></div> -->
+<!--      <div class="state">
          <dl>
           <dt><a href="order.html"><img src="images/user1.png" /></a></dt>
-          <dd><a href="order.html">待支付</a></dd><span id="pay1"></span>
+          <dd><a href="order.html" name='tab'>待支付</a></dd><span id="pay1"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user2.png" /></a></dt>
-          <dd><a href="order.html">代发货</a></dd><span id="pay2"></span>
+          <dd><a href="order.html" name='tab'>代发货</a></dd><span id="pay2"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user3.png" /></a></dt>
-          <dd><a href="order.html">已完成</a></dd><span id="pay3"></span>
+          <dd><a href="order.html" name='tab'>已完成</a></dd><span id="pay3"></span>
          </dl>
          <dl>
           <dt><a href="order.html"><img src="images/user4.png" /></a></dt>
-          <dd><a href="order.html">全部订单</a></dd><span id="order"></span>
+          <dd><a href="order.html" name='tab'>全部订单</a></dd><span id="order"></span>
          </dl>
          <div class="clearfix"></div>
-      </div><!--state/-->
+      </div> -->
+	  <!--state/-->
 	  <li><span class="glyphicon glyphicon-user"></span><a href="isuser.html">我的资料</a></li>
       <li><span class="glyphicon glyphicon-globe"></span><a href="quan.html">我的优惠券</a></li>
       <li><span class="glyphicon glyphicon-map-marker"></span><a href="add-address.html">收货地址管理</a></li>
@@ -122,6 +123,7 @@
 </html>
 <script type="text/javascript">
 	mui.plusReady(function () {
+		
 	   var uid = plus.storage.getItem("uid")
 	   	mui.ajax('http://39.96.199.148:8060/userCenter',{
 	   	data:{
