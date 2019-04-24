@@ -112,7 +112,7 @@
   </body>
 </html>
 <script>
-	$(function(){
+	mui.plusReady(function () {
 		aj(1);
 		
 		var type = '';
@@ -135,9 +135,11 @@
 			});
 		})
 		
+			
+		
 		function aj(type){
-			// var user_id=plus.storage.getItem("uid");
-			var user_id = 4;
+			// var user_id = 4;
+			var user_id=plus.storage.getItem("uid");
 			$.ajax({
 				url : 'http://39.96.199.148:8060/couponDel',
 				data : {user_id:user_id,type:type},
