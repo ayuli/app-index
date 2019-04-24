@@ -97,7 +97,8 @@
     <script>
 		var page =2;
 
-		$(function () {
+	$(function () {
+	mui.plusReady(function () {
 			$("#search").val(" ");
 
 
@@ -110,7 +111,7 @@
 		 	dataType:'json',
 		 	success:function(da){
 				mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
-				mui('#pullrefresh').pullRefresh().refresh(true); 
+				mui('#pullrefresh').pullRefresh().refresh(true);
 		 		var str = '';
 		 		$.each(da.data,function(k,v){ 
 		 			str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
@@ -222,6 +223,7 @@
 		}
 		
 		
+	});
 	});
 	
 		mui.init({
