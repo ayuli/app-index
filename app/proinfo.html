@@ -45,7 +45,7 @@
 			<strong class='goods_name'></strong>
 			</td>
 			<td align="right">
-			<a class="shoucang" href="javascript:;"><span class="glyphicon glyphicon-star-empty" id='shoucang'></span></a>
+			<a class="shoucang" href="javascript:;"><span class="glyphicon  glyphicon-star-empty" id='shoucang'  ></span></a>
 			</td>
 		</tr>
      </table>
@@ -60,9 +60,8 @@
      </ul><!--guige/-->
      <div class="height2"></div>
      <div class="zhaieq">
-      <a href="javascript:;" class="zhaiCur">商品参数</a>
-      <a href="javascript:;">商品简介</a>
-      <a href="javascript:;" style="background:none;">订购列表</a>
+      <a href="javascript:;" class="zhaiCur" style="width: 50%;">商品参数</a>
+      <a href="javascript:;" style="width: 50%;">商品简介</a>
       <div class="clearfix"></div>
      </div><!--zhaieq/-->
      <div class="proinfoList proinfoList2">
@@ -73,9 +72,7 @@
      </div><!--proinfoList/-->
 	 <div class="proinfoList proinfoList1">
 	 </div><!--proinfoList/--> 
-     <div class="proinfoList proinfoList3">
-      暂无信息......
-     </div><!--proinfoList/-->
+     
      <!-- <table class="jrgwc"> -->
       <!-- <tr>
        <th>
@@ -92,7 +89,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script> 
     <script src="js/style.js"></script>
     <!--焦点轮换-->
     <!-- <script src="js/jquery.excoloSlider.js"></script>
@@ -107,6 +104,8 @@
 
 		function collection(){
 			var uid = plus.storage.getItem("uid")
+			console.log(uid); 
+			return false;
 		//var goods_id=document.getElementById('goods_id').val();
 			$.ajax({ 
 					data:{
@@ -284,22 +283,16 @@
 			data = plus.webview.currentWebview();
 			var goods_id = data.goods_id
 			var user_id=plus.storage.getItem("uid");
-		$.ajax({
-			url : 'http://39.96.199.148:8060/collection',
-			data : {goods_id:goods_id,user_id:user_id},
-			type : 'post',
-			dataType: 'json',
-			success:function(d){
-				alert(d.msg)
-			}
-		})
-			
-			
-// 			if($(this).attr('class')=='glyphicon glyphicon-star-empty'){
-// 
-// 			}else{
-// 				$(this).addClass('')
-// 			}
+			$.ajax({
+				url : 'http://39.96.199.148:8060/collection',
+				data : {goods_id:goods_id,user_id:user_id},
+				type : 'post',
+				dataType: 'json',
+				success:function(d){
+					alert(d.msg)
+				}
+			})
+			console.log($(this).parent().html());
 		})
 	});
 	</script>

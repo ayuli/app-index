@@ -12,6 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -32,10 +34,10 @@
      </div><!--head-top/-->
      
      <div class="zhaieq oredereq">
-      <a href="javascript:;" class="zhaiCur">待付款</a>
-      <a href="javascript:;">待发货</a>
-      <a href="javascript:;">已取消</a>
-      <a href="javascript:;" style="background:none;">已完成</a>
+      <a href="javascript:;" class="zhaiCur" name='tab' type='1'>待付款</a>
+      <!-- <a href="javascript:;" name='tab'>待发货</a> -->
+      <a href="javascript:;" name='tab' type='6'>已取消</a>
+      <a href="javascript:;" name='tab' style="background:none;" type='2'>已完成</a>
       <div class="clearfix"></div>
      </div><!--oredereq/-->
      
@@ -120,3 +122,51 @@
    </script>
   </body>
 </html>
+
+<script>
+	mui.plusReady(function () {
+
+	// $(function () {
+		aj(1);
+		
+		var type = '';
+		$(document).on('click','[name=tab]',function(){
+			if($(this).attr('type')==1){
+				type=1;
+			}else if($(this).attr('type')==2){
+				type=2;
+			}else if($(this).attr('type')==6){
+				type=6;
+			}
+			
+			aj(type);
+
+		})
+		
+		
+		
+		function aj(type){
+			// var user_id = 4;
+			var user_id=plus.storage.getItem("uid");
+			$.ajax({
+				url : 'http://39.96.199.148:8060/couponDel',
+				data : {user_id:user_id,type:type},
+				type : 'get',
+				dataType : 'json',
+				success : function(d){
+					var str = '';
+					$.each(d.data,function(k,v){
+						str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3个月</dd>"
+						+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt>"
+						+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>1</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>使用</a></div>"
+						+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+					})
+					$('#yhj').html(str);
+				}
+			})
+		}
+		
+		
+	})
+	
+</script>
