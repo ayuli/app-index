@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Author" contect="http://www.webqin.net">
+    <title>三级分销</title>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/response.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="maincont">
+     <header>
+      <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div class="head-mid">
+       <h1>购物车</h1>
+      </div>
+     </header>
+     <div class="head-top">
+      <img src="images/head.jpg" />
+     </div><!--head-top/-->
+     <table class="shoucangtab">
+      <tr>
+       <td width="75%"><span class="hui">购物车共有：<strong class="orange cart_count">1</strong>件商品</span></td>
+       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;">
+        <span class="glyphicon glyphicon-shopping-cart" style="font-size:2rem;color:#666;"></span>
+       </td>
+      </tr>
+     </table>
+     &nbsp;&nbsp;<tr>
+      <td width="100%" colspan="4"><span id="allbox" ><input type="checkbox"  name="1"  /> 全选</span></td>
+	  <td>&nbsp;&nbsp;&nbsp;&nbsp;<span  class='allDel'>批量删除</span></td>
+     </tr>
+	
+	   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tr>
+	    <td width="100%" colspan="4"><a href="javascript:;"  class="batchdel">&nbsp;</a></td>
+	   </tr>
+	   
+     <div class="dingdanlist">
+      <table>
+       <!-- <tr>
+        <td width="4%"><input type="checkbox" name="1" /></td>
+        <td class="dingimg" width="15%"><img src="images/20190303190131.jpg" /></td>
+        <td width="50%">
+         <h3>亨奇 摇表器 机械手表德国进口全自动</h3>
+        </td>
+        <td align="right"><input type="text" class="spinnerExample" /></td>
+       </tr>
+       <tr>
+			<th colspan="4"><strong class="orange">¥36.60</strong></th>
+       </tr> -->
+	   
+      </table>
+	  
+     </div><!--dingdanlist/-->
+     <!--dingdanlist/-->
+     <div class="height1"></div>
+     <div class="gwcpiao">
+     <table>
+      <tr>
+       <th width="10%"><a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-menu-left"></span></a></th>
+       <td width="50%">总计：<strong class="orange total">¥0.00</strong></td>
+       <td width="40%"><a href="javascript:;" class="jiesuan">去结算</a></td>
+      </tr>
+     </table>
+    </div><!--gwcpiao/-->
+    </div><!--maincont-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/style.js"></script>
+    <!--jq加减-->
+    <script src="js/jquery.spinner.js"></script>
+	<script src="js/mui.js"></script>
+   <script>
+	$('.spinnerExample').spinner({});
+	</script>
+  </body>
+</html>
+ <script src="js/jquery.spinner.js"></script>
+<script>
+	$(function(){ 
+		mui.plusReady(function () { 
+			var user_id = plus.storage.getItem("uid");
+			 
+			$.ajax({
+				url:'http://39.96.199.148:8060/cartshow/',
+				type:'get',
+				data:{user_id:user_id},
+				dataType:'json', 
+				success:function(da){
+					if(da.code==1){
+						$(".cart_count").text(da.count); 
+						var str = '';
+						var goods_num=[];
+						$.each(da.data,function(k,v){
+							goods_num.push(v.goods_num);
+							if(v.type_id!=null){
+								str += "<tr goods_num='"+v.goods_number+"' cart_id='"+v.cart_id+"'  goods_price='"+v.goods_price+"' >"+  
+								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1' /></td>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+ 
+								"<td width='50%'><h3>"+v.goods_name+"<br/><span style='color:#f00;'>"+v.attr_value+"</span></h3></td>"+
+								"<td width='18%'><span class='goods_del' >删除</span></td>"+
+								"<td align='right'>"+ 
+									"<input type='text' class='spinnerExample'  />"+
+								"</td>"+ 
+								"</tr>"+ 
+								"<tr>"+
+								"<th colspan='5'><span style='color:#f60;'></span>￥&nbsp;<strong class='orange goods_price'>"+v.total_price+"</strong></th>"+
+								"</tr>"
+							}else{
+								str += "<tr goods_num='"+v.goods_number+"' cart_id='"+v.cart_id+"'  goods_price='"+v.goods_price+"'  >"+ 
+								"<td width='4%'><input type='checkbox' class='box' cart_id='"+v.cart_id+"' name='1'/></td>"+
+								"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td>"+
+								"<td width='50%'><h3>"+v.goods_name+"</h3></td>"+
+								"<td width='18%'><span class='goods_del' >删除</span></td>"+
+								"<td align='right'>"+ 
+									"<input type='text' class='spinnerExample'  />"+
+								"</td>"+ 
+								"</tr>"+
+								"<tr>"+  
+								"<th colspan='5'><span style='color:#f60;'></span>￥&nbsp;<strong class='orange goods_price'>"+v.total_price+"</strong></th>"+
+								"</tr>"
+							}
+							
+						})
+						
+						$('.dingdanlist').html(str);
+						$('.spinnerExample').spinner({}); 
+						$.each(goods_num,function(i,v){
+							$(".value").eq(i).val(v); 
+						});
+						$(".spinnerExample").blur(function(){
+							var goods_num=$(this).parents('tr').attr('goods_num');
+							var price=$(this).parents('tr').attr('goods_price');
+							var cart_id=$(this).parents('tr').attr('cart_id');
+							var num=parseInt($(this).val());
+							
+							total();
+							
+							if(isNaN(num)){
+								num=1
+							}
+							if(num>goods_num){
+								num=goods_num
+							}
+							
+							price=Number(price)*Number(num);
+							price=price.toFixed(2); 
+							$(this).parents('tr').next().find('.goods_price').text(price);
+							$(this).val(num);
+							total();
+							var data={};
+							data.cart_id=cart_id;
+							data.goods_num=num;
+							data.total_price=price;
+							$.get("http://39.96.199.148:8060/cartUpdate",data,function(res){
+								alert(res.msg);
+							},'json'); 
+						});
+						
+						$(".box").click(function(){
+							total();
+						});
+						
+						$(".goods_del").click(function(){
+							var cart_id=$(this).parents('tr').attr('cart_id')+',';
+							cartDel(cart_id);  
+						}); 
+						
+					}else{
+						$(".cart_count").text(0);
+						$('.dingdanlist').html(da.msg);  
+					}
+					
+			
+				},
+			});
+			
+			
+			//总价
+			function total(){
+			    var total=0;
+			    var num=0;
+			    //获取所有选中复选框
+			    $('.box:checked').each(function (index) {
+					var subtotal=$(this).parents('tr').next().find('.goods_price').text();
+					subtotal=Number(subtotal).toFixed(2);//总价
+					total+=Number(subtotal);
+			    })   
+				total=total.toFixed(2);
+			    $(".total").text('￥'+total);
+			}; 
+			
+			 //点击全选
+			$('#allbox').click(function(){
+				var _this=$(this).find('[name=1]');
+				
+				var status=_this.prop('checked');
+				
+				$('.box').prop('checked',status);
+							  
+				total();
+			 });
+			 
+			 
+			//批量删除
+			$(".allDel").click(function(){
+				var cart_id="";
+				$.each($(".box:checked"),function(i,v){
+					cart_id+=$(this).attr('cart_id')+',';
+				});
+				if(cart_id==''){
+					alert('请选择要删除的商品！');
+					return false;
+				}
+				cartDel(cart_id);
+			});
+			
+			
+			function cartDel(cart_id){
+				var data={};
+				data.cart_id=cart_id;
+				$.post("http://39.96.199.148:8060/indexCartDel",data,function(res){
+					alert(res.msg); 
+					if(res.code==1){
+						location.reload();
+					}
+				},'json');
+			}
+			
+			
+			$(".jiesuan").click(function(){  
+				var cart_id="";
+				$.each($(".box:checked"),function(i,v){
+					cart_id+=$(this).attr('cart_id')+',';
+				});
+				if(cart_id==''){
+					alert('请选择商品！');
+					return false;
+				}
+				mui.openWindow({
+					url:'pay.html', 
+					createNew:true,
+					extras:{
+						cart_id:cart_id
+					}
+				});
+			});
+		}); 
+	});
+</script>
+ 

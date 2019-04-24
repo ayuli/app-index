@@ -25,7 +25,7 @@
       textField.after(increaseButton)
 
       function changeValue(delta,goods_num,goods_price,obj) {  
-				// var goods_num=0;
+				// var goods_num=0;   
 				var num = getValue() + delta;
 				if(num>=goods_num){
 					return false;

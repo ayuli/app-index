@@ -10,7 +10,7 @@ $(function(){
 		})	
 	$(".glyphicon-remove").click(function(){
 		$(".addYinhang").fadeOut();
-		})	
+		})	 
 	$(".proinfoList:first").fadeIn(); 
 	$(".zhaieq a").click(function(){
 		$(this).addClass("zhaiCur").siblings("a").removeClass("zhaiCur");
