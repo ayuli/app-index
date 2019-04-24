@@ -33,12 +33,12 @@
       <img src="images/20190303190131.jpg" />
      </div><!--sliderA/-->
      <table class="jia-len">
-      <tr>
+      <tr class='goods_num' >
+
        <th><span style='color: #f60;'>￥</span><strong class="orange">299</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商品数量：<span class="goods_number">35</span></th>
        <td>
         <input type="text" class="spinnerExample"  />
        </td>
-	   <input type="hidden" class='goods_num'>
       </tr>
 		<tr>
 			<td>
@@ -95,12 +95,12 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/style.js"></script>
     <!--焦点轮换-->
-    <script src="js/jquery.excoloSlider.js"></script>
+    <!-- <script src="js/jquery.excoloSlider.js"></script>
     <script>
 		$(function () {
-		 $("#sliderA").excoloSlider();
+			$("#sliderA").excoloSlider();
 		});
-	</script>
+	</script> -->
      
 
    <script>
@@ -132,7 +132,6 @@
 </html>
 	<script type="text/javascript">
 	$(function(){
-		$('.spinnerExample').spinner({});
 		mui.plusReady(function () { 
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
@@ -168,8 +167,8 @@
 				$(".orange").html(res.goodsInfo.goods_price);
 				$(".goods_name").html(res.goodsInfo.goods_name);
 				$(".goods_number").text(res.goodsInfo.goods_number);
-				$(".goods_num").val(res.goodsInfo.goods_number);
-				// console.log(res.goodsInfo.goods_img) 
+				$(".goods_num").attr('goods_num',res.goodsInfo.goods_number);  
+				// console.log(res.goodsInfo.goods_img)  
 				if(res.goodsInfo.goods_img!=null){
 					var str="<img src='http://39.96.199.148:8060/"+res.goodsInfo.goods_img+"' style='width: 640px; height: 250px;'>"; 
 					$("#sliderA").html(str);
@@ -214,6 +213,7 @@
 					$(".guige").html(str);
 				}
 				
+				$('.spinnerExample').spinner({});
 				
 				$(".spinnerExample").blur(function(){
 					var num=parseInt($(this).val());

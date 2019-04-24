@@ -65,7 +65,7 @@
 		mui.plusReady(function() {
 			var user_id=plus.storage.getItem("user_id");
 			mui.ajax('http://47.107.93.29:8080/cartShow',{
-				data:{'id':user_id},
+				data:{'id':user_id}, 
 				dataType:'json',//服务器返回json格式数据
 				type:'post',//HTTP请求类型
 				timeout:10000,//超时时间设置为10秒；
@@ -130,24 +130,7 @@
 					}
 				});
 			});
-			//总价
-			function total(){
-			    var total=0;
-			    var num=0;
-			    //获取所有选中复选框
-			    $('.box').each(function (index) {
-					if($(this).prop('checked')==true){
-					var subtotal=$(this).parents('tr').siblings().find("strong").text();
-					subtotal=parseInt(subtotal.substr(0));//总价
-					total+=subtotal;
-					}
-			    })
-			    $(".total").text('￥'+total);
-			};
-			//点击复选框
-			$(document).on('click','.box',function(){
-				total();
-			});
+			
 			//点击 +-
 			$(document).on('click','.change_num',function(){
 					 var _this=$(this);
@@ -189,14 +172,13 @@
 					_this.parents('tr').siblings('tr').find('strong').text(parseInt(price*buy_number));
 					_this.parents('tr').find('.box').prop('checked',true);
 					total();
-					mui.ajax('http://47.107.93.29:8080/cartUpdate',{
+					mui.ajax('http://47.107.93.29:8080/cartUpdate',{  
 						data:{'buy_number':buy_number,'user_id':user_id,'id':goods_id},
 						dataType:'json',//服务器返回json格式数据
 						type:'post',//HTTP请求类型
 						timeout:10000,//超时时间设置为10秒；
 						headers:{'Content-Type':'application/json'},
 						success:function(data){
-							
 								$('.num').empty().html(_str);
 							},
 					});
@@ -294,7 +276,7 @@
 				});
 			});
 			//点击去结算
-			$(document).on('click','.jiesuan',function(){
+			$(document).on('click','.jiesuan',function(){  
 				var goods_id='';
 				var user_id=plus.storage.getItem("user_id");
 				var order_amount=$('.total').text();

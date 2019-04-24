@@ -83,11 +83,18 @@
 				
 			</td>
 	   </tr>
-       <!-- <tr>
-        <td class="dingimg" width="75%" colspan="2">优惠券</td>
-        <td align="right"><span class="hui">无</span></td>
-       </tr>
-       <tr><td colspan="3" style="height:10px; background:#efefef;padding:0;"></td></tr> -->
+       <tr>
+        <td class="dingimg" width="100%" colspan="3">
+			<ul class="mui-table-view" style='background-color: #f2f2f2;'>  
+				<li class="mui-table-view-cell mui-collapse mui-active couponInfo">
+					<a class="mui-navigate-right" href="#" >选择优惠券</a> 
+						
+				</li> 
+				
+			</ul> 
+		</td>
+       </tr> 
+       <tr><td colspan="3" style="height:10px; background:#efefef;padding:0;"></td></tr>
        <!-- <tr>
         <td class="dingimg" width="75%" colspan="2">是否需要开发票</td>
         <td align="right"><a href="javascript:;" class="orange">是</a> &nbsp; <a href="javascript:;">否</a></td>
@@ -135,7 +142,7 @@
        
        <tr>
         <td class="dingimg" width="75%" colspan="2">抵扣金额</td>
-        <td align="right"><strong class="green">¥0.00</strong></td>
+        <td align="right"><span style="color: #7ABD54;">¥</span><strong class="green zhekou">0.00</strong></td>
        </tr>
        
       </table>
@@ -148,7 +155,7 @@
     <div class="gwcpiao">
      <table>
       <tr>
-       <th width="10%"><a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-menu-left"></span></a></th>
+       <th width="10%"><a href="javascript:;"><span class="glyphicon glyphicon-menu-left"></span></a></th>
        <td width="50%">总计：<span style='color: #f60;'>¥</span><strong class="orange foot_price">69.88</strong></td>
        <td width="40%"><a href="javascript:;" class="jiesuan">提交订单</a></td>
       </tr>
@@ -172,9 +179,11 @@
 	$(function(){
 		mui.plusReady(function () {
 			var foot_price=0;
+			var total_price=0;
 			data = plus.webview.currentWebview();
 			var cart_id = data.cart_id
 			var user_id = plus.storage.getItem("uid"); 
+			//获取用户地址
  			var url="http://39.96.199.148:8060/addressGet"; 
 			$.get(url,{user_id:user_id},function(res){  
 				if(res.code==0){     
@@ -191,10 +200,17 @@
 				}else{
 					var str="<div class='mui-collapse-content'><p>";
 					$.each(res.data,function(i,v){
-						str+="<div class='mui-input-row mui-radio'>"+  
-								"<label>"+v.addressInfo+" "+v.userInfo+"</label>"+
-								"<input name='address_id' @if("+v.is_address+" == 1) checked @endif   type='radio'  value='"+v.id+"'>"+
-							"</div>";
+						if(v.is_address==1){
+							str+="<div class='mui-input-row mui-radio'>"+  
+									"<label>"+v.addressInfo+" "+v.userInfo+"</label>"+
+									"<input name='address_id' checked    type='radio'  value='"+v.id+"'>"+
+								"</div>";
+						}else{ 
+							str+="<div class='mui-input-row mui-radio'>"+  
+									"<label>"+v.addressInfo+" "+v.userInfo+"</label>"+
+									"<input name='address_id'     type='radio'  value='"+v.id+"'>"+
+								"</div>";
+						}
 					})
 					str+="</p></div>";
 					$(".address_info").append(str);
@@ -202,11 +218,10 @@
 				
 				
 			},'json');  
-			
+			//获取用户选择的商品信息
 			$.post("http://39.96.199.148:8060/cartshow",{cart_id:cart_id,user_id:user_id},function(res){
 				if(res.code==1){ 
 					var str="";  
-					var total_price=0;
 					$.each(res.data,function(i,v){
 						total_price+=Number(v.goods_price);  
 						if(v.type_id!=null){
@@ -234,13 +249,73 @@
 						}
 						
 					});
-					total_price=total_price.toFixed(2);  
+					total_price=total_price.toFixed(2);
 					$(".goods_list").parent().after(str);
 					$(".total_price").text(total_price);
 					$(".foot_price").text(total_price);
 					foot_price=total_price;
 				}
 			},'json');
+				
+			$.get('http://39.96.199.148:8060/getUserCoupon',{user_id:user_id},function(res){
+				// alert(res.code);
+				if(res.code==1){    
+					var str="<div class='mui-collapse-content'><p>";
+					$.each(res.data,function(i,v){
+						if(v.coupon_type==2){
+							str+="<div class='mui-input-row mui-radio'>"+  
+									"<label>"+v.coupon_name+"</label>"+
+									"<input name='uc_id' class='coupon_click'  type='radio' coupon_type='"+v.coupon_type+"' price='"+v.price+"'   value='"+v.uc_id+"'>"+
+								"</div>";
+						}else if(v.coupon_type==1){
+							str+="<div class='mui-input-row mui-radio'>"+  
+									"<label>"+v.coupon_name+"</label>"+
+									"<input name='uc_id' class='coupon_click' type='radio' coupon_type='"+v.coupon_type+"' max='"+v.max+"'  price='"+v.price+"' value='"+v.uc_id+"'>"+
+								"</div>";
+						}else{
+							str+="<div class='mui-input-row mui-radio'>"+  
+									"<label>"+v.coupon_name+"</label>"+
+									"<input name='uc_id' class='coupon_click' type='radio' coupon_type='"+v.coupon_type+"' discount='"+v.discount+"' value='"+v.uc_id+"'>"+
+								"</div>";
+						}
+					});
+					str+="</p></div>";
+					$(".couponInfo").append(str);
+					$(".coupon_click").click(function(){
+						var _this=$(this);
+						var coupon_type=_this.attr('coupon_type')
+						if(coupon_type==1){
+							var max=parseInt(_this.attr('max'));     
+							if(max>total_price){
+								alert('不满足使用条件！');
+								_this.prop('checked',false);
+							}else{
+								var price=parseInt(_this.attr('price')).toFixed(2);
+								var foot_price=total_price-price;
+								$(".zhekou").text(price);
+								$(".foot_price").text(foot_price.toFixed(2));
+							}
+						}else if(coupon_type==2){
+							var price=Number(_this.attr('price')).toFixed(2); 
+							$(".zhekou").text(price);
+							foot_price=Number(total_price)-Number(price);
+							foot_price=foot_price.toFixed(2)
+							$(".foot_price").text(foot_price);
+						}else{
+							var discount=Number(_this.attr('discount')).toFixed(2);
+							console.log(total_price);
+							foot_price=total_price*discount/10; 
+							$(".foot_price").text(foot_price.toFixed(2));
+							var price=total_price-foot_price;
+							$(".zhekou").text(price.toFixed(2));  
+						} 
+					});
+				}else{
+					
+				}
+			},'json');
+
+
 
 			$(".jiesuan").click(function(){
 				var pay_way=$("[name='pay_way']:checked").val(); 
@@ -258,7 +333,7 @@
 					if(res.code==1){ 
 						mui.openWindow({
 							url:'success.html', 
-							createNew:true,
+							createNew:true, 
 							extras:{ 
 								order_id:res.order_id
 							}
@@ -266,6 +341,7 @@
 					}
 				},'json');
 			});
+			
 		});
 	})
 </script>

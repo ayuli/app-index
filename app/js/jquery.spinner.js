@@ -1,4 +1,5 @@
 ;(function ($) {
+	var goods_num="";
   $.fn.spinner = function (opts) {
     return this.each(function () {
       var defaults = {value:1, min:1}
@@ -15,23 +16,37 @@
         })
       textField.wrap(container)
 
-      var increaseButton = $('<button class="increase">+</button>').click(function () { changeValue(1) })
-      var decreaseButton = $('<button class="decrease">-</button>').click(function () { changeValue(-1) })
+      var increaseButton = $('<button class="increase">+</button>').click(function () { var goods_price=Number($(this).parent().parent().parent().attr('goods_price'));  var goods_num=Number($(this).parent().parent().parent().attr('goods_num')); changeValue(1,goods_num,goods_price,$(this)) })
+      var decreaseButton = $('<button class="decrease">-</button>').click(function () { var goods_price=Number($(this).parent().parent().parent().attr('goods_price'));  var goods_num=Number($(this).parent().parent().parent().attr('goods_num')); changeValue(-1,goods_num,goods_price,$(this)) })
 
       validate(textField)
       container.data('lastValidValue', options.value)
       textField.before(decreaseButton)
       textField.after(increaseButton)
 
-      function changeValue(delta) {
-		var goods_num = $(".goods_num").val();
-		
-		var num = getValue() + delta;
-		if(num>=goods_num){
-			return false;
-		}
-        textField.val(num)
-        validateAndTrigger(textField)
+      function changeValue(delta,goods_num,goods_price,obj) {  
+				// var goods_num=0;
+				var num = getValue() + delta;
+				if(num>=goods_num){
+					return false;
+				} 
+				textField.val(num)
+				validateAndTrigger(textField)
+				if(!isNaN(goods_price)){
+					var price=Number(goods_price).toFixed(2);
+					price=(price*num).toFixed(2);
+					$(obj).parents('tr').next().find('.goods_price').text(price);
+					var cart_id=$(obj).parents('tr').attr('cart_id');
+					total();
+					var data={};
+					data.cart_id=cart_id;
+					data.goods_num=num;
+					data.total_price=price;
+					$.get("http://39.96.199.148:8060/cartUpdate",data,function(res){
+						alert(res.msg);
+					},'json');
+				}
+				
       }
 
       function validateAndTrigger(field) {
@@ -68,4 +83,19 @@
       }
     })
   }
+	
+	//总价
+	function total(){
+	    var total=0;
+	    var num=0;
+	    //获取所有选中复选框
+	    $('.box:checked').each(function (index) {
+			var subtotal=$(this).parents('tr').next().find('.goods_price').text();
+			subtotal=Number(subtotal).toFixed(2);//总价
+			total+=Number(subtotal);
+	    })  
+		total=total.toFixed(2)
+	    $(".total").text('￥'+total);
+	}; 
+	
 })(jQuery)
