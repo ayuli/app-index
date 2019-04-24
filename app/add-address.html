@@ -110,14 +110,27 @@ mui.plusReady(function () {
 			}else{
 				var str = "<table style='border-top:none;'>"
 				$.each(res.data,function(k,v){  
-					str +=
-					"<tr id='"+v.id+"'>"
-					 +"<td width='60%' class='is_address'>"
-					  +"<h3 id='name'>"+v.userInfo+"</h3>"  
-					  +"<time id='address'>"+v.addressInfo+"</time>"
-					 +"</td>"
-					 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
-					 +"</tr>";
+					if(v.is_address==1){
+						str +=
+						"<tr id='"+v.id+"'>"
+						 +"<td width='60%' >"
+						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+						  +"<time id='address'>"+v.addressInfo+"</time>"
+						 +"</td>"
+						 +"<td style='color:green;' class='is_address' >默认地址</td>"
+						 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"</tr>";
+					}else{
+						str +=
+						"<tr id='"+v.id+"'>"
+						 +"<td width='60%' class='is_address'>"
+						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+						  +"<time id='address'>"+v.addressInfo+"</time>"
+						 +"</td>"
+						 +"<td style='color:red;' width='20%;'>设为默认</td>"
+						 +"<td align='right'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"</tr>";
+					}
 				})
 				str+="</table>";
 				$('#is_address').html(str);
@@ -144,8 +157,20 @@ mui.plusReady(function () {
  					}); 
  				});
 				$(".is_address").click(function(){
+					var _this=$(this);
 					var id=$(this).parents('tr').attr('id');
-					alert(id);
+					var data={};
+					data.id=id;
+					data.user_id=user_id;
+					$.get("http://39.96.199.148:8060/is_address",data,function(res){
+						alert(111);
+						if(res.code==0){
+							alert(res.msg);
+						}else{
+							_this.text('默认地址');
+							_this.css('color','green');
+						}
+					},'json');
 				});
 			}
 		},
