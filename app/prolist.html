@@ -32,7 +32,7 @@
      <ul class="pro-select">
       <li class="pro-selCur" name="label" type2='is_del'><a href="javascript:;">全部</a></li>
       <li name="label"  type2='is_new'><a href="javascript:;" >新品</a></li>
-      <li name="label" class='price' type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
+      <li name="label" price='price'   type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
      </ul><!--pro-select/-->
 	 
 	 
@@ -137,9 +137,9 @@
 		$('[name=label]').click(function(){
 			page=1;
 			_this = $(this);
+			var xxx=_this.attr('price');
 			
 			var type2 = _this.attr('type2')
-				
 			
 			if(type2=='prices'){
 				$('#arrows').text('↑') 
@@ -149,13 +149,16 @@
 				$('#arrows').text('↓')
 			}
 			
-			if(type2!='search'){ 
-				$("#search").val(" ");
+			if(type2!='search'){  
+				if(xxx!='price'){
+					$("#search").val(" ");
+				}
 				_this.siblings().removeClass();
-				_this.addClass('pro-selCur')
+				_this.addClass('pro-selCur') 
 			}else{
 				var type2 = $(".pro-selCur").attr('type2')
 			}
+			
 			var search = $("[name='search']").val();
 			
 			if($('.price').hasClass('pro-selCur')){
@@ -170,7 +173,7 @@
 		})
 		
 		function getGoodsList(type2,search){
-			
+			console.log(search); 
 			$.ajax({
 				url:'http://39.96.199.148:8060/indexgoods/',
 				type:'get',
@@ -179,18 +182,19 @@
 				success:function(da){   
 					var str = '';
 					if(da.code==0){
-					$.each(da.data,function(k,v){
-						str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
-					})
+						$.each(da.data,function(k,v){
+							str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>"+v.goods_price+"</strong> <span>¥599</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+						});
+						$(".mui-pull-caption").show;
+
 					}else{
 						str +="<div style='text-align:center;'>"
 							  +"<img src='images/nosc.png' style='text-align:center;'>"
 							  +"<h4>没有找的您需要的商品....</h4>"
 							  +"<br>"
 							  +"</div>"
-							 +"</div>"
-							 $(".mui-pull-caption").remove();
-
+							 +"</div>";
+							 $("mui-pull-caption").hidden;
 					}
 					$('.prolist').html(str);	
 					page++;
@@ -213,13 +217,13 @@
 	
 		mui.init({
 			
-		    pullRefresh : { 
+		    pullRefresh : {    
 		        container:pullrefresh,//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
 		        up : {
 		            height:50,//可选.默认50.触发上拉加载拖动距离
 		            auto:false,//可选,默认false.自动上拉加载一次
 		            contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
-		            contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+		            contentnomore:'没有更多数据了...',//可选，请求完毕若没有更多数据时显示的提醒内容；
 		            callback :pulluploading //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
 		        } 
 		    }
