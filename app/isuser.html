@@ -7,7 +7,12 @@
     <meta name="Author" contect="http://www.webqin.net">
     <title>三级分销</title>
 	<script src="js/mui.min.js"></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.picker.min.js"></script>
+	<script src="js/mui.poppicker.js"></script>
 	<link href="css/mui.min.css" rel="stylesheet"/>
+	<link href="css/mui.picker.all.css" rel="stylesheet"/>
+	<link href="css/mui.poppicker.css" rel="stylesheet"/>
     <link rel="shortcut icon" href="images/favicon.ico" />
     
     <!-- Bootstrap -->
@@ -29,17 +34,18 @@
        <h1>我的资料</h1>
       </div>
      </header>
-		<a href="touxiang.html"><img src="images/d5.png" alt=""></a>
+	 <br>
+	 <div id="" style="text-align:center;">
+	 	<a href="touxiang.html"><img style="width:150px;height:150px;" src="images/f11f3a292df5e0fe532f77685f6034a85edf72a0 (1).jpg" alt=""></a>
+	 </div>
+		<br>
       <div class="lrBox">
-       <div class="lrList"><input type="text" placeholder="昵称" id="consignee_name"/></div>
-       <div class="lrList"><input type="text" placeholder="详细地址" id="detailed_address"/></div>
-       <div class="mui-input-row mui-checkbox">
-       		  <div class="lrList2"><input type="text"  readonly="" placeholder="设为默认地址" /> <button id="is_address" value="1">设为默认</button></div>
-       		</div>
-      </div><!--lrBox/-->
+        <div class="lrList"><input type="text" placeholder="昵称" id="nickname"/></div>
+		<div class="lrList" for="dateSelect"><input type="text" readonly="" placeholder="年龄" id="dateSelect"/></div>
+		<div class="lrList" id="sex"><input type="rdio" readonly="" placeholder="性别"  id="issex"/></div>
+		
       <div class="lrSub">
        <input type="button" style="background:#00CC00" id="btn" value="保存" />
-	   
       </div>
      
      <div class="height1"></div>
@@ -84,127 +90,91 @@
   </body>
 </html>
 <script type="text/javascript">
-mui.plusReady(function () {
-	data = plus.webview.currentWebview();
-
-	var user_id = plus.storage.getItem("uid");
-	var cart_id = data.cart_id;
-	console.log(cart_id); 
-  $('#btn').click(function(){
- 		if(isaddress){
- 			isaddress = 1;
- 		}else{
- 			isaddress = 0;
- 		}
- 		mui.ajax('http://39.96.199.148:8060/address',{
- 		data:{ 
- 			user_id:user_id, 
- 			consignee_name:$('#consignee_name').val(),
- 			detailed_address:$('#detailed_address').val(),
- 			province:$('#province').val(),
- 			city:$('#city').val(),
- 			district:$('#area').val(),
- 			consignee_tel:$('#consignee_tel').val(),
- 			is_address:isaddress
- 		},
- 		dataType:'json',//服务器返回json格式数据
- 		type:'post',//HTTP请求类型
- 		timeout:10000,//超时时间设置为10秒；
- 		success:function(data){
-			console.log(data);
- 			if(data==1){
-				if(cart_id!=''){
-					mui.openWindow({
-						url:'pay.html', 
-						createNew:true,
-						extras:{ 
-							cart_id:cart_id
-						}
-					});
+	mui.plusReady(function () {
+		var uid = plus.storage.getItem("uid");
+	    mui.ajax('http://39.96.199.148:8060/showuserinfo',{
+	    	data:{
+	    		uid:uid
+	    	},
+	    	dataType:'json',//服务器返回json格式数据
+	    	type:'get',//HTTP请求类型
+	    	timeout:10000,//超时时间设置为10秒；
+	    	success:function(data){
+				$('#nickname').val(data.nickname);
+				$('#dateSelect').val(data.age);
+				if(data.sex==0){
+					$('#issex').val('保密')
+				}else if(data.sex==1){
+					$('#issex').val('男')
 				}else{
-					mui.openWindow({
-						url:'add-address.html', 
-						createNew:true,
-						extras:{ 
-						}
-					});
+					$('#issex').val('女')
 				}
-			}else{
-				alert('添加失败！');
-			}
- 		},
- 		error:function(xhr,type,errorThrown){
- 			
- 		}
- 	}); 
- })
-		mui.ajax('http://39.96.199.148:8060/getregion',{
-		data:{
-		},
-		dataType:'json',//服务器返回json格式数据
-		type:'get',//HTTP请求类型
-		timeout:10000,//超时时间设置为10秒；
-		success:function(data){
-			var str = "<option>省份</option>";
-			$.each(data,function(k,v){
-				str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-			})
-			$('#province').html(str);
-		},
-		error:function(xhr,type,errorThrown){
-		}
-	});
-	$('#province').change(function(){
-			var pid = $('#province').val();
-				mui.ajax('http://39.96.199.148:8060/getregion',{
-			data:{
-				pid:pid
-			},
-			dataType:'json',//服务器返回json格式数据
-			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				var str = "<option>城市</option>";
-				$.each(data,function(k,v){
-					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-				})
-				$('#city').html(str);
-			},
-			error:function(xhr,type,errorThrown){
-			}
-		});
+	    	}
+	    });
 	})
-		$('#city').change(function(){
-			var pid = $('#city').val();
-				mui.ajax('http://39.96.199.148:8060/getregion',{
-			data:{
-				pid:pid
-			},
-			dataType:'json',//服务器返回json格式数据
-			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				var str = "<option>区县</option>";
-				$.each(data,function(k,v){
-					str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-				})
-				$('#area').html(str);
-			},
-			error:function(xhr,type,errorThrown){
-			}
-		});
-	})
-})
-var isaddress = 0
-		$('#is_address').click(function(){
-			// console.log(isaddress)
-			if(isaddress==0){
-				isaddress=1
-				mui.toast('已设为默认')
-			}else{
-				isaddress=0
-				mui.toast('已取消默认')
-		}		
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#dateSelect").click(function () {
+            var dtPicker = new mui.DtPicker({
+				type: 'date' ,
+				beginYear:1898, //设置开始日期
+                endDate: new Date //设置结束日期
+				});
+			
+            /*参数：'datetime'-完整日期视图(年月日时分)
+                    'date'--年视图(年月日)
+                    'time' --时间视图(时分)
+                    'month'--月视图(年月)
+                    'hour'--时视图(年月日时)
+            */      
+            dtPicker.show(function (selectItems) {
+               var y = selectItems.y.text;  //获取选择的年
+               var m = selectItems.m.text;  //获取选择的月
+               var d = selectItems.d.text;  //获取选择的日
+               var date = y + "-" + m + "-" + d ; 
+               $("#dateSelect").val(date); 
+            })
+        });
+		$("#sex").click(function(){
+			 var picker = new mui.PopPicker();
+			 picker.setData([{value:'0',text:'保密'},{value:'1',text:'男'},{value:'2',text:'女'}]);
+			 picker.show(function (selectItems) {
+				$("#issex").val(selectItems[0].text);
+				// $("#issex").val(selectItems[0].value);
+  })
 		})
-		 
-</script>	
+    })
+</script>
+<script type="text/javascript">
+	$('#btn').click(function(){
+		var uid = plus.storage.getItem("uid");
+		var nickname =$('#nickname').val();
+		var age =$('#dateSelect').val();
+		var sex = $('#issex').val();
+		
+ 		mui.ajax('http://39.96.199.148:8060/adduserinfo',{
+			data:{
+				uid:uid,
+				nickname:nickname,
+				age:age,
+				sex:sex
+			},
+			
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				if(data==1){
+					mui.toast('修改成功')
+					location.reload()
+				}else{
+					mui.toast('未做修改')
+				}
+			},
+			error:function(xhr,type,errorThrown){
+				alert(2)
+			}
+		});
+	})
+</script>
+	
