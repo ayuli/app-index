@@ -6,7 +6,34 @@
 <title>头像</title>
 
 <script src="js/mavatar.js"></script>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Author" contect="http://www.webqin.net">
+    <title>三级分销</title>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.picker.js"></script>
+	<script src="js/mui.picker.min.js"></script>
+	<script src="js/mui.poppicker.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet"/>
+	<link href="css/mui.picker.all.css" rel="stylesheet"/>
+	<link href="css/mui.poppicker.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="http://39.96.199.148:8060/css/css.css" />
+    <link href="css/response.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="maincont">
+     <header>
+      <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div class="head-mid">
+       <h1>头像上传</h1>
+      </div>
+     </header>
 <style>
 .button {
   outline: 0;
@@ -39,58 +66,40 @@
   background-color: #2db7f5;
   border-color: #2db7f5;
 }
-.avatarbox {width: 200px; margin: 0 auto}
-#avatar{width: 200px;}
-.botton-box{width: 140px; margin: 0 auto; margin-top: 20px}
+.file{
+	width: 160px;
+    height: 180px;
+    position: relative;
+    top: -180px;
+    left: 45px;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+}
+.bbDImg{
+	width: 160px;
+    height: 180px;
+    background-color: #c6c6c6;
+    text-align: center;
+    line-height: 180px;
+    font-size: 55px;
+    color: #fff;
+    margin-left: 100px;
+    /* margin-top: -16px; */
+}
 </style>
 
 </head>
+                    <div class="bbDd"  >
+
+                        <div class="bbDImg" >+</div>
+                        <input type="file" style="cursor:pointer" class="file" id="file" name="file"/>
+						<button onClick="clip()" class="button button-info" style="float: left">上传</button>
+						<button onClick="reset()" class="button" style="float: right">重置</button>
+                    </div>
 
 <body style="background-color:#fafafa">
-
-<div class="avatarbox" >
-  <div id="avatar"></div>
-  <div class="botton-box">
-    <button onClick="clip()" class="button button-info" style="float: left">裁剪</button>
-    <button onClick="reset()" class="button" style="float: right">重置</button>
-  </div>
-</div>
-
 <script>
-  var avatar = new Mavatar({el: '#avatar',backgroundColor: '#fff', fileOnchange: function (e) {
-      console.log(e)
-    }});
-  function clip() {
-    avatar.imageClipper(function (data) {
-      alert('裁剪成功，生成的图片已覆盖在上传框内');
-      console.log(data);
-      //  将图片上传至后台
-      avatar.upload({
-        url: 'http://localhost:3080/profile',
-        name: 'avatar',
-        data: {userName: 'hzy0913', info: 'someInfo'},
-        success: function (data) {
-          console.log(data)
-        },
-        error: function (error) {
-          console.log(error)
-        },
-      });
-    })
-  }
-  function reset() {
-    avatar.resetImage();
-  }
-  //获取上传前信息
-  function getInfo() {
-    var fileInfo = avatar.getfileInfo();
-    console.log(fileInfo);
-  }
-  //获取base64
-  function getdata() {
-    var urldata = avatar.getDataUrl();
-    console.log(urldata);
-  }
+
 </script>
 </body>
 </html>
