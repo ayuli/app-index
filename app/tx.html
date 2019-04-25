@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet"/>
+		
+	</head>
+	<body>
+		<img id="my_img_id" width="280px" height="280px" class="my_img_class" src="images/f11f3a292df5e0fe532f77685f6034a85edf72a0%20(1).jpg"/>
+		<button type="button">1111</button>
+	</body>
+</html>
+<script type="text/javascript">
+var img_my = document.getElementById('my_img_id');
+var imgArray=''
+//点击添加图片 
+img_my.addEventListener('tap', function() {
+    
+    //打开相册（这里之前很多小伙伴问我，为什么打不开，因为我用的是H5+的方式，不适用于纯web页面）
+    plus.gallery.pick(
+        function(path) {
+            img_my.src = path; //设置img的路径
+
+            //把图片base64编码  注意：这里必须在onload事件里执行！这给我坑的不轻
+            img_my.onload = function() {
+                var data = getBase64Image(img_my);    //base64编码
+				console.log(data)
+                var newImgbase = data.split(",")[1];  //通过逗号分割到新的编码 
+                imgArray.push=newImgbase;            //放到imgArray数组里面
+                img_my.off='load';                   //关闭加载
+                }
+            },
+            function(e) {
+                mui.toast('取消选择');
+                });
+            });
+
+//base64编码  
+function getBase64Image(img) {
+    var canvas = document.createElement("canvas");   //创建canvas DOM元素，并设置其宽高和图片一样
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height); //使用画布画图
+    var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();  //动态截取图片的格式
+    var dataURL = canvas.toDataURL("image/" + ext);  //返回的是一串Base64编码的URL并指定格式
+    return dataURL;
+}
+</script>
