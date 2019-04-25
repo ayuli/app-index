@@ -193,7 +193,31 @@
      
      <div class="height1"></div>
      <div class="footNav">  
-       
+      <dl>
+       <a href="index.html">
+        <dt><span class="glyphicon glyphicon-home"></span></dt>
+        <dd>微店</dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="javascript:;" class='tiao'>
+        <dt><span class="glyphicon glyphicon-th"></span></dt>
+        <dd>所有商品</dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="car.html">
+        <dt><span class="glyphicon glyphicon-shopping-cart"></span></dt>
+        <dd>购物车 </dd>
+       </a>
+      </dl>
+      <dl>
+       <a href="user.html">
+        <dt><span class="glyphicon glyphicon-user"></span></dt>
+        <dd>我的</dd>
+       </a>
+      </dl>
+      <div class="clearfix"></div>
      </div><!--footNav/-->
     </div><!--maincont-->
 	
@@ -224,6 +248,15 @@
 			});
 		 });
 			
+			$(".tiao").click(function(){
+				mui.openWindow({
+					url:'prolist.html', 
+					createNew:true,
+					extras:{
+						
+					}
+				});
+			});
 			
 		$.ajax({
 			url:'http://39.96.199.148:8060/indexgoods/',
@@ -358,13 +391,7 @@
 	})
 		
 	</script> 
+	 
 	
   </body>
 </html>
-<script>   
-	$(function(){
-		document.addEventListener('plusready',function () {  
-			$(".footNav").load("footer.html");
-		},false);  
-	}); 
-</script>

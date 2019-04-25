@@ -21,20 +21,27 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+  
   <body>
     <div class="maincont">
      <header>
       <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
-      <div class="head-mid">
-       <form action="#" class="prosearch"><input type="text" placeholder="请输入您要搜索的商品" style='border: 0px; width:225px;background:#FFFFFF;border-radius:15px;' name='search' id='search'/>&nbsp;&nbsp;<input type="button" name="label" type2='search'  value="搜索" style='border:0px; width:47px; background:#FF701E; color:#FFFFFF;border-radius:13px;' id='search-btn'/></form>
+      <div class="head-mid" width='100%'>
+       <form action="#" class="prosearch"><input type="text" placeholder="请输入您要搜索的商品" style='width:230px;background:#FFFFFF;border-radius:15px;' name='search' id='search'/><input type="button" name="label" type2='search'  value="搜索" style='border:0px; width:44px; background:#FF701E; color:#FFFFFF;border-radius:13px;margin-left:7px;' id='search-btn'/></form>
       </div>
-     </header>
+     </header> 
+	<img src="images/5-120601155U7_02.gif" alt="返回顶部" onclick='pageScroll()' style='position: fixed;left:332px;top:540px;'> 
      <ul class="pro-select">
       <li class="pro-selCur" name="label" type2='is_del'><a href="javascript:;">全部</a></li>
       <li name="label"  type2='is_new'><a href="javascript:;" >新品</a></li>
       <li name="label" price='price'   type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
      </ul><!--pro-select/-->
+	 
+	 
+	 
 	    <div class="mui-scroll">
+			
+			
      <div class="prolist">
 
 <!--      <dl>
@@ -48,9 +55,10 @@
       </dl>
 	  -->
 	 
+	 </div>
 	 
 	 </div>
-	 </div>
+	 
 	 	 <div id="pullrefresh" class="mui-scroll-wrapper"></div>
      <div class="height1"></div>
      <div class="footNav">
@@ -61,7 +69,7 @@
        </a>
       </dl>
       <dl class="ftnavCur">
-       <a href="prolist.html">
+       <a href="javascript:;">
         <dt><span class="glyphicon glyphicon-th"></span></dt>
         <dd>所有商品</dd>
        </a>
@@ -90,42 +98,93 @@
     <script src="js/jquery.excoloSlider.js"></script>
 
     <script>
-		var page =2;
-
+	
+	var page =1;
+	
+	
+	function pageScroll(){
+            //把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
+            window.scrollBy(0,-100);
+            //延时递归调用，模拟滚动向上效果
+            scrolldelay = setTimeout('pageScroll()',100);
+            //获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+            var sTop=document.documentElement.scrollTop+document.body.scrollTop;
+            //判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+            if(sTop==0) clearTimeout(scrolldelay);
+        }
+	
+	
+	
 	$(function () {
 	mui.plusReady(function () {
-			$("#search").val(" ");
-
-
-		 $("#sliderA").excoloSlider();
-		 
-		 $.ajax({
-		 	url:'http://39.96.199.148:8060/indexgoods/',
-		 	type:'get',
-		 	data : {type:'is_del',page:1},  
-		 	dataType:'json',
-		 	success:function(da){
-				mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
-				mui('#pullrefresh').pullRefresh().refresh(true);
-		 		var str = '';
-		 		$.each(da.data,function(k,v){ 
-		 			str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
-		 		})
-		 		$('.prolist').html(str);
+		
+		$("#sliderA").excoloSlider();
+		
+		data = plus.webview.currentWebview();
+		
+		var search=data.search;
+		
+		$(".ftnavCur").click(function(){
+			mui.openWindow({
+				url:'prolist.html', 
+				createNew:true,
+				extras:{
 					
-				$('.goodsList_del').click(function(){
-					var goods_id=$(this).attr('goods_id')
-					mui.openWindow({
-						url:'proinfo.html', 
-						createNew:true,
-						extras:{
-							goods_id:goods_id
-						}
-					});
-				});
-				
-		 	},
-		 });
+				}
+			});
+		});
+		
+		if(search!=undefined){
+			$("#search").val(search); 
+			page="";
+		}
+		
+// 		 $.ajax({
+// 		 	url:'http://39.96.199.148:8060/indexgoods/',
+// 		 	type:'get',
+// 		 	data : {type:'is_del',search:search,page:1},  
+// 		 	dataType:'json',
+// 		 	success:function(da){
+// 				var str = '';
+// 				if(da.code==0){
+// 					
+// 					$.each(da.data,function(k,v){ 
+// 						str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+// 					})
+// 					page++;
+// 					$('.prolist').html(str);
+// 					$('.goodsList_del').click(function(){
+// 						var goods_id=$(this).attr('goods_id')
+// 						mui.openWindow({
+// 							url:'proinfo.html', 
+// 							createNew:true,
+// 							extras:{
+// 								goods_id:goods_id
+// 							}
+// 						});
+// 					});
+// 						
+// 					if(da.count<=6){
+// 						mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
+// 						mui('#pullrefresh').pullRefresh().refresh(true);
+// 					}else{
+// 						mui('#pullrefresh').pullRefresh().enablePullupToRefresh(true);
+// 					}
+// 					
+// 				}else{
+// 					str +="<div style='text-align:center;'>"
+// 						  +"<img src='images/nosc.png' style='text-align:center;'>"
+// 						  +"<h4>没有找的您需要的商品....</h4>"
+// 						  +"<br>"
+// 						  +"</div>"
+// 						 +"</div>";
+// 						 
+// 					mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+// 					$('.prolist').html(str);
+// 				}
+// 				
+// 		 	},
+// 		 });
 		 
 		
 		
@@ -183,7 +242,7 @@
 						$.each(da.data,function(k,v){
 							str += "<dl class='goodsList' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
 						});
-						
+						page++;
 						if(num>=6){
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
 						}else{
@@ -199,7 +258,7 @@
 							 +"</div>";
 							 
 							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-
+							
 					}
 					$('.prolist').html(str);	
 					page++;
@@ -227,14 +286,14 @@
 		        container:pullrefresh,//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
 		        up : {
 		            height:50,//可选.默认50.触发上拉加载拖动距离
-		            auto:false,//可选,默认false.自动上拉加载一次
+		            auto:true,//可选,默认false.自动上拉加载一次
 		            contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
 		            contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
 		            callback :pulluploading //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
 		        } 
 		    }
 		});
-		
+
 	function pulluploading(){  
 		var type2=$(".pro-selCur").attr('type2');
 		
@@ -245,7 +304,10 @@
 				type2='pricex'
 			}
 		}
-		
+		// console.log(page);
+		if(page==''){
+			page=1;
+		}
 		search = $("#search").val();
 		// console.log(search);
 		// console.log(page); 
@@ -291,12 +353,4 @@
 	</script>
   </body>
 </html>
-<script>
-	
-	
-		
-		
-		
-		
-		
-</script>
+ 

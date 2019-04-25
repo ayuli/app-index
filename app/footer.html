@@ -1,0 +1,75 @@
+<dl>
+   <a href="javascript:;" class='index foot'>
+	<dt><span class="glyphicon glyphicon-home"></span></dt>
+	<dd>微店</dd>
+   </a>
+  </dl>
+  <dl>
+   <a href="javascript:;" class='shop foot'>
+	<dt><span class="glyphicon glyphicon-th"></span></dt>
+	<dd>所有商品</dd>
+   </a>
+  </dl>
+  <dl>
+   <a href="javascript:;" class='car foot'>
+	<dt><span class="glyphicon glyphicon-shopping-cart"></span></dt>
+	<dd>购物车 </dd>
+   </a>
+  </dl>
+  <dl>
+   <a href="javascript:;" class='user foot'>
+	<dt><span class="glyphicon glyphicon-user"></span></dt>
+	<dd>我的</dd>
+   </a>
+  </dl>
+<div class="clearfix"></div>
+
+<script>  
+	$(function(){
+		
+		$(".foot").click(function(){
+			$(this).parent().siblings().removeClass('ftnavCur');  
+			$(this).parent().addClass('ftnavCur');
+		});
+		
+		$(".index").click(function(){
+			mui.openWindow({
+				url:'index.html', 
+				createNew:true,
+				extras:{
+					
+				}
+			});
+		});
+		
+		$(".user").click(function(){
+			mui.openWindow({
+				url:'user.html', 
+				createNew:true,
+				extras:{
+					
+				}
+			});
+		});
+		
+		$(".shop").click(function(){
+			mui.openWindow({
+				url:'prolist.html', 
+				createNew:true,
+				extras:{
+					
+				}
+			});
+		});
+		
+		$(".car").click(function(){
+			mui.openWindow({
+				url:'car.html', 
+				createNew:true,
+				extras:{
+					
+				}
+			});
+		});
+	})
+</script>  

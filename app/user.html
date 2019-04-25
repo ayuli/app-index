@@ -237,6 +237,7 @@
      
      <div class="height1"></div>
      <div class="footNav">
+      <div class="footNav">
       <dl>
        <a href="index.html">
         <dt><span class="glyphicon glyphicon-home"></span></dt>
@@ -262,7 +263,10 @@
        </a>
       </dl>
       <div class="clearfix"></div>
+     </div>
      </div><!--footNav/-->
+	 <script src='js/jquery.min.js'></script>
+
     </div><!--maincont-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
@@ -283,6 +287,8 @@
 		document.location.href=this.href;
 	} )
 	mui.plusReady(function () {
+		
+		// $(".footNav").load("footer.html");
 	   var uid = plus.storage.getItem("uid")
 	   	mui.ajax('http://39.96.199.148:8060/userCenter',{
 	   	data:{
