@@ -35,11 +35,11 @@
       </div>
      </header>
 	 <br>
-	 <div id="" style="text-align:center;">
-	 	<a href="touxiang.html"><img style="width:150px;height:150px;" src="images/f11f3a292df5e0fe532f77685f6034a85edf72a0 (1).jpg" alt=""></a>
+	 <div id="" style="text-align:center;margin-top: 30px;">
+	 	<a href="touxiang.html"><img style="width:150px;height:150px;" id="imgg" src="images/f11f3a292df5e0fe532f77685f6034a85edf72a0 (1).jpg" alt=""></a>
 	 </div>
 		<br>
-      <div class="lrBox">
+      <div class="lrBox" style="margin-top:50px;">
         <div class="lrList"><input type="text" placeholder="昵称" id="nickname"/></div>
 		<div class="lrList" for="dateSelect"><input type="text" readonly="" placeholder="年龄" id="dateSelect"/></div>
 		<div class="lrList" id="sex"><input type="rdio" readonly="" placeholder="性别"  id="issex"/></div>
@@ -102,12 +102,16 @@
 	    	success:function(data){
 				$('#nickname').val(data.nickname);
 				$('#dateSelect').val(data.age);
+				console.log(data.touxiangurl)
 				if(data.sex==0){
 					$('#issex').val('保密')
 				}else if(data.sex==1){
 					$('#issex').val('男')
 				}else{
 					$('#issex').val('女')
+				}
+				if(data.touxiangurl!=null){
+					$('#imgg').prop("src","http://39.96.199.148:8060/"+data.touxiangurl+"")
 				}
 	    	}
 	    });
