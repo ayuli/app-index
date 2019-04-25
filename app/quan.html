@@ -151,10 +151,23 @@
 					}
 					var str = '';
 					$.each(d.data,function(k,v){
-						str +="<div class='jifenList'><dl class='jl1'>"
-						+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' style='border-radius: 20px;'/></dt>"
-						+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>"+v.coupon_num+"</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>使用</a></div>"
-						+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+						if(type==1){
+							str +="<div class='jifenList'><dl class='jl1'>"
+							+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' style='border-radius: 20px;'/></dt>"
+							+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>1</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>使用</a></div>"
+							+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+						}else if(type==2){
+							str +="<div class='jifenList'><dl class='jl1'>"
+							+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' style='border-radius: 20px;'/></dt>"
+							+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>1</strong> 个<a class='ljdh a' style='background:#eeeeee; color:#cccccc;' href='javascript:;'>已使用</a></div>"
+							+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+						}else if(type==3){
+							str +="<div class='jifenList'><dl class='jl1'>"
+							+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' style='border-radius: 20px;'/></dt>"
+							+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>1</strong> 个<a class='ljdh a' style='background:#eeeeee; color:#cccccc;' href='javascript:;'>已过期</a></div>"
+							+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
+						}
+						
 					
 					})
 					$('#yhj').html(str);

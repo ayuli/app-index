@@ -113,9 +113,14 @@
    </script>
   </body>
 </html>
+<script src="layui/layui.js"></script>
 
 <script>
 	mui.plusReady(function () {
+		
+		layui.use('layer', function(){
+		layer = layui.layer;
+		
 		aj(1);
 		var type = '';
 		$(document).on('click',"[name='tab']",function(){
@@ -129,11 +134,20 @@
 			aj(type);
 		})
 		 
-		$(document).on('click','.orange',function(){
-			var uid = plus.storage.getItem("uid");
+		$(document).on('click','.orange',function(){  //取消订单
+			var user_id = plus.storage.getItem("uid");
 			var order_id = $(this).attr('order_id')
-			alert(order_id) 
-			
+			_this = $(this)
+			$.ajax({
+				url : 'http://39.96.199.148:8060/orderoff',
+				data : {order_id:order_id,user_id:user_id},
+				type : 'get',
+				dataType : 'json',
+				success : function(d){
+					layer.msg(d.msg)
+					_this.parent().remove();
+				}
+			})
 		})
 		
 		function aj(type){  //ajax
@@ -149,7 +163,14 @@
 					}
 						var str = '';
 						$.each(d.data,function(k,v){
-							str += "<table><tr><td colspan='2' width='65%'>订单号：<strong>"+v.order_sn+"</strong></td><td width='35%' align='right'><div class='qingqu'><a href='javascript:;' class='orange' order_id='"+v.order_goods_id+"'>订单取消</a></div></td></tr><tr><td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td><td width='50%'><h3>"+v.goods_name+"</h3><time>下单时间：2015-08-11  13:51</time></td><td align='right'><img src='images/jian-new.png' /></td></tr><tr><th colspan='3'><strong class='orange'>¥"+v.order_amount+"</strong></th></tr></table>";
+							if(type==1){
+								str += "<table ><tr><td colspan='2' width='65%'>订单号：<strong>"+v.order_sn+"</strong></td><td width='35%' align='right'><div class='qingqu'><a href='javascript:;' class='orange' order_id='"+v.order_id+"'>订单取消</a></div></td></tr>";
+							}else if(type==6){
+								str += "<table><tr><td colspan='2' width='65%'>订单号：<strong>"+v.order_sn+"</strong></td><td width='35%' align='right'><div class='qingqu'>已取消</div></td></tr>";
+							}else{
+								str += "<table><tr><td colspan='2' width='65%'>订单号：<strong>"+v.order_sn+"</strong></td><td width='35%' align='right'><div class='qingqu'>已完成</div></td></tr>";
+							}
+							// str += "<table><tr><td colspan='2' width='65%'>订单号：<strong>"+v.order_sn+"</strong></td><td width='35%' align='right'><div class='qingqu'><a href='javascript:;' class='orange' order_id='"+v.order_id+"'>订单取消</a></div></td></tr><tr><td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"' /></td><td width='50%'><h3>"+v.goods_name+"</h3><time></time></td><td align='right'><img src='images/jian-new.png' /></td></tr><tr><th colspan='3'><strong class='orange'>¥"+v.order_amount+"</strong></th></tr></table>";
 						})
 						$('.dingdanlist').html(str);
 					
@@ -157,7 +178,7 @@
 			})
 		}
 		
-		
+		})
 	})
 	
 </script>
