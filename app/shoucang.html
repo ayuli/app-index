@@ -113,7 +113,7 @@
 							 "<table>"+
 								"<tr >"+
 									"<td colspan='2' width='65%'></td>"+ 
-									"<td width='35%' align='right'><div class='qingqu'><a href='shoucang.html' class='del' rid='"+v.rec_id+"' style='color:#f60;'>取消收藏</a></div></td>"+
+									"<td width='35%' align='right'><div class='qingqu'><a href='javascript:;' class='ddel' rid='"+v.rec_id+"' style='color:#f60;'>取消收藏</a></div></td>"+
 								"</tr>"+
 								"<tr>"+
 									"<td class='dingimg' width='15%'><img src='http://39.96.199.148:8060/"+v.goods_img+"'/></td>" +
@@ -128,26 +128,10 @@
 								"</tr>"+
 								"</table>"
 						})
+						
 						$('#sc').html(str)
 						$('#num').html(data.num)
-						$('.del').click(function(){
-							rid = $(this).attr('rid')
-							mui.ajax('http://39.96.199.148:8060/uncollection',{
-								data:{
-									user_id:uid,
-									rec_id:rid
-								},
-								dataType:'json',//服务器返回json格式数据
-								type:'post',//HTTP请求类型
-								timeout:10000,//超时时间设置为10秒；
-								success:function(data){
-									mui.toast('查询收藏失败')
-								},
-								error:function(xhr,type,errorThrown){
-									mui.toast('查询收藏失败')
-								}
-							});
-						}) 
+						
 					}else{
 						mui.toast('您还没有收藏商品')
 					}
@@ -155,6 +139,32 @@
 			});
 		}
 	})
+	
+	
+	$(document).on('click','.ddel',function(){
+		_this = $(this)
+		rid = $(this).attr('rid')
+		var uid = plus.storage.getItem("uid");
+		
+		mui.ajax('http://39.96.199.148:8060/uncollection',{
+			data:{
+				user_id:uid,
+				rec_id:rid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			success:function(data){
+				mui.toast(data.msg)
+				_this.parents('table').remove();
+				var num = $("#num").text();
+				var newnum = num-1
+				$("#num").text(newnum)
+			}
+		});
+		
+	}) 
+	
+	
 $('#alldel').click(function(){
 	var uid = plus.storage.getItem("uid");
 	mui.ajax('http://39.96.199.148:8060/delconllection',{
@@ -167,7 +177,8 @@ $('#alldel').click(function(){
 		success:function(data){
 			if(data==1){
 				mui.toast('删除成功')
-				location.href="";
+				$("#sc").remove();
+				$('#num').text('0')
 			}else{
 				mui.toast('删除失败')
 			}

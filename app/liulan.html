@@ -158,6 +158,8 @@
 					$('#liulan').html(str)
 					$('#num').html(data.num)
 				}
+				
+				
 				$('.del').click(function(){
 					_this = $(this)
 					var id = $(this).parents('tr').attr('hid')
@@ -172,6 +174,9 @@
 							if(data==1){
 								layer.msg('删除成功');
 								_this.parents('table').remove()
+								var num = $("#num").text();
+								var newnum = num-1
+								$("#num").text(newnum)
 							}
 						},
 						error:function(xhr,type,errorThrown){
@@ -197,6 +202,7 @@
 								if(data==1){
 									layer.msg('删除成功');
 									$('#liulan').remove();
+									$("#num").text('0')
 								}
 							},
 							error:function(xhr,type,errorThrown){
