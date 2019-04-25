@@ -122,11 +122,12 @@
 		aj(user_id,order_id,type);
 		
 		$(document).on('click','.orange',function(){  //取消该商品
+			var user_id = plus.storage.getItem("uid");
 			var order_goods_id = $(this).attr('order_goods_id')
 			_this = $(this)
 			$.ajax({
 				url : 'http://39.96.199.148:8060/ordergoodsoff',
-				data : {order_goods_id:order_goods_id},
+				data : {order_goods_id:order_goods_id,user_id:user_id},
 				type : 'get',
 				dataType : 'json',
 				success : function(d){
@@ -136,7 +137,7 @@
 			})
 		})
 		
-		function aj(order,type){  //ajax
+		function aj(user_id,order_id,type){  //ajax
 			$.ajax({
 				url : 'http://39.96.199.148:8060/orderget',
 				data : {user_id:user_id,order_id:order_id,type:type},
