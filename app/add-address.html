@@ -119,17 +119,17 @@ mui.plusReady(function () {
 						  +"<time id='address'>"+v.addressInfo+"</time>"
 						 +"</td>" 
 						 +"<td style='color:green;' width='28%' class='is_address' >默认地址</td>"
-						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
 						 +"</tr>";
 					}else{ 
 						str +=
-						"<tr id='"+v.id+"'>"
+						"<tr id='"+v.id+"'>" 
 						 +"<td width='55%' >"
 						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
 						  +"<time id='address'>"+v.addressInfo+"</time>"
 						 +"</td>"
-						 +"<td style='color:red;' width='28%' class='is_address'>设为默认</td>"
-						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改信息</a></td>"
+						 +"<td style='color:red;' width='28%' class='is_address'>设为默认</td>"   
+						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
 						 +"</tr>";
 					}
 				})
@@ -169,7 +169,7 @@ mui.plusReady(function () {
 							alert(res.msg);
 						}else{
 							console.log(cart_id);
-							if(cart_id!=""){
+							if(cart_id!=undefined){ 
 								
 								mui.alert('设置成功！','提示',function(){
 									mui.openWindow({

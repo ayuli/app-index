@@ -107,7 +107,7 @@ mui.plusReady(function () {
 
 	var user_id = plus.storage.getItem("uid");
 	var cart_id = data.cart_id;
-	console.log(cart_id); 
+	console.log(cart_id);   
   $('#btn').click(function(){
  		if(isaddress){
  			isaddress = 1;
@@ -131,7 +131,7 @@ mui.plusReady(function () {
  		success:function(data){
 			console.log(data);
  			if(data==1){
-				if(cart_id!=''){
+				if(cart_id!=undefined){
 					mui.openWindow({
 						url:'pay.html', 
 						createNew:true,
