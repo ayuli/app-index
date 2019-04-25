@@ -12,6 +12,10 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	
+	  <link rel="stylesheet" href="layui/css/layui.css" media="all">
+	  
+	  <script src="layui/layui.js"></script>
 		<script src="js/mui.min.js"></script>
 	<script src="js/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -73,6 +77,8 @@
 	   
      
      <div class="height1"></div>
+	 
+	 
      <div class="footNav">
       <dl>
        <a href="index.html">
@@ -100,6 +106,9 @@
       </dl>
       <div class="clearfix"></div>
      </div><!--footNav/-->
+	 
+	 
+	 
     </div><!--maincont-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery.min.js"></script>
@@ -117,6 +126,12 @@
 <script>
 	
 	$(function(){
+		
+		
+		layui.use('layer', function(){
+			var layer = layui.layer;
+  
+		
 		$.ajax({  //展示领取优惠卷
 			url:'http://39.96.199.148:8060/getcoupon',
 			data : {},
@@ -125,7 +140,7 @@
 			success:function(da){
 				var str = '';
 				$.each(da.data,function(k,v){
-					str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3个月</dd>"
+					str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3天</dd>"
 					+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt>"
 					+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>"+v.coupon_num+"</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>领取</a></div>"
 					+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
@@ -136,23 +151,23 @@
 		
 		
 		$(document).on('click','a[class=ljdh]',function(){ //点击领取优惠卷
-			
+		
 			var coupon_id = $(this).attr('coupon_id')
 			var user_id=plus.storage.getItem("uid");
-	
+			_this = $(this)
 			$.ajax({
 				url:'http://39.96.199.148:8060/coupondo',
 				data : {coupon_id:coupon_id,user_id:user_id},
 				type:'get',
 				dataType:'json',
 				success:function(da){
-					alert(da.msg)
-					location.href=''
+					layer.msg(da.msg);
+					_this.prev().text(da.num);
 				}
 			});
 			
 		})
-		
+		}); 
 		
 	})
 </script>
