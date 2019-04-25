@@ -45,13 +45,18 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body>   
 	  
-<header class="mui-bar mui-bar-nav">
+<header class="mui-bar mui-bar-nav" style="background-color: rgba(247, 247, 247, 0);box-shadow: none;">
+	<div class="mui-input-row mui-search" >
+		<input type="search" class="mui-input-clear whiteBg" style='background-color:#fff;' placeholder="搜你想要的" >
+	</div>
+</header>
+<!-- <header class="mui-bar mui-bar-nav mui-bar-transparent" >
 	<div class="mui-input-row mui-search">
 		<input type="search" class="mui-input-clear whiteBg" placeholder="搜你想要的" >
 	</div>
-</header>
+</header> -->
 
     <div class="maincont"> 
      <!-- div class="head-top">
@@ -158,11 +163,19 @@
 		 
 		 
       <div class="index-pro1-list" id='pro1'>
-     
+       <dl>
+        <dt><a href="proinfo.html"><img src="images/pro1.jpg" /></a></dt>
+        <dd class="ip-text"><a href="proinfo.html">这是产品的名称</a><span>已售：488</span></dd>
+        <dd class="ip-price"><strong>¥299</strong> <span>¥599</span></dd>
+       </dl>
       </div>
 	  
       <div class="index-pro1-list" id='pro2'>
-   
+       <dl>
+        <dt><a href="proinfo.html"><img src="images/pro1.jpg" /></a></dt>
+        <dd class="ip-text"><a href="proinfo.html">这是产品的名称</a></dd>
+        <dd class="ip-price"><strong>¥299</strong> <span>¥599</span></dd>
+       </dl>
       </div>
      
 	  
@@ -178,7 +191,7 @@
 	 
      <div class="joins">广告
 		<div id='default'>
-
+			<a href="fenxiao.html"><img src="images/jrwm.jpg" /></a>
 		</div>
 	 </div>
      <div class="copyright">Copyright &copy; <span class="blue">这是就是三级分销底部信息</span></div>
@@ -215,6 +228,14 @@
 				}
 			});
 		 });
+			
+		
+		mui('.mui-bar').transparent({
+			top: 0,  
+			offset: 150,
+			duration: 16,
+			scrollby: document.querySelector('.mui-scroll-wrapper')
+		})	
 			
 			
 		$.ajax({
@@ -323,8 +344,6 @@
 		$(".cate tr td dl").click(function(){
 			var cate_id=$(this).attr('cate_id');
 			if(isNaN(parseInt(cate_id))){
-				console.log(cate_id);
-				console.log($(this).attr('open'));
 				if($(this).attr('open')=='open'){
 					mui.openWindow({
 						url:""+cate_id+"", 
@@ -337,11 +356,14 @@
 					plus.runtime.openURL(cate_id);//在本机浏览器中打开url  
 				}
 			}else{
+				
+				plus.storage.setItem("cate_id",""+cate_id+"");
+ 
 				mui.openWindow({
 					url:"prolist.html", 
 					createNew:true,
 					extras:{
-						cate_id:cate_id
+						
 					}
 				});
 			}
@@ -354,7 +376,7 @@
   </body>
 </html>
 <script>   
-	$(function(){
+	$(function(){ 
 		document.addEventListener('plusready',function () {  
 			$(".footNav").load("footer.html");
 		},false);  

@@ -81,7 +81,12 @@
   </body>
 </html>
 <script type="text/javascript">
-mui.ready(function(){
+mui.plusReady(function(){
+			data = plus.webview.currentWebview();
+
+			var url=data.url;
+	
+	
 			$('#btn').click(function(){
 				var name = $('#name').val();
 				var pwd = $('#pwd').val();
@@ -99,10 +104,18 @@ mui.ready(function(){
 							mui.toast('登陆成功')
 							plus.storage.setItem("uid",""+uid+"");
 						
-							mui.openWindow({
-								url:'index.html',
-								createNew:true,
-							}); 
+							if(url!=null){
+								mui.openWindow({
+									url:""+url+"",
+									createNew:true,
+								});
+							}else{
+								mui.openWindow({ 
+									url:'index.html',
+									createNew:true,
+								});
+							}
+							 
 						}else if(data==3){
 							mui.toast('已登陆')
 							mui.openWindow({

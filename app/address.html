@@ -178,7 +178,9 @@ mui.plusReady(function () {
 		error:function(xhr,type,errorThrown){
 		}
 	});
+	
 	$('#province').change(function(){
+			$("#area").html("<option>区县</option>");
 			var pid = $('#province').val();
 				mui.ajax('http://39.96.199.148:8060/getregion',{
 			data:{
@@ -186,7 +188,7 @@ mui.plusReady(function () {
 			},
 			dataType:'json',//服务器返回json格式数据
 			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
+			timeout:10000,//超时时间设置为10秒； 
 			success:function(data){
 				var str = "<option>城市</option>";
 				$.each(data,function(k,v){

@@ -27,14 +27,14 @@
      <header>
       <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
       <div class="head-mid" width='100%'>
-       <form action="#" class="prosearch"><input type="text" placeholder="请输入您要搜索的商品" style='width:230px;background:#FFFFFF;border-radius:15px;' name='search' id='search'/><input type="button" name="label" type2='search'  value="搜索" style='border:0px; width:44px; background:#FF701E; color:#FFFFFF;border-radius:13px;margin-left:7px;' id='search-btn'/></form>
+       <form action="#" class="prosearch"><input type="text" placeholder="&nbsp;&nbsp;请输入您要搜索的商品" style='width:230px;background:#FFFFFF;border-radius:15px;' name='search' id='search'/><input type="button" name="label" type2='search'  value="搜索" style='border:0px; width:44px; background:#FF701E; color:#FFFFFF;border-radius:13px;margin-left:7px;' id='search-btn'/></form>
       </div>
      </header> 
 	<img src="images/5-120601155U7_02.gif" alt="返回顶部" onclick='pageScroll()' style='position: fixed;left:332px;top:540px;'> 
      <ul class="pro-select">
       <li class="pro-selCur" name="label" type2='is_del'><a href="javascript:;">全部</a></li>
       <li name="label"  type2='is_new'><a href="javascript:;" >新品</a></li>
-      <li name="label" price='price'   type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
+      <li name="label" price='price'  class='price'  type2='pricex'><a href="javascript:;" >价格<span id='arrows'>↑</span></a></li>
      </ul><!--pro-select/-->
 	 
 	 
@@ -100,22 +100,23 @@
     <script>
 	
 	var page =1;
+	var cate_id="";
 	
 	
 	function pageScroll(){
             //把内容滚动指定的像素数（第一个参数是向右滚动的像素数，第二个参数是向下滚动的像素数）
-            window.scrollBy(0,-100);
-            //延时递归调用，模拟滚动向上效果
-            scrolldelay = setTimeout('pageScroll()',100);    
-			
-            //获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
-            var sTop=document.documentElement.scrollTop+document.body.scrollTop;
-            //判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
-            if(sTop==0) clearTimeout(scrolldelay);
+            window.scroll(0,0);         
+//             //延时递归调用，模拟滚动向上效果
+//             scrolldelay = setTimeout('pageScroll()',100);    
+// 			
+//             //获取scrollTop值，声明了DTD的标准网页取document.documentElement.scrollTop，否则取document.body.scrollTop；因为二者只有一个会生效，另一个就恒为0，所以取和值可以得到网页的真正的scrollTop值
+//             var sTop=document.documentElement.scrollTop+document.body.scrollTop;
+//             //判断当页面到达顶部，取消延时代码（否则页面滚动到顶部会无法再向下正常浏览页面）
+//             if(sTop==0) clearTimeout(scrolldelay);
         }
 	
 	
-	
+	var page=2;
 	$(function () {
 	mui.plusReady(function () {
 		
@@ -123,76 +124,70 @@
 		
 		data = plus.webview.currentWebview();
 		
+
 		var search=data.search;
 		
-		$(".ftnavCur").click(function(){
-			mui.openWindow({
-				url:'prolist.html', 
-				createNew:true,
-				extras:{
-					
-				}
-			});
-		});
+		
+		
 		
 		if(search!=undefined){
 			$("#search").val(search); 
 			page="";
 		}
-		
-// 		 $.ajax({
-// 		 	url:'http://39.96.199.148:8060/indexgoods/',
-// 		 	type:'get',
-// 		 	data : {type:'is_del',search:search,page:1},  
-// 		 	dataType:'json',
-// 		 	success:function(da){
-// 				var str = '';
-// 				if(da.code==0){
-// 					
-// 					$.each(da.data,function(k,v){ 
-// 						str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
-// 					})
-// 					page++;
-// 					$('.prolist').html(str);
-// 					$('.goodsList_del').click(function(){
-// 						var goods_id=$(this).attr('goods_id')
-// 						mui.openWindow({
-// 							url:'proinfo.html', 
-// 							createNew:true,
-// 							extras:{
-// 								goods_id:goods_id
-// 							}
-// 						});
-// 					});
-// 						
-// 					if(da.count<=6){
-// 						mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
-// 						mui('#pullrefresh').pullRefresh().refresh(true);
-// 					}else{
-// 						mui('#pullrefresh').pullRefresh().enablePullupToRefresh(true);
-// 					}
-// 					
-// 				}else{
-// 					str +="<div style='text-align:center;'>"
-// 						  +"<img src='images/nosc.png' style='text-align:center;'>"
-// 						  +"<h4>没有找的您需要的商品....</h4>"
-// 						  +"<br>"
-// 						  +"</div>"
-// 						 +"</div>";
-// 						 
-// 					mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-// 					$('.prolist').html(str);
-// 				}
-// 				
-// 		 	},
-// 		 });
+		var cate_id=plus.storage.getItem("cate_id");
+
+		 $.ajax({
+		 	url:'http://39.96.199.148:8060/indexgoods/',
+		 	type:'get',
+		 	data : {type:'is_del',search:search,page:1,cate_id:cate_id},  
+		 	dataType:'json',
+		 	success:function(da){
+				var str = '';
+				if(da.code==0){
+					
+					$.each(da.data,function(k,v){ 
+						str += "<dl class='goodsList_del' goods_id='"+v.goods_id+"' ><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存："+v.goods_number+"</em></div></dd><div class='clearfix'></div></dl>"
+					})
+					$('.prolist').html(str);
+					$('.goodsList_del').click(function(){
+						var goods_id=$(this).attr('goods_id')
+						mui.openWindow({
+							url:'proinfo.html', 
+							createNew:true,
+							extras:{
+								goods_id:goods_id
+							}
+						});
+					});
+						
+					if(da.count<=6){
+						mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}else{
+						mui('#pullrefresh').pullRefresh().enablePullupToRefresh(true);
+					}
+					
+				}else{
+					str +="<div style='text-align:center;'>"
+						  +"<img src='images/nosc.png' style='text-align:center;'>"
+						  +"<h4>没有找的您需要的商品....</h4>"
+						  +"<br>"
+						  +"</div>"
+						 +"</div>";
+						 
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					$('.prolist').html(str);
+				}
+				
+		 	},
+		 });
 		 
 		
 		
 		 
 		// 标记
 		$('[name=label]').click(function(){
-			page=1;
+			page=1
 			_this = $(this);
 			var xxx=_this.attr('price');
 			
@@ -229,12 +224,14 @@
 		})
 		
 		function getGoodsList(type2,search){
+			console.log(type2);
+			var cate_id=plus.storage.getItem("cate_id");
 			mui('#pullrefresh').pullRefresh().enablePullupToRefresh();
 			mui('#pullrefresh').pullRefresh().refresh(true);
 			$.ajax({
 				url:'http://39.96.199.148:8060/indexgoods/',
 				type:'get',
-				data : {type:type2,search:search,page:1},
+				data : {type:type2,search:search,page:1,cate_id:cate_id},
 				dataType:'json',
 				success:function(da){   
 					var str = '';
@@ -262,7 +259,6 @@
 							
 					}
 					$('.prolist').html(str);	
-					page++;
 					$('.goodsList').click(function(){
 						var goods_id=$(this).attr('goods_id')
 						mui.openWindow({
@@ -287,70 +283,76 @@
 		        container:pullrefresh,//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
 		        up : {
 		            height:50,//可选.默认50.触发上拉加载拖动距离
-		            auto:true,//可选,默认false.自动上拉加载一次
+		            auto:false,//可选,默认false.自动上拉加载一次
 		            contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
 		            contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
 		            callback :pulluploading //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
 		        } 
 		    }
 		});
-
-	function pulluploading(){  
-		var type2=$(".pro-selCur").attr('type2');
 		
-		if($('.price').hasClass('pro-selCur')){
-			if($("#arrows").text()=='↑'){
-				type2='prices'
-			}else{
-				type2='pricex'
-			}
-		}
-		// console.log(page);
-		if(page==''){
-			page=1;
-		}
-		search = $("#search").val();
-		// console.log(search);
-		// console.log(page); 
-			mui.ajax("http://39.96.199.148:8060/indexgoods/", {
-	        type: "get",
-	        dataType: "json",
-	        data:{type : type2,page : page,search:search},
-	        success: function(d){
-				
-				if(d.code==0){
-					var num=d.count;
-					var result="";
-					$.each(d.data,function(i,v){
-						result+= "<dl class='"+page+"' goods_id='"+v.goods_id+"'><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存：100</em></div></dd><div class='clearfix'></div></dl>";
-					});
-					
-					
-					$(".prolist").append(result);
-					   // console.log(page)
-					$('.'+page+'').click(function(){
-						var goods_id=$(this).attr('goods_id')
-						mui.openWindow({
-							url:'proinfo.html',
-							createNew:true,
-							extras:{
-								goods_id:goods_id
-							}
-						});
-					});
-					page++;
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
-				}else{
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
-				}
+		function pulluploading(){  
+			 
+			var cate_id=plus.storage.getItem("cate_id");
 			
-	        }
-	    });
-		    
-	}
-	
+			var type2=$(".pro-selCur").attr('type2');
+			if($('.price').hasClass('pro-selCur')){
+				if($("#arrows").text()=='↑'){
+					type2='prices'
+				}else{
+					type2='pricex'
+				}
+			}
+			console.log(type2);
+			
+			search = $("#search").val();
+				mui.ajax("http://39.96.199.148:8060/indexgoods/", {
+		        type: "get",
+		        dataType: "json",
+		        data:{type : type2,page : page,search:search,cate_id:cate_id},
+		        success: function(d){
+					if(d.code==0){
+						var num=d.count;
+						var result="";
+						$.each(d.data,function(i,v){
+							result+= "<dl class='"+page+"' goods_id='"+v.goods_id+"'><dt><a href='javascript:;'><img src='http://39.96.199.148:8060/"+v.goods_img+"' width='100' height='100' /></a></dt><dd><h3><a href='javascript:;'>"+v.goods_name+"</a></h3><div class='prolist-price'><strong>¥"+v.goods_price+"</strong> <span>¥"+Number(Number(v.goods_price)+200).toFixed(2)+"</span></div><div class='prolist-yishou'><span>5.0折</span> <em>库存：100</em></div></dd><div class='clearfix'></div></dl>";
+						});
+						
+						
+						$(".prolist").append(result);
+						   // console.log(page)
+						$('.'+page+'').click(function(){
+							var goods_id=$(this).attr('goods_id')
+							mui.openWindow({
+								url:'proinfo.html',
+								createNew:true,
+								extras:{
+									goods_id:goods_id
+								}
+							});
+						});
+						page++;
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+					}else{
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(true);
+					}
+				
+		        }
+		    });
+			    
+		}
+		
+		$(".ftnavCur").click(function(){
+			plus.storage.removeItem("cate_id");  
 
-	
+			mui.openWindow({
+				url:'prolist.html', 
+				createNew:true,
+				extras:{
+					
+				}
+			});
+		});
 	</script>
   </body>
 </html>

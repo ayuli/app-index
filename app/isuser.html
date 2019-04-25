@@ -85,7 +85,6 @@
 	    	success:function(data){
 				$('#nickname').val(data.nickname);
 				$('#dateSelect').val(data.age);
-				console.log(data.touxiangurl)
 				if(data.sex==0){
 					$('#issex').val('保密')
 				}else if(data.sex==1){

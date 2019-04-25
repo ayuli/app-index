@@ -106,11 +106,7 @@
 
 <script type="text/javascript"> 
 	mui.plusReady(function () {  
-		
-		layui.use('layer', function(){
-		layer = layui.layer;
-		
-		    data = plus.webview.currentWebview();
+		data = plus.webview.currentWebview();
 			name = data.name
 			tel = data.tel
 			address = data.address
@@ -118,46 +114,62 @@
 			district = data.district
 			city = data.city
 			add_id = data.add_id
+			isaddress=data.isaddress;
+			if(isaddress==1){
+				$('#is_address').text("已是默认地址");
+				$('#is_address').css('background','green');
+			}else{
+				$('#is_address').text("设置默认地址");
+				$('#is_address').css('background','#f60');
+			}
 			$('#consignee_name').val(name)
 			$('#detailed_address').val(address)
 			$('#consignee_tel').val(tel)
-		mui.ajax('http://39.96.199.148:8060/selregion',{
-			data:{
-			},
-			dataType:'json',//服务器返回json格式数据
-			type:'get',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				var str = "<option>省份</option>";
-				var str1 = "<option>城市</option>";
-				var str2 = "<option>区县</option>";
-				$.each(data,function(k,v){
-					if(v.region_id==province){
-						str += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
-					}else{
-						str += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-					}
-					if(v.region_id==city){
-						str1 += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
-					}else{
-						str1 += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-					}
-					if(v.region_id==district){
-						str2 += "<option value=\""+v.region_id+"\" selected>"+v.region_name+"</option>" ;
-					}else{
-						str2 += "<option value=\""+v.region_id+"\">"+v.region_name+"</option>" ;
-					}
-				})
-				// str = "<option value='"+province+"'></option>"
-				$('#province').html(str);
-				$('#city').html(str1);
-				$('#area').html(str2);
-			},
-			error:function(xhr,type,errorThrown){
-			}
-		});
+		layui.use('layer', function(){
+		layer = layui.layer;
+		
+		    
+			
+			
+			 
+		$.get('http://39.96.199.148:8060/getregion',{pid:1},function(res){
+			var str = "<option>省份</option>";
+			$.each(res,function(k,v){
+				if(province==v.region_id){ 
+					str += "<option value=\""+v.region_id+"\" selected >"+v.region_name+"</option>" ;
+				}else{
+					str += "<option value=\""+v.region_id+"\"  >"+v.region_name+"</option>" ;
+				}
+			});
+			$('#province').html(str);   
+		},'json');
+	 
+		 $.get('http://39.96.199.148:8060/getregion',{pid:province},function(res){
+			var str = "<option>城市</option>";
+			$.each(res,function(k,v){
+				if(city==v.region_id){ 
+					str += "<option value=\""+v.region_id+"\" selected >"+v.region_name+"</option>" ;
+				}else{
+					str += "<option value=\""+v.region_id+"\"  >"+v.region_name+"</option>" ;
+				}
+			})
+			$('#city').html(str);   
+		 },'json');
+	 
+		$.get('http://39.96.199.148:8060/getregion',{pid:city},function(res){
+			var str = "<option>区县</option>";  
+			$.each(res,function(k,v){
+				if(district==v.region_id){ 
+					str += "<option value=\""+v.region_id+"\" selected >"+v.region_name+"</option>" ;
+				}else{
+					str += "<option value=\""+v.region_id+"\"  >"+v.region_name+"</option>" ;
+				}
+			})
+			$('#area').html(str);   
+		},'json');
 	 
 		$('#province').change(function(){
+				$("#area").html("<option>区县</option>");
 				var pid = $('#province').val();
 					mui.ajax('http://39.96.199.148:8060/getregion',{
 				data:{
@@ -197,23 +209,23 @@
 				}
 			});
 		})
-		var isaddress = 0
+		
+	 
 		$('#is_address').click(function(){
-			console.log(isaddress)
+			// console.log(isaddress)
 			if(isaddress==0){
 				isaddress=1
+				$(this).text("已是默认地址");
+				$(this).css('background','green');
 				mui.toast('已设为默认')
 			}else{
 				isaddress=0
+				$(this).text("设置默认地址");
+				$(this).css('background','#f60');
 				mui.toast('已取消默认')
-		}		
+			}		
 		})
 		$('#btn').click(function(){
-				if(isaddress){
-					isaddress = 1;
-				}else{
-					isaddress = 0;
-				}
 		 	mui.ajax('http://39.96.199.148:8060/upaddress',{
 				data:{
 					consignee_name:$('#consignee_name').val(),
@@ -231,6 +243,10 @@
 				success:function(data){
 					if(data==1){
 						layer.msg('修改成功')
+						mui.openWindow({
+							url:'add-address.html',
+							createNew:true,
+						})
 					}else{
 						layer.msg('未修改')
 					}

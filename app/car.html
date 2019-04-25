@@ -36,7 +36,7 @@
       <tr>
        <td width="75%"><span class="hui">购物车共有：<strong class="orange cart_count">1</strong>件商品</span></td>
        <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;">
-        <span class="glyphicon glyphicon-shopping-cart" style="font-size:2rem;color:#666;"></span>
+        <span class="glyphicon glyphicon-shopping-cart top_car" style="font-size:2rem;color:#666;" ></span>
        </td>
       </tr>
      </table>
@@ -100,7 +100,18 @@
 		var layer = layui.layer;
 
 			var user_id = plus.storage.getItem("uid");
-			 
+			
+			if(user_id==null){
+				mui.toast('请先登录！') 
+				mui.openWindow({
+					url:'login.html',
+					createNew:true,
+					extras:{ 
+						url:"car.html"
+					}
+				}); 
+			}
+			
 			$.ajax({
 				url:'http://39.96.199.148:8060/cartshow/',
 				type:'get',
@@ -187,8 +198,15 @@
 						}); 
 						
 					}else{
+						var str ="<div style='text-align:center;'>"
+							  +"<img src='images/nosc.png' style='text-align:center;'>"
+							  +"<h4>没有找的您需要的商品....</h4>"
+							  +"<br>"
+							  +"</div>"
+							 +"</div>";
+							 
 						$(".cart_count").text(0);
-						$('.dingdanlist').html(da.msg);  
+						$('.dingdanlist').html(str);  
 					}
 					
 			
@@ -235,6 +253,15 @@
 				cartDel(cart_id);
 			});
 			
+			$(".top_car").click(function(){
+				mui.openWindow({
+					url:'prolist.html',
+					createNew:true,
+					extras:{ 
+						
+					}
+				}); 
+			});
 			
 			function cartDel(cart_id){
 				var data={};

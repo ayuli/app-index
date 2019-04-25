@@ -35,7 +35,7 @@
      <table class="shoucangtab" style="border-bottom:none;">
       <tr>
        <td width="75%"><a href="address.html" class="hui"><strong class="">+</strong> 新增收货地址</a></td>
-       <td width="25%" align="center" style="background:#fff url(images/xian.jpg) left center no-repeat;"><a href="javascript:;" class="orange">删除信息</a></td>
+       <td width="25%" align="center" ></td>
       </tr>
      </table>
      
@@ -119,17 +119,17 @@ mui.plusReady(function () {
 						  +"<time id='address'>"+v.addressInfo+"</time>"
 						 +"</td>" 
 						 +"<td style='color:green;' width='28%' class='is_address' >默认地址</td>"
-						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
+						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"' isaddress='"+v.is_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
 						 +"</tr>";
 					}else{ 
 						str +=
 						"<tr id='"+v.id+"'>" 
 						 +"<td width='55%' >"
-						  +"<h3 id='name'>"+v.userInfo+"</h3>"  
+						  +"<h3 id='name'>"+v.userInfo+"</h3>"    
 						  +"<time id='address'>"+v.addressInfo+"</time>"
 						 +"</td>"
 						 +"<td style='color:red;' width='28%' class='is_address'>设为默认</td>"   
-						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
+						 +"<td align='right' width='20%'><a class='btn' add_id='"+v.id+"' city='"+v.city+"' district='"+v.district+"' province='"+v.province+"' consignee_name='"+v.consignee_name+"' consignee_tel='"+v.consignee_tel+"' detailed_address='"+v.detailed_address+"' isaddress='"+v.is_address+"'  href='javascript:;' class='hui'><span class='glyphicon glyphicon-check'></span> 修改</a></td>"
 						 +"</tr>";
 					}
 				})
@@ -143,7 +143,8 @@ mui.plusReady(function () {
 				var district = $(this).attr('district')
 				var province = $(this).attr('province')
  					var add_id = $(this).attr('add_id')
- 					mui.openWindow({
+ 					var isaddress = $(this).attr('isaddress')	
+  					mui.openWindow({
  						url:'up-address.html',
  						createNew:true,
  						extras:{   
@@ -153,7 +154,8 @@ mui.plusReady(function () {
  							name:consignee_name,
  							tel:consignee_tel,
  							address:detailed_address,
-							add_id:add_id
+							add_id:add_id,
+							isaddress:isaddress  
 						},
  					}); 
  				});
@@ -168,7 +170,6 @@ mui.plusReady(function () {
 						if(res.code==0){
 							alert(res.msg);
 						}else{
-							console.log(cart_id);
 							if(cart_id!=undefined){ 
 								
 								mui.alert('设置成功！','提示',function(){
