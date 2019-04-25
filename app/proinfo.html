@@ -99,7 +99,7 @@
 		});
 	</script> -->
      
-
+<script src="layui/layui.js"></script>
    <script>
 
 		function collection(){
@@ -132,6 +132,9 @@
 	<script type="text/javascript">
 	$(function(){
 		mui.plusReady(function () { 
+			layui.use('layer', function(){
+		var layer = layui.layer;
+			
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
 			// console.log(goodsid);
@@ -151,7 +154,7 @@
 					if(data==1){
 						// alert(11)
 					}else{
-						alert(222)
+						// alert(222)
 					}
 		    	},
 		    	error:function(xhr,type,errorThrown){
@@ -272,14 +275,17 @@
 				data.user_id=user_id; 
 				data.goods_num=goods_num;
 				$.post(url,data,function(res){
-					alert(res.msg);
+					layer.msg(res.msg);
 					if(res.code==1){   
 						location.href="car.html"; 
 					}
 				},'json');
 			});
 			
-		})
+		
+		
+		
+		
 		
 		
 		$("#shoucang").click(function(){
@@ -292,11 +298,14 @@
 				type : 'post',
 				dataType: 'json',
 				success:function(d){
-					alert(d.msg)
+					layer.msg(d.msg)
 				}
 			})
-			console.log($(this).parent().html());
+			// console.log($(this).parent().html());
 		})
+		
+		})
+			})
 	});
 	</script>
 	<!--jq加减-->

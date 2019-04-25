@@ -14,6 +14,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	<script src="layui/layui.js"></script>
+<link href="css/style.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -103,11 +105,15 @@
 </html>
 <script type="text/javascript">
 mui.plusReady(function () {
+// 	
+ 		layui.use('layer', function(){
+ 		var layer = layui.layer;
+		
 	data = plus.webview.currentWebview();
 
 	var user_id = plus.storage.getItem("uid");
 	var cart_id = data.cart_id;
-	console.log(cart_id);   
+	// console.log(cart_id);   
   $('#btn').click(function(){
  		if(isaddress){
  			isaddress = 1;
@@ -148,7 +154,7 @@ mui.plusReady(function () {
 					});
 				}
 			}else{
-				alert('添加失败！');
+				layer.msg('添加失败！');
 			}
  		},
  		error:function(xhr,type,errorThrown){
@@ -211,6 +217,8 @@ mui.plusReady(function () {
 			error:function(xhr,type,errorThrown){
 			}
 		});
+	})
+	
 	})
 })
 var isaddress = 0

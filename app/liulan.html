@@ -14,6 +14,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+<link href="layui/css/style.css" rel="stylesheet">
+<script src="layui/layui.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -97,6 +99,10 @@
 </html>
 <script>
 	mui.plusReady(function () {
+		
+		layui.use('layer', function(){
+		layer = layui.layer;
+		
 		var uid = plus.storage.getItem("uid")
 		if(uid==null){
 			mui.toast('请先登陆') 
@@ -153,6 +159,7 @@
 					$('#num').html(data.num)
 				}
 				$('.del').click(function(){
+					_this = $(this)
 					var id = $(this).parents('tr').attr('hid')
 					mui.ajax('http://39.96.199.148:8060/delhistory',{
 						data:{
@@ -163,8 +170,8 @@
 						timeout:10000,//超时时间设置为10秒；
 						success:function(data){
 							if(data==1){
-								alert('删除成功');
-								location.reload();
+								layer.msg('删除成功');
+								_this.parents('table').remove()
 							}
 						},
 						error:function(xhr,type,errorThrown){
@@ -177,23 +184,29 @@
 	    		
 	    	}
 	    });
-	})
-	$('#adel').click(function(){
-					mui.ajax('http://39.96.199.148:8060/delahistory',{
-						data:{
-						},
-						dataType:'json',//服务器返回json格式数据
-						type:'get',//HTTP请求类型
-						timeout:10000,//超时时间设置为10秒；
-						success:function(data){
-							if(data==1){
-								alert('删除成功');
-								location.href="";
+		
+		
+		$('#adel').click(function(){
+						mui.ajax('http://39.96.199.148:8060/delahistory',{
+							data:{
+							},
+							dataType:'json',//服务器返回json格式数据
+							type:'get',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								if(data==1){
+									layer.msg('删除成功');
+									$('#liulan').remove();
+								}
+							},
+							error:function(xhr,type,errorThrown){
+								
 							}
-						},
-						error:function(xhr,type,errorThrown){
-							
-						}
-					});
+						});
+		})
+		
+		
 	})
+	})
+	
 </script>

@@ -39,8 +39,8 @@
       <h3>已经有账号了？点此<a class="orange" href="login.html">登陆</a></h3>
       <div class="lrBox">
        <div class="lrList"><input type="text" id="name" placeholder="输入手机号码或者邮箱号" /></div>
-       <div class="lrList"><input type="text" id="pwd" placeholder="设置新密码（6-18位数字或字母）" /></div>
-       <div class="lrList"><input type="text" id="tpwd" placeholder="再次输入密码" /></div>
+       <div class="lrList"><input type="password" id="pwd" placeholder="设置新密码（6-18位数字或字母）" /></div>
+       <div class="lrList"><input type="password" id="tpwd" placeholder="再次输入密码" /></div>
 	   <div class="lrList"><input type="text" id="yzm" placeholder="输入验证码" /></div>
       </div><!--lrBox/-->
       <div class="lrSub">
@@ -85,7 +85,13 @@
     <script src="js/style.js"></script>
   </body>
 </html>
+<script src="layui/layui.js"></script>
 <script type="text/javascript">
+	
+	mui.plusReady(function () {
+		layui.use('layer', function(){
+		layer = layui.layer;
+
 	$('#btn1').click(function(){
 	var name = $('#name').val();
 	mui.ajax('http://39.96.199.148:8060/getvercode',{
@@ -96,10 +102,10 @@
 		type:'get',//HTTP请求类型
 		timeout:10000,//超时时间设置为10秒；
 		success:function(data){
-			alert(data.msg)
+			layer.msg(data.msg)
 		},
 		error:function(xhr,type,errorThrown){
-			alert(2)
+			layer.msg(2)
 		}
 	});
 	})
@@ -120,7 +126,7 @@
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
-						alert(data.msg)
+						layer.msg(data.msg)
 						if(data.code==0){
 							mui.openWindow({
 								url:'login.html',
@@ -129,9 +135,11 @@
 						}
 					},
 					error:function(xhr,type,errorThrown){
-						alert(22)
+						layer.msg(22)
 					}
 				});
+	})
+	})
 	})
 </script><strong></strong>
 

@@ -75,7 +75,7 @@
 					var order=false;
 					data = plus.webview.currentWebview();
 					var order_id=data.order_id;
-					console.log(order_id);
+					// console.log(order_id);
 					var url="http://39.96.199.148:8060/orderShow";
 					$.ajax({ 
 						url:url,
@@ -84,7 +84,7 @@
 						async:false,
 						success:function(res){
 							if(res.code==1){ 
-								alert(res.code);
+								// alert(res.code);
 								var data=res.data;
 							var str="	<td width='50%'>"+
 												"<h3>订单号："+data.order_sn+"</h3>"+

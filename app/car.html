@@ -12,6 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	<script src="layui/layui.js"></script>
+<link href="css/style.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -93,6 +95,10 @@
 <script>
 	$(function(){ 
 		mui.plusReady(function () { 
+			
+			layui.use('layer', function(){
+		var layer = layui.layer;
+
 			var user_id = plus.storage.getItem("uid");
 			 
 			$.ajax({
@@ -167,7 +173,7 @@
 							data.goods_num=num;
 							data.total_price=price;
 							$.get("http://39.96.199.148:8060/cartUpdate",data,function(res){
-								alert(res.msg);
+								layer.msg(res.msg);
 							},'json'); 
 						});
 						
@@ -223,7 +229,7 @@
 					cart_id+=$(this).attr('cart_id')+',';
 				});
 				if(cart_id==''){
-					alert('请选择要删除的商品！');
+					layer.msg('请选择要删除的商品！');
 					return false;
 				}
 				cartDel(cart_id);
@@ -234,7 +240,7 @@
 				var data={};
 				data.cart_id=cart_id;
 				$.post("http://39.96.199.148:8060/indexCartDel",data,function(res){
-					alert(res.msg); 
+					layer.msg(res.msg); 
 					if(res.code==1){
 						location.reload();
 					}
@@ -248,7 +254,7 @@
 					cart_id+=$(this).attr('cart_id')+',';
 				});
 				if(cart_id==''){
-					alert('请选择商品！');
+					layer.msg('请选择商品！');
 					return false;
 				}
 				mui.openWindow({
@@ -259,6 +265,7 @@
 					}
 				});
 			});
+			})
 		}); 
 	});
 </script>

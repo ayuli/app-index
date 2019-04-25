@@ -175,9 +175,14 @@
 	</script>
   </body>
 </html>
+<script src="layui/layui.js"></script>
 <script>
 	$(function(){
 		mui.plusReady(function () {
+			
+			layui.use('layer', function(){
+			layer = layui.layer;
+		
 			var foot_price=0;
 			var total_price=0;
 			data = plus.webview.currentWebview();
@@ -288,7 +293,7 @@
 						if(coupon_type==1){
 							var max=parseInt(_this.attr('max'));     
 							if(max>total_price){
-								alert('不满足使用条件！');
+								layer.msg('不满足使用条件！');
 								_this.prop('checked',false);
 							}else{
 								var price=parseInt(_this.attr('price')).toFixed(2);
@@ -359,7 +364,7 @@
 				data.total=total;     
 				data.uc_id=uc_id;
 				$.post(url,data,function(res){
-					alert(res.msg); 
+					layer.msg(res.msg); 
 					if(res.code==1){ 
 						mui.openWindow({
 							url:'success.html', 
@@ -381,5 +386,6 @@
 			});
 			
 		});
+		})
 	})
 </script>
