@@ -665,14 +665,15 @@ color:#e93967;
 	text-align:center;
 	line-height:30px;
 	margin:10px 0;
-	background:#f60;
-	border-radius: 3px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */ 
-    -moz-border-radius: 3px; /* Mozilla浏览器的私有属性 */ 
-    -webkit-border-radius: 3px; /* Webkit浏览器的私有属性 */ 
-	color:#fff;
+	background:#f00;
+	/* border:#ee1e20 2 solid; */
+	border-radius: 20px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */ 
+    -moz-border-radius: 20px; /* Mozilla浏览器的私有属性 */ 
+    -webkit-border-radius: 20px; /* Webkit浏览器的私有属性 */ 
+	color:#ffffff;
 	}
 .ljdh:hover{
-	background:#f00;
+	background:#e92123;
 	color:#fff;
 	}
 	
