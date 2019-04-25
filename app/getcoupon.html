@@ -12,6 +12,10 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/response.css" rel="stylesheet">
+	
+	  <link rel="stylesheet" href="layui/css/layui.css" media="all">
+	  
+	  <script src="layui/layui.js"></script>
 		<script src="js/mui.min.js"></script>
 	<script src="js/jquery.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -117,6 +121,12 @@
 <script>
 	
 	$(function(){
+		
+		
+		layui.use('layer', function(){
+			var layer = layui.layer;
+  
+		
 		$.ajax({  //展示领取优惠卷
 			url:'http://39.96.199.148:8060/getcoupon',
 			data : {},
@@ -136,23 +146,23 @@
 		
 		
 		$(document).on('click','a[class=ljdh]',function(){ //点击领取优惠卷
-			
+		
 			var coupon_id = $(this).attr('coupon_id')
 			var user_id=plus.storage.getItem("uid");
-	
+			_this = $(this)
 			$.ajax({
 				url:'http://39.96.199.148:8060/coupondo',
 				data : {coupon_id:coupon_id,user_id:user_id},
 				type:'get',
 				dataType:'json',
 				success:function(da){
-					alert(da.msg)
-					location.href=''
+					layer.msg(da.msg);
+					_this.prev().text(da.num);
 				}
 			});
 			
 		})
-		
+		}); 
 		
 	})
 </script>
