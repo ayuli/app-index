@@ -26,7 +26,7 @@
      <header>
       <a href="javascript:history.back(-1)" class="back-off fl"><span class="glyphicon glyphicon-menu-left"></span></a>
       <div class="head-mid">
-       <h1>产品详情</h1>
+       <h1>产品详情</h1> 
       </div>
      </header>
      <div id="sliderA" class="slider">
@@ -159,10 +159,13 @@
 		    	}
 		    });
 
-			
 			//商品信息
 			var url="http://39.96.199.148:8060/indexGoodsDetail";
-			$.get(url,{goods_id:goodsid},function(res){
+			$.get(url,{goods_id:goodsid,user_id:uid},function(res){ 
+				if(res.code==1){
+					$(".shoucang").addClass('shoucangout');
+					$(".shoucang").removeClass('shoucang');
+				}  
 				$(".orange").html(res.goodsInfo.goods_price);
 				$(".goods_name").html(res.goodsInfo.goods_name);
 				$(".goods_number").text(res.goodsInfo.goods_number);
