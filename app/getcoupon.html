@@ -140,8 +140,8 @@
 			success:function(da){
 				var str = '';
 				$.each(da.data,function(k,v){
-					str +="<div class='jifenList'><dl class='jl1'><dt>"+v.coupon_name+"</dt><dd>有效期：自兑换日起3天</dd>"
-					+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' /></dt>"
+					str +="<div class='jifenList'><dl class='jl1'>"
+					+"<div class='clearfix'></div></dl><dl class='jl2'><dt><img src='"+v.coupon_img+"' width='203' height='150' style='border-radius: 20px;'/></dt>"
 					+"<div class='jl2Text' style='float: left; margin-top: 36px;margin-left: 40px;'>数&nbsp;&nbsp;&nbsp;量：<strong class='red' style='font-size:16px;'>"+v.coupon_num+"</strong> 个<a class='ljdh' coupon_id='"+v.coupon_id+"' href='javascript:;'>领取</a></div>"
 					+"<div class='clearfix' style='height: 100px;'></div></dl></div>";
 				})
