@@ -114,8 +114,7 @@
 		layer = layui.layer;
 		
 		data = plus.webview.currentWebview();
-		var order_id = data.order_id
-		var user_id = plus.storage.getItem("uid");
+		order_id = data.order_id
 	
 		aj(4);
 		
@@ -124,7 +123,7 @@
 			var user_id=plus.storage.getItem("uid");
 			$.ajax({
 				url : 'http://39.96.199.148:8060/orderget',
-				data : {user_id:user_id,type:type},
+				data : {user_id:user_id,order_id:order_id,type:type},
 				type : 'get',
 				dataType : 'json',
 				success : function(d){
