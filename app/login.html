@@ -83,10 +83,11 @@
 <script type="text/javascript">
 mui.plusReady(function(){
 			data = plus.webview.currentWebview();
-
+			
 			var url=data.url;
-	
-	
+			
+			var goods_id=data.goods_id; 
+		
 			$('#btn').click(function(){
 				var name = $('#name').val();
 				var pwd = $('#pwd').val();
@@ -105,10 +106,22 @@ mui.plusReady(function(){
 							plus.storage.setItem("uid",""+uid+"");
 						
 							if(url!=null){
-								mui.openWindow({
-									url:""+url+"",
-									createNew:true,
-								});
+								if(url=="proinfo.html"){
+									mui.openWindow({
+										url:""+url+"",
+										createNew:true,
+										extras:{ 
+											goods_id:goods_id
+										}
+									});
+								}else{
+									mui.openWindow({
+										url:""+url+"",
+										createNew:true,
+									});
+								}
+								
+								
 							}else{
 								mui.openWindow({ 
 									url:'index.html',

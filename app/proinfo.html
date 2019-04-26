@@ -133,7 +133,7 @@
 	$(function(){
 		mui.plusReady(function () { 
 			layui.use('layer', function(){
-		var layer = layui.layer;
+		var layer = layui.layer; 
 			
 			data = plus.webview.currentWebview();
 			var goodsid = data.goods_id
@@ -211,13 +211,12 @@
 					
 				}else{
 					var str=""; 
-					mui.each(res.attrInfo,function (i,v) {
-						str+="<li><a href='javascript:;' price='"+v.attr_price+"' goods_attr='"+v.goods_attr+"' class='attr' >"+v.attr_value+"</a></li>";
+					mui.each(res.attrInfo,function (i,v) { 
+						str+="<li><a href='javascript:;' price='"+v.attr_price+"' goods_attr='"+v.goods_attr+"' class='attr' >"+v.attr_value+" ￥"+v.attr_price+"</a></li>";
 					}); 
 					str+="<div class='clearfix'></div>"; 
 					$(".guige").html(str);
 				}
-				
 				$('.spinnerExample').spinner({});
 				
 				$(".spinnerExample").blur(function(){
@@ -234,39 +233,55 @@
 				});
 				
 				
+				
 				$(".attr").click(function(){
 					var price=parseInt(res.goodsInfo.goods_price).toFixed(2);
 					var price=(Number(price)+Number($(this).attr('price'))).toFixed(2);
 					$(".orange").text(price);
-					$(this).addClass('attr_click');
+					$.each($(".attr"),function(i,v){
+						$(this).css('color','#333');        
+						$(this).css('text-decoration','none');
+						$('.attr').eq(i).css('border','1px solid #ddd');
+						$('.attr').eq(i).removeClass('attr_click');
+					});
+					
+					$(this).addClass('attr_click');   
+					$(this).css('border','1px solid #f60');
+					$(this).css('color','#f60');   
+					$(this).css('text-decoration','underline');   
 				});
 				
 			},'json'); 
 			
-
+			
+			
+			
 			
 			$(".cartAdd").click(function(){
 				var user_id=plus.storage.getItem("uid");
 				if(user_id==null){
-					mui.alert('请先登录！',function(){
-						location.href="login.html"; 
-					}); 
+					mui.toast('请先登录！');
+					mui.openWindow({
+						url:'login.html', 
+						createNew:true,
+						extras:{
+							url:"proinfo.html",
+							goods_id:goodsid
+						}  
+					});
 					return false;
 				}
 				
 				var goods_attr=$(".attr_click").attr('goods_attr');
 				
 				if(!$(".guige").hasClass('attr_none')){
-					if(goods_attr==undefined){
+					if(goods_attr==undefined){  
 						layer.msg('请选择规格！');
 						return false;
 					}
-				}
-				
+				} 
 				
 				var goods_id=goodsid; 
-				
-
 				var goods_num=$(".spinnerExample").val();
 				var url="http://39.96.199.148:8060/cartAdd";
 				var data={};
@@ -275,10 +290,13 @@
 				data.user_id=user_id; 
 				data.goods_num=goods_num;
 				$.post(url,data,function(res){
-					layer.msg(res.msg);
-					if(res.code==1){   
-						location.href="car.html"; 
-					}
+					mui.toast(res.msg);
+					mui.openWindow({
+						url:'car.html', 
+						createNew:true,
+						extras:{
+						}  
+					});
 				},'json');
 			});
 			
@@ -292,6 +310,18 @@
 			data = plus.webview.currentWebview();
 			var goods_id = data.goods_id
 			var user_id=plus.storage.getItem("uid");
+			if(user_id==null){
+				mui.toast('请先登录！');
+				mui.openWindow({
+					url:'login.html', 
+					createNew:true,
+					extras:{
+						url:"proinfo.html",
+						goods_id:goodsid
+					}  
+				});
+				return false;
+			}
 			$.ajax({
 				url : 'http://39.96.199.148:8060/collection',
 				data : {goods_id:goods_id,user_id:user_id},
@@ -299,6 +329,17 @@
 				dataType: 'json',
 				success:function(d){
 					layer.msg(d.msg)
+					if(d.code==0){
+						mui.toast('请先登录！');
+						mui.openWindow({
+							url:'login.html', 
+							createNew:true,
+							extras:{
+								url:"proinfo.html",
+								goods_id:goodsid
+							}   
+						});
+					}
 				}
 			})
 			// console.log($(this).parent().html());
