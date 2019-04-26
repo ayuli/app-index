@@ -92,6 +92,13 @@
 mui.plusReady(function () { 
 	var name = $('#name').val()
 	var user_id = plus.storage.getItem("uid");
+	if(user_id==null){
+		mui.toast('请先登陆') 
+		mui.openWindow({
+			url:'login.html',
+			createNew:true,
+		});
+	}
 	 data = plus.webview.currentWebview();
 	var cart_id=data.cart_id;
 	mui.ajax('http://39.96.199.148:8060/addressGet',{

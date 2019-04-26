@@ -75,28 +75,36 @@
 <script type="text/javascript">
 	mui.plusReady(function () {
 		var uid = plus.storage.getItem("uid");
-	    mui.ajax('http://39.96.199.148:8060/showuserinfo',{
-	    	data:{
-	    		uid:uid
-	    	},
-	    	dataType:'json',//服务器返回json格式数据
-	    	type:'get',//HTTP请求类型
-	    	timeout:10000,//超时时间设置为10秒；
-	    	success:function(data){
-				$('#nickname').val(data.nickname);
-				$('#dateSelect').val(data.age);
-				if(data.sex==0){
-					$('#issex').val('保密')
-				}else if(data.sex==1){
-					$('#issex').val('男')
-				}else{
-					$('#issex').val('女')
+		if(uid==null){
+			mui.toast('请先登陆') 
+			mui.openWindow({
+				url:'login.html',
+				createNew:true,
+			});
+		}else{
+				    mui.ajax('http://39.96.199.148:8060/showuserinfo',{
+				data:{
+					uid:uid
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					$('#nickname').val(data.nickname);
+					$('#dateSelect').val(data.age);
+					if(data.sex==0){
+						$('#issex').val('保密')
+					}else if(data.sex==1){
+						$('#issex').val('男')
+					}else{
+						$('#issex').val('女')
+					}
+					if(data.touxiangurl!=null){
+						$('#imgg').prop("src","http://39.96.199.148:8060/"+data.touxiangurl+"")
+					}
 				}
-				if(data.touxiangurl!=null){
-					$('#imgg').prop("src","http://39.96.199.148:8060/"+data.touxiangurl+"")
-				}
-	    	}
-	    });
+			});
+		}
 	})
 </script>
 <script type="text/javascript">
